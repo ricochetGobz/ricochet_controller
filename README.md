@@ -2,18 +2,14 @@
 
 Manages data received by the Kinect and the cubes for drawing the projection.
 
-## UML
-
 ## Exemples
 
 - **Mapping :**
   - [Graffiti Research Lab L.A.S.E.R Tag](https://www.youtube.com/watch?v=DKbtTPYZEig)
   - [CubeMapped](https://vimeo.com/146400251)
-- **** 
-
-
-## Functionnalities
-
+  
+- **OpenFrameworks app :**
+  - **TODO**  
 
 
 ## Important Components
@@ -30,3 +26,11 @@ Manages data received by the Kinect and the cubes for drawing the projection.
 
 - **Vidéo projecteur :** Mapping et projection des effets visuels et graphiques sur les cubes et le support de composition. Projection d'informations pour guider les utilisateurs.
 
+
+## Links
+
+
+## UML
+
+
+## Functionnalities
