@@ -1,0 +1,63 @@
+### OSX ###
+.DS_Store
+._*
+.Trashes
+
+### Xcode ###
+# Xcode
+#
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+## Build generated
+build/
+DerivedData
+
+## Various settings
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+
+## Other
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+
+
+### Open Framework ###
+
+# build files
+openFrameworks.a
+openFrameworksDebug.a
+openFrameworksUniversal.a
+libs/openFrameworksCompiled/lib/*/*
+!libs/openFrameworksCompiled/lib/*/.gitkeep
+
+bin/ricochet_proto_echoDebug.app/**
+bin/ricochet_proto_echoDebug.app/Contents/MacOS/ricochet_proto_echoDebug
+
+
+### Server ###
+npm-debug.log
+
+# NPM packages folder.
+server/node_modules/
+server/npm-debug.log
+
+# dist
+server/public/
+
+### Render ###
+
+# NPM packages folder.
+server/render/node_modules/
+server/render/npm-debug.log
+
+# Build
+server/render/public/style.css
+server/render/public/main.js
