@@ -27,8 +27,8 @@
 		7ADB04AF67C568EAFAEBA546 /* ofxKinectExtras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01438542609FC64F1EC60EEB /* ofxKinectExtras.cpp */; };
 		879A251454401BC0B6E4F238 /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9BFFBBF4CC43DEE890B3C3E /* OscTypes.cpp */; };
 		8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81967292BFC87A0144BD32C6 /* ofxOscSender.cpp */; };
-		A27147B11CCF79E300B0C083 /* KinectController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27147AF1CCF79E300B0C083 /* KinectController.cpp */; };
-		A27147B51CCF79FE00B0C083 /* ServerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27147B31CCF79FE00B0C083 /* ServerController.cpp */; };
+		A27147BB1CCF7EE300B0C083 /* KinectController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27147B71CCF7EE300B0C083 /* KinectController.cpp */; };
+		A27147BC1CCF7EE300B0C083 /* ServerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27147B91CCF7EE300B0C083 /* ServerController.cpp */; };
 		ACE7DC9A3223ED5EE1B80074 /* cameras.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DBD37876A11E46E4D7069B3 /* cameras.c */; };
 		ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADD194746185E2DA11468377 /* IpEndpointName.cpp */; };
 		C4782ECC372420ACE0615B74 /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC8881B3C8C0A1C45F042E7A /* OscPrintReceivedElements.cpp */; };
@@ -211,10 +211,10 @@
 		A0399084868E7CAFB7E3D8E9 /* retina.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = retina.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/contrib/retina.hpp; sourceTree = SOURCE_ROOT; };
 		A15E0125B8C9B7F01DED5695 /* matrix.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = matrix.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/matrix.h; sourceTree = SOURCE_ROOT; };
 		A1E5C3C977BF213B183ABC28 /* block.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = block.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/block.hpp; sourceTree = SOURCE_ROOT; };
-		A27147AF1CCF79E300B0C083 /* KinectController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KinectController.cpp; path = ../../ricochet_test_communication/src/KinectController.cpp; sourceTree = "<group>"; };
-		A27147B01CCF79E300B0C083 /* KinectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KinectController.h; path = ../../ricochet_test_communication/src/KinectController.h; sourceTree = "<group>"; };
-		A27147B31CCF79FE00B0C083 /* ServerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerController.cpp; path = ../../ricochet_test_communication/src/ServerController.cpp; sourceTree = "<group>"; };
-		A27147B41CCF79FE00B0C083 /* ServerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerController.h; path = ../../ricochet_test_communication/src/ServerController.h; sourceTree = "<group>"; };
+		A27147B71CCF7EE300B0C083 /* KinectController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KinectController.cpp; path = Controller/KinectController.cpp; sourceTree = "<group>"; };
+		A27147B81CCF7EE300B0C083 /* KinectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KinectController.h; path = Controller/KinectController.h; sourceTree = "<group>"; };
+		A27147B91CCF7EE300B0C083 /* ServerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerController.cpp; path = Controller/ServerController.cpp; sourceTree = "<group>"; };
+		A27147BA1CCF7EE300B0C083 /* ServerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerController.h; path = Controller/ServerController.h; sourceTree = "<group>"; };
 		A2AAA8CA403479E6FCDF920E /* OscHostEndianness.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscHostEndianness.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscHostEndianness.h; sourceTree = SOURCE_ROOT; };
 		A2C86A44C1FD1CB1DD189DFA /* transform.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = transform.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/transform.hpp; sourceTree = SOURCE_ROOT; };
 		A2EE5E80B134EA52A8B369D2 /* eigen.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = eigen.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/eigen.hpp; sourceTree = SOURCE_ROOT; };
@@ -693,10 +693,10 @@
 		A27147B21CCF79E800B0C083 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				A27147AF1CCF79E300B0C083 /* KinectController.cpp */,
-				A27147B01CCF79E300B0C083 /* KinectController.h */,
-				A27147B31CCF79FE00B0C083 /* ServerController.cpp */,
-				A27147B41CCF79FE00B0C083 /* ServerController.h */,
+				A27147B71CCF7EE300B0C083 /* KinectController.cpp */,
+				A27147B81CCF7EE300B0C083 /* KinectController.h */,
+				A27147B91CCF7EE300B0C083 /* ServerController.cpp */,
+				A27147BA1CCF7EE300B0C083 /* ServerController.h */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1107,6 +1107,7 @@
 				686B0DF6249B52E1A85B39EC /* ofxKinect.cpp in Sources */,
 				0F8F016776681D468C0D0949 /* audio.c in Sources */,
 				ACE7DC9A3223ED5EE1B80074 /* cameras.c in Sources */,
+				A27147BC1CCF7EE300B0C083 /* ServerController.cpp in Sources */,
 				F4135EEFC911E9ED211FB6F9 /* core.c in Sources */,
 				E55DEEF784A10419E444669E /* flags.c in Sources */,
 				21A059755481CC0BF969FD2D /* keep_alive.c in Sources */,
@@ -1121,19 +1122,18 @@
 				E212C821D1064B92DD953A42 /* ofxCvHaarFinder.cpp in Sources */,
 				63020F16C7E8DED980111241 /* ofxCvImage.cpp in Sources */,
 				D3301F6A0B43BB293ED97C1D /* ofxCvShortImage.cpp in Sources */,
-				A27147B11CCF79E300B0C083 /* KinectController.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
-				A27147B51CCF79FE00B0C083 /* ServerController.cpp in Sources */,
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,
 				510CAFE035E576A4E1502D52 /* UdpSocket.cpp in Sources */,
 				62545D179C94265CA1389D4A /* OscOutboundPacketStream.cpp in Sources */,
 				C4782ECC372420ACE0615B74 /* OscPrintReceivedElements.cpp in Sources */,
 				0546D1A38E13BD319CC9755B /* OscReceivedElements.cpp in Sources */,
+				A27147BB1CCF7EE300B0C083 /* KinectController.cpp in Sources */,
 				879A251454401BC0B6E4F238 /* OscTypes.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
