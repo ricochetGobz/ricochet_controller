@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "36729B824AA5DD286C9002644D300BECB81781F9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "36729B824AA5DD286C9002644D300BECB81781F9" : 0,
+    "FB34F19DF380B6FD6DDF4313279E270582A719AE" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "C8015985-B265-4C16-877E-B8D4A7E98922",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "36729B824AA5DD286C9002644D300BECB81781F9" : "ricochet_controller\/",
+    "FB34F19DF380B6FD6DDF4313279E270582A719AE" : "ricochet_test_communication\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ricochet_controller",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ricochet_controller.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:ricochetGobz\/ricochet_controller.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "36729B824AA5DD286C9002644D300BECB81781F9"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:ricochetGobz\/ricochet_test_communication.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "FB34F19DF380B6FD6DDF4313279E270582A719AE"
+    }
+  ]
+}
