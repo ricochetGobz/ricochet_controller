@@ -9,7 +9,6 @@
 #ifndef EchoContainer_h
 #define EchoContainer_h
 
-#include <stdio.h>
 #include "Cube.h"
 #include "Echo.h"
 

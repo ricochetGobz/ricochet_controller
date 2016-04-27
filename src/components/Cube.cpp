@@ -6,26 +6,27 @@
 //
 //
 
-#include <stdio.h>
 #include "Cube.h"
 #include "echo.h"
 
 //--------------------------------------------------------------
-Cube::Cube(ofPoint _pos, int _id){
+Cube::Cube(ofPoint _pos, int _id, ServerController _server){
     color.set( ofRandom(255), ofRandom(255), ofRandom(255));
     pos = _pos;
+    posMid.x = pos.x - size / 2;
+    posMid.y = pos.y - size / 2;
     cubeId = _id;
+    
+    server = _server;
 }
 
 //--------------------------------------------------------------
 void Cube::draw(){
     ofNoFill();
     ofSetColor(color);
-    ofPoint posMid;
     posMid.x = pos.x - size / 2;
     posMid.y = pos.y - size / 2;
     ofDrawRectangle(posMid,size,size);
-
     if(contactZoneShowed){
         ofDrawCircle(pos.x, pos.y, contactArea);
     }
@@ -39,12 +40,13 @@ void Cube::loadSound(string soundPath){
 //--------------------------------------------------------------
 void Cube::moveTo(ofPoint _pos){
     pos = ofPoint( _pos.x, _pos.y);
-    cout << " Cube Moved" << endl;
 }
 
 //--------------------------------------------------------------
 void Cube::play(){
     cubeSound.play();
+    // TODO envoyer une requête au serveur
+    server.sendPlayCube(cubeId, -1, posMid.x, posMid.y);
 }
 
 //--------------------------------------------------------------

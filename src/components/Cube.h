@@ -10,11 +10,12 @@
 #define Cube_h
 
 #include "ofMain.h"
+#include "ServerController.h"
 
 class Cube{
     public:
         // Constructor
-        Cube(ofPoint _pos, int _id);
+        Cube(ofPoint _pos, int _id, ServerController _server);
 
         // VARS
         int cubeId;
@@ -33,9 +34,12 @@ class Cube{
         int faceId;
         int size = 70;
         float contactArea = 245;
+        ofPoint posMid;
 
         ofColor color;
         ofSoundPlayer cubeSound;
+    
+        ServerController server;
     
         vector<ofColor> colors;
 

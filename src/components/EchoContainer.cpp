@@ -39,9 +39,9 @@ void EchoContainer::draw() {
 void EchoContainer::createEcho(Cube _cube) {
     // sauve le cube emmeteur comme cube touché
     cubesTouched.push_back(_cube.cubeId);
-    _cube.play();
-    
     echoes.push_back(*new Echo(_cube.pos));
+
+    _cube.play();
 }
 
 //--------------------------------------------------------------

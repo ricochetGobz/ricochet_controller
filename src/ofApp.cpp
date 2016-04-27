@@ -29,7 +29,7 @@ void ofApp::setup(){
     ///// TEMP CUBE INIT ////
     /* Pushback, pour entrer un objet dans mon tableaux d'objet "cube".     */
     for(int i = 0; i < nCube; i++) {
-        cubes.push_back(*new Cube(ofPoint((ofGetWidth()*i/nCube) + 50, 50.0), i));
+        cubes.push_back(*new Cube(ofPoint((ofGetWidth()*i/nCube) + 50, 50.0), i, server));
         cubes[i].loadSound("./sounds/note_" + std::to_string((i%6)+1) +".mp3");
     }
 
@@ -112,10 +112,7 @@ void ofApp::exit(){
 
 // CREATE ECHO CONTAINER -----------------------------------------------
 void ofApp::createEchoContainer(Cube _cube){
-    
     EchoContainer newEchoContainer = *new EchoContainer(_cube);
-    _cube.play();
-    
     echoContainers.push_back(newEchoContainer);
 }
 
@@ -141,7 +138,6 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    //server.sendPlayCube(-1, -1, x, y);
     for(vector<Cube>::iterator it = cubes.begin(); it != cubes.end(); ++it) {
         
         if((*it).pointIsInside(ofPoint(x, y))) {

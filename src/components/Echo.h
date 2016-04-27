@@ -8,6 +8,7 @@
 
 #ifndef Echo_h
 #define Echo_h
+
 #include "ofMain.h"
 
 class Echo{
