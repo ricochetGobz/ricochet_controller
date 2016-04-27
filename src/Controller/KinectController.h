@@ -25,7 +25,7 @@ public:
     
     void init();
     void update();
-    void draw();
+    void draw(int mode);
     void onKeyPressed(int key);
     bool kinectIsConnected();
     
@@ -51,8 +51,6 @@ private:
     int farThreshold;
     
     int angle;
-    
-    int mode;
     
     // used for viewing the point cloud
     ofEasyCam easyCam;

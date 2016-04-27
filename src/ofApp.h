@@ -10,6 +10,10 @@
 
 #define RECEIVER_PORT 5555
 
+#define NORMAL_MODE 0
+#define CALIBRATION_MODE 1
+#define CLOUD_MODE 2
+
 class ofApp : public ofBaseApp{
     
 public:
@@ -19,17 +23,14 @@ public:
     void exit();
     
     void keyPressed(int key);
-    void keyReleased(int key);
-    void mouseMoved(int x, int y );
     void mouseDragged(int x, int y, int button);
     void mousePressed(int x, int y, int button);
     void mouseReleased(int x, int y, int button);
-    void mouseEntered(int x, int y);
-    void mouseExited(int x, int y);
-    void windowResized(int w, int h);
-    void dragEvent(ofDragInfo dragInfo);
     
 private:
+    // UX
+    int mode;
+
     // CONTROLLERS
     ServerController server;
     // !!!! THE RECEIVER DOESN'T WORK INTO NODEBRIGDE

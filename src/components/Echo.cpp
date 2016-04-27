@@ -11,7 +11,7 @@
 
 //--------------------------------------------------------------
 Echo::Echo(ofPoint _pos){
-    color.set(0.28, 0.39, 0.53);
+    color.set(255.0, 255.0, 255.0);
     pos = _pos;
 }
 
@@ -27,8 +27,6 @@ void Echo::expand(){
     
     expandForce = (sizeMax - size) * vel;
     size += expandForce;
-    
-    //size += 4;
 }
 
 bool Echo::souldRemoved() {

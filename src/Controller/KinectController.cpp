@@ -89,7 +89,7 @@ void KinectController::update() {
 
 }
 
-void KinectController::draw() {
+void KinectController::draw(int mode) {
     
     // INSCTUCTION
     stringstream reportStream;
@@ -170,63 +170,50 @@ bool KinectController::kinectIsConnected(){
 
 void KinectController::onKeyPressed(int key) {
     switch (key) {
-        case'm':
-            mode++;
-            if(mode == 3){
-                mode = 0;
-            }
-            break;
         case 'o':
             kinect.setCameraTiltAngle(angle); // go back to prev tilt
             kinect.open();
             break;
-        default:
-            if(mode == CALIBRATION_MODE){
-                switch (key) {
-                    case ' ':
-                        bThreshWithOpenCV = !bThreshWithOpenCV;
-                        break;
-                    case '>':
-                    case '.':
-                        farThreshold ++;
-                        if (farThreshold > 255) farThreshold = 255;
-                        break;
+        case ' ':
+            bThreshWithOpenCV = !bThreshWithOpenCV;
+            break;
+        case '>':
+        case '.':
+            farThreshold ++;
+            if (farThreshold > 255) farThreshold = 255;
+            break;
                         
-                    case '<':
-                    case ',':
-                        farThreshold --;
-                        if (farThreshold < 0) farThreshold = 0;
-                        break;
-                        
-                    case '+':
-                    case '=':
-                        nearThreshold ++;
-                        if (nearThreshold > 255) nearThreshold = 255;
-                        break;
-                        
-                    case '-':
-                        nearThreshold --;
-                        if (nearThreshold < 0) nearThreshold = 0;
-                        break;
-                        
-                    case 'w':
-                        kinect.enableDepthNearValueWhite(!kinect.isDepthNearValueWhite());
-                        break;
-                        
-                    case OF_KEY_UP:
-                        angle++;
-                        if(angle>30) angle=30;
-                        kinect.setCameraTiltAngle(angle);
-                        break;
-                        
-                    case OF_KEY_DOWN:
-                        angle--;
-                        if(angle<-30) angle=-30;
-                        kinect.setCameraTiltAngle(angle);
-                        break;
-                }
-                
-            }
+        case '<':
+        case ',':
+            farThreshold --;
+            if (farThreshold < 0) farThreshold = 0;
+            break;
+            
+        case '+':
+        case '=':
+            nearThreshold ++;
+            if (nearThreshold > 255) nearThreshold = 255;
+            break;
+            
+        case '-':
+            nearThreshold --;
+            if (nearThreshold < 0) nearThreshold = 0;
+            break;
+            
+        case 'w':
+            kinect.enableDepthNearValueWhite(!kinect.isDepthNearValueWhite());
+            break;
+            
+        case OF_KEY_UP:
+            angle++;
+            if(angle>30) angle=30;
+            kinect.setCameraTiltAngle(angle);
+            break;
+            
+        case OF_KEY_DOWN:
+            angle--;
+            if(angle<-30) angle=-30;
+            kinect.setCameraTiltAngle(angle);
             break;
     }
 }
