@@ -4,6 +4,8 @@
 #include "ofxOsc.h"
 #include "ServerController.h"
 #include "KinectController.h"
+#include "Cube.h"
+#include "EchoContainer.h"
 
 
 #define RECEIVER_PORT 5555
@@ -28,9 +30,28 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     
 private:
+    // CONTROLLERS
     ServerController server;
     // !!!! THE RECEIVER DOESN'T WORK INTO NODEBRIGDE
     ofxOscReceiver server_receive;
     
     KinectController kinect;
+    
+    // TEMPS
+    int cubeDragged;
+    int nCube = 8;
+    bool mouseDown = false;
+    bool mouseMove = false;
+    bool bSetupArduino = false;
+    
+    // COMPONENTS
+    vector<Cube> cubes;
+    vector<EchoContainer> echoContainers;
+    
+    void createEchoContainer(Cube _cube);
+    
+    // AUDIO PART
+    vector<ofSoundPlayer> sounds;
+
+    
 };

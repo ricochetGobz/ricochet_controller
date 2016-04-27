@@ -29,6 +29,9 @@
 		8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81967292BFC87A0144BD32C6 /* ofxOscSender.cpp */; };
 		A27147BB1CCF7EE300B0C083 /* KinectController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27147B71CCF7EE300B0C083 /* KinectController.cpp */; };
 		A27147BC1CCF7EE300B0C083 /* ServerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27147B91CCF7EE300B0C083 /* ServerController.cpp */; };
+		A27147C51CD0B7D000B0C083 /* Cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27147BF1CD0B7D000B0C083 /* Cube.cpp */; };
+		A27147C61CD0B7D000B0C083 /* Echo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27147C11CD0B7D000B0C083 /* Echo.cpp */; };
+		A27147C71CD0B7D000B0C083 /* EchoContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27147C31CD0B7D000B0C083 /* EchoContainer.cpp */; };
 		ACE7DC9A3223ED5EE1B80074 /* cameras.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DBD37876A11E46E4D7069B3 /* cameras.c */; };
 		ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADD194746185E2DA11468377 /* IpEndpointName.cpp */; };
 		C4782ECC372420ACE0615B74 /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC8881B3C8C0A1C45F042E7A /* OscPrintReceivedElements.cpp */; };
@@ -215,6 +218,12 @@
 		A27147B81CCF7EE300B0C083 /* KinectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KinectController.h; path = Controller/KinectController.h; sourceTree = "<group>"; };
 		A27147B91CCF7EE300B0C083 /* ServerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerController.cpp; path = Controller/ServerController.cpp; sourceTree = "<group>"; };
 		A27147BA1CCF7EE300B0C083 /* ServerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerController.h; path = Controller/ServerController.h; sourceTree = "<group>"; };
+		A27147BF1CD0B7D000B0C083 /* Cube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Cube.cpp; path = components/Cube.cpp; sourceTree = "<group>"; };
+		A27147C01CD0B7D000B0C083 /* Cube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cube.h; path = components/Cube.h; sourceTree = "<group>"; };
+		A27147C11CD0B7D000B0C083 /* Echo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Echo.cpp; path = components/Echo.cpp; sourceTree = "<group>"; };
+		A27147C21CD0B7D000B0C083 /* Echo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Echo.h; path = components/Echo.h; sourceTree = "<group>"; };
+		A27147C31CD0B7D000B0C083 /* EchoContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EchoContainer.cpp; path = components/EchoContainer.cpp; sourceTree = "<group>"; };
+		A27147C41CD0B7D000B0C083 /* EchoContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EchoContainer.h; path = components/EchoContainer.h; sourceTree = "<group>"; };
 		A2AAA8CA403479E6FCDF920E /* OscHostEndianness.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscHostEndianness.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscHostEndianness.h; sourceTree = SOURCE_ROOT; };
 		A2C86A44C1FD1CB1DD189DFA /* transform.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = transform.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/transform.hpp; sourceTree = SOURCE_ROOT; };
 		A2EE5E80B134EA52A8B369D2 /* eigen.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = eigen.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/eigen.hpp; sourceTree = SOURCE_ROOT; };
@@ -690,7 +699,7 @@
 			name = ofxOpenCv;
 			sourceTree = "<group>";
 		};
-		A27147B21CCF79E800B0C083 /* Controller */ = {
+		A27147B21CCF79E800B0C083 /* controller */ = {
 			isa = PBXGroup;
 			children = (
 				A27147B71CCF7EE300B0C083 /* KinectController.cpp */,
@@ -698,7 +707,20 @@
 				A27147B91CCF7EE300B0C083 /* ServerController.cpp */,
 				A27147BA1CCF7EE300B0C083 /* ServerController.h */,
 			);
-			name = Controller;
+			name = controller;
+			sourceTree = "<group>";
+		};
+		A27147BE1CD0B75600B0C083 /* components */ = {
+			isa = PBXGroup;
+			children = (
+				A27147BF1CD0B7D000B0C083 /* Cube.cpp */,
+				A27147C01CD0B7D000B0C083 /* Cube.h */,
+				A27147C11CD0B7D000B0C083 /* Echo.cpp */,
+				A27147C21CD0B7D000B0C083 /* Echo.h */,
+				A27147C31CD0B7D000B0C083 /* EchoContainer.cpp */,
+				A27147C41CD0B7D000B0C083 /* EchoContainer.h */,
+			);
+			name = components;
 			sourceTree = "<group>";
 		};
 		A5A3A2F98919E2243C73199C /* core */ = {
@@ -899,7 +921,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				A27147B21CCF79E800B0C083 /* Controller */,
+				A27147BE1CD0B75600B0C083 /* components */,
+				A27147B21CCF79E800B0C083 /* controller */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
@@ -1101,6 +1124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A27147C61CD0B7D000B0C083 /* Echo.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				7ADB04AF67C568EAFAEBA546 /* ofxKinectExtras.cpp in Sources */,
@@ -1125,6 +1149,8 @@
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
+				A27147C51CD0B7D000B0C083 /* Cube.cpp in Sources */,
+				A27147C71CD0B7D000B0C083 /* EchoContainer.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
