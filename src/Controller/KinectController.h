@@ -12,26 +12,44 @@
 
 #include "ofxOpenCv.h"
 #include "ofxKinect.h"
+#include "ofxControlPanel.h"
 
 #define NORMAL_MODE 0
 #define CALIBRATION_MODE 1
 #define CLOUD_MODE 2
 
+#define RES 1.33333
+#define WIDTH 800
+#define HEIGHT WIDTH/RES
+#define OC_WIDTH 200
+#define OC_HEIGHT OC_WIDTH/RES
+
 class KinectController {
  
 public:
-    // Constructor
-    KinectController();
-    
     void init();
     void update();
     void draw(int mode);
-    void onKeyPressed(int key);
     bool kinectIsConnected();
-    
-
+    void setDepthNearValue(bool white);
+    void open();
     
 private:
+    // GUI
+    ofxControlPanel gui;
+    // Infos
+    ofParameterGroup stats;
+    ofParameter <float> appFrameRate;
+    ofParameter <int> nBlobs;
+    ofParameter <int> nCubes;
+    // OpenCV controls
+    ofParameterGroup resultControls;
+    ofParameter <bool> bDepthNearValue;
+    ofParameter <int> nearThreshold;
+    ofParameter <int> farThreshold;
+    ofParameter <int> minArea;
+    ofParameter <int> maxArea;
+
     
     void drawPointCloud();
     ofxKinect kinect;
@@ -44,13 +62,8 @@ private:
     
     ofxCvContourFinder contourFinder;
     
-    bool bThreshWithOpenCV;
     bool bDrawPointCloud;
-    
-    int nearThreshold;
-    int farThreshold;
-    
-    int angle;
+    bool depthNearValue;
     
     // used for viewing the point cloud
     ofEasyCam easyCam;

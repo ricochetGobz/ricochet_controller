@@ -14,6 +14,7 @@
 #define CALIBRATION_MODE 1
 #define CLOUD_MODE 2
 
+
 class ofApp : public ofBaseApp{
     
 public:
@@ -26,11 +27,11 @@ public:
     void mouseDragged(int x, int y, int button);
     void mousePressed(int x, int y, int button);
     void mouseReleased(int x, int y, int button);
+
     
 private:
-    // UX
     int mode;
-
+    
     // CONTROLLERS
     ServerController server;
     // !!!! THE RECEIVER DOESN'T WORK INTO NODEBRIGDE
@@ -38,12 +39,12 @@ private:
     
     KinectController kinect;
     
+    
     // TEMPS
     int cubeDragged;
     int nCube = 8;
     bool mouseDown = false;
-    bool mouseMove = false;
-    bool bSetupArduino = false;
+    bool mouseMove = false;    
     
     // COMPONENTS
     vector<Cube> cubes;
@@ -51,8 +52,7 @@ private:
     
     void createEchoContainer(Cube _cube);
     
+    
     // AUDIO PART
     vector<ofSoundPlayer> sounds;
-
-    
 };

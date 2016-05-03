@@ -1,3 +1,5 @@
+ofxControlPanel
 ofxKinect
 ofxOpenCv
 ofxOsc
+ofxXmlSettings

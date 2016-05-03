@@ -32,12 +32,12 @@ void ofApp::setup(){
         cubes.push_back(*new Cube(ofPoint((ofGetWidth()*i/nCube) + 50, 50.0), i, server));
         cubes[i].loadSound("./sounds/note_" + std::to_string((i%6)+1) +".mp3");
     }
-
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
+       
     ///// SERVER UPDATE : OSC MESSAGE RECEIVED ////
     while(server_receive.hasWaitingMessages()){
         ofxOscMessage m;
@@ -73,14 +73,15 @@ void ofApp::draw(){
     ofBackground(100, 100, 100);
     ofSetColor(255, 255, 255);
     
-    ///// KINECT DEBUG DRAW ////
+    ///// KINECT DRAW ////
     kinect.draw(mode);
     
     ///// COMMUNICATION INFORMATION /////
     stringstream reportStream;
     reportStream << "Node.js Server: " << ((server.isStarted())?"ON":"OFF") << endl
     << "Web Render: " << ((server.webRenderIsConnected())?"ON":"OFF") << endl
-    << "Kinect: " << ((server.kinectIsConnected())?"ON":"OFF - press (o) :: try to connect the kinect.") << endl;
+    << "Kinect: " << ((server.kinectIsConnected())?"ON":"OFF - press (o) :: try to connect the kinect.") << endl << endl
+    << "press (m) :: switch between modes" << endl;
     ofDrawBitmapString(reportStream.str(), 10, 20);
     
     
@@ -94,8 +95,7 @@ void ofApp::draw(){
         for (vector<EchoContainer>::iterator it = echoContainers.begin(); it != echoContainers.end(); ++it) {
             (*it).draw();
         }
-        
-        
+
         ///// TEMPS /////
         if(cubeDragged >= 0 && mouseDown){
             cubes[cubeDragged].contactZoneShowed = true;
@@ -123,8 +123,9 @@ void ofApp::keyPressed(int key){
         if(mode == 3){
             mode = 0;
         }
+    } else if(key == 'o'){
+        kinect.open();
     }
-    kinect.onKeyPressed(key);
 }
 
 //--------------------------------------------------------------

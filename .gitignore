@@ -38,26 +38,5 @@ openFrameworksUniversal.a
 libs/openFrameworksCompiled/lib/*/*
 !libs/openFrameworksCompiled/lib/*/.gitkeep
 
-bin/ricochet_proto_echoDebug.app/**
-bin/ricochet_proto_echoDebug.app/Contents/MacOS/ricochet_proto_echoDebug
-
-
-### Server ###
-npm-debug.log
-
-# NPM packages folder.
-server/node_modules/
-server/npm-debug.log
-
-# dist
-server/public/
-
-### Render ###
-
-# NPM packages folder.
-server/render/node_modules/
-server/render/npm-debug.log
-
-# Build
-server/render/public/style.css
-server/render/public/main.js
+bin/ricochet_controller.app/**
+bin/ricochet_controller.app/Contents/MacOS/ricochet_controller

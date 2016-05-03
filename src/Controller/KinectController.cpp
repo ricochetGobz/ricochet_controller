@@ -9,26 +9,12 @@
 
 #include "KinectController.h"
 
-KinectController::KinectController() {
-    nearThreshold = 230;
-    farThreshold = 70;
-    bThreshWithOpenCV = true;
-    angle = 0;
-    
-    // KINECT INITIALISATION MUST BE CONTROLLED
-}
-
 void KinectController::init() {
     // enable depth->video image calibration
     kinect.setRegistration(true);
     
     kinect.init();
-    // kinect.init(true); // shows infrared instead of RGB video image
-    // kinect.init(false, false); // disable video image (faster fps)
-    
-    kinect.open();		// opens first available kinect
-    // kinect.open(1);	// open a kinect by id, starting with 0 (sorted by serial # lexicographically))
-    // kinect.open("A00362A08602047A");	// open a kinect using it's unique serial #
+    kinect.open();
     
     // print the intrinsic IR sensor values
     if(kinect.isConnected()) {
@@ -43,11 +29,34 @@ void KinectController::init() {
     grayThreshNear.allocate(kinect.width, kinect.height);
     grayThreshFar.allocate(kinect.width, kinect.height);
     
-    // zero the tilt on startup
-    kinect.setCameraTiltAngle(angle);
+    
+    ///// GUI INIT ////
+    gui.setup("Ricochet - DEBUG", (ofGetWidth()/3.5)*2.5, 0, ofGetWidth()/3.5, ofGetHeight());
+    //--------- PANEL 1 : DEBUG
+    gui.setWhichPanel(0);
+    gui.setWhichColumn(0);
+    // Stats
+    gui.addChartPlotter(appFrameRate, 30, 80);
+    stats.setName("Stats");
+    stats.add( nBlobs.set("Blobs founds", 0) );
+    stats.add( nCubes.set("Cubes founds", 0) );
+    gui.addVariableLister(stats);
+    // Resultcontrol
+    resultControls.setName("OpenCV result");
+    resultControls.add(bDepthNearValue.set("deathNearValue", false));
+    resultControls.add(nearThreshold.set("nearThreshold", 152.0, 1.0, 255.0));
+    resultControls.add(farThreshold.set("farThreshold", 145.0, 1.0, 255.0));
+    resultControls.add(minArea.set("minArea", 800.0, 1.0, 3000.0));
+    resultControls.add(maxArea.set("maxArea", 3000.0, 1.0, (OC_WIDTH*OC_HEIGHT)));
+    gui.addGroup(resultControls);
 }
 
 void KinectController::update() {
+    ///// GUI UPDATE /////
+    gui.update();
+    appFrameRate = ofGetFrameRate();
+
+    ///// KINECT UPDATE /////
     kinect.update();
     
     // there is a new frame and we are connected
@@ -58,51 +67,34 @@ void KinectController::update() {
         
         // we do two thresholds - one for the far plane and one for the near plane
         // we then do a cvAnd to get the pixels which are a union of the two thresholds
-        if(bThreshWithOpenCV) {
-            grayThreshNear = grayImage;
-            grayThreshFar = grayImage;
-            grayThreshNear.threshold(nearThreshold, true);
-            grayThreshFar.threshold(farThreshold);
-            cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
-        } else {
-            
-            // or we do it ourselves - show people how they can work with the pixels
-            unsigned char * pix = grayImage.getPixels();
-            
-            int numPixels = grayImage.getWidth() * grayImage.getHeight();
-            for(int i = 0; i < numPixels; i++) {
-                if(pix[i] < nearThreshold && pix[i] > farThreshold) {
-                    pix[i] = 255;
-                } else {
-                    pix[i] = 0;
-                }
-            }
-        }
+        grayThreshNear = grayImage;
+        grayThreshFar = grayImage;
+        grayThreshNear.threshold(gui.getValueI("OpenCV_result:nearThreshold"), true);
+        grayThreshFar.threshold(gui.getValueI("OpenCV_result:farThreshold"));
+        cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
         
         // update the cv images
         grayImage.flagImageChanged();
         
         // find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
         // also, find holes is set to true so we will get interior contours as well....
-        contourFinder.findContours(grayImage, 10, (kinect.width*kinect.height)/2, 20, false);
+        contourFinder.findContours(grayImage,
+                                   gui.getValueI("OpenCV_result:minArea"),
+                                   gui.getValueI("OpenCV_result:maxArea"),
+                                   gui.getValueI("OpenCV_result:nBlobMax"),
+                                   false);
     }
 
 }
 
 void KinectController::draw(int mode) {
     
-    // INSCTUCTION
-    stringstream reportStream;
-    
     if(mode == NORMAL_MODE) {
         
-        // TODO respecter l'omotécie
         kinect.draw(2, 2, ofGetWidth() - 4, ofGetHeight() - 4);
         
-        // TODO afficher les cubes capturés
-        
-        reportStream << "NORMAL MODE" << endl
-        << "press (m) :: switch between modes" << endl << endl;
+        // TODO draw contourFinder
+        // TODO show cubes
         
     } else if (mode == CALIBRATION_MODE){
         // draw from the live kinect
@@ -111,30 +103,14 @@ void KinectController::draw(int mode) {
         
         grayImage.draw(10, 320, 400, 300);
         contourFinder.draw(10, 320, 400, 300);
-        
-        reportStream << "CALIBRATION MODE" << endl
-        << "press (m) :: switch between modes" << endl
-        << "press (spacebar) :: using opencv threshold = " << bThreshWithOpenCV << endl
-        << "press (w) :: toggle death near value = " << kinect.isDepthNearValueWhite() << endl
-        << "press (+ -) :: set near threshold = " << nearThreshold << endl
-        << "press (< >) :: set far threshold = " << farThreshold << endl;
-        if(kinect.hasCamTiltControl()) {
-            reportStream << "press (UP DOWN) :: change the tilt angle = " << angle << " degrees" << endl << endl;
-        }
-        
-        reportStream << "num blobs found = " << contourFinder.nBlobs << ", fps = " << ofGetFrameRate() << endl;
-        
+        // TODO just draw the gui
+        gui.draw();
         
     } else if (mode == CLOUD_MODE) {
-        reportStream << "CLOUD MODE" << endl
-        << "press (m) :: switch between modes" << endl << endl
-        << "rotate the point cloud with the mouse" << endl;
-        
         easyCam.begin();
         drawPointCloud();
         easyCam.end();
     }
-    ofDrawBitmapString(reportStream.str(), 20, 652);
 }
 
 
@@ -167,53 +143,13 @@ bool KinectController::kinectIsConnected(){
     return kinect.isConnected();
 }
 
-
-void KinectController::onKeyPressed(int key) {
-    switch (key) {
-        case 'o':
-            kinect.setCameraTiltAngle(angle); // go back to prev tilt
-            kinect.open();
-            break;
-        case ' ':
-            bThreshWithOpenCV = !bThreshWithOpenCV;
-            break;
-        case '>':
-        case '.':
-            farThreshold ++;
-            if (farThreshold > 255) farThreshold = 255;
-            break;
-                        
-        case '<':
-        case ',':
-            farThreshold --;
-            if (farThreshold < 0) farThreshold = 0;
-            break;
-            
-        case '+':
-        case '=':
-            nearThreshold ++;
-            if (nearThreshold > 255) nearThreshold = 255;
-            break;
-            
-        case '-':
-            nearThreshold --;
-            if (nearThreshold < 0) nearThreshold = 0;
-            break;
-            
-        case 'w':
-            kinect.enableDepthNearValueWhite(!kinect.isDepthNearValueWhite());
-            break;
-            
-        case OF_KEY_UP:
-            angle++;
-            if(angle>30) angle=30;
-            kinect.setCameraTiltAngle(angle);
-            break;
-            
-        case OF_KEY_DOWN:
-            angle--;
-            if(angle<-30) angle=-30;
-            kinect.setCameraTiltAngle(angle);
-            break;
+void KinectController::setDepthNearValue(bool white){
+    if(white == depthNearValue){
+        white = depthNearValue;
+        kinect.enableDepthNearValueWhite(white);
     }
+}
+
+void KinectController::open() {
+    kinect.open();
 }
