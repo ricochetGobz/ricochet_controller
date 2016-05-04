@@ -2,10 +2,12 @@
 
 Manages data received by the Kinect and the cubes for drawing the projection.
 Contains [submodules](https://git-scm.com/book/fr/v2/Utilitaires-Git-Sous-modules)
-[ricochet_server](https://github.com/ricochetGobz/ricochet_server) and 
-[ricochet_render](https://github.com/ricochetGobz/ricochet_render)
+[ricochet_server](https://github.com/ricochetGobz/ricochet_server) and
+[ricochet_render](https://github.com/ricochetGobz/ricochet_render).
 
 ## How to install
+
+- Go to `addons/` into your OF folder and install [ofxControlPanel](https://github.com/ofTheo/ofxControlPanel) with a `git clone git@github.com:ofTheo/ofxControlPanel.git`.
 
 - `git clone --recursive git@github.com:ricochetGobz/ricochet_controller.git`
 
