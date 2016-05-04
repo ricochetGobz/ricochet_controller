@@ -82,7 +82,7 @@ void ofApp::draw(){
     << "Web Render: " << ((server.webRenderIsConnected())?"ON":"OFF") << endl
     << "Kinect: " << ((server.kinectIsConnected())?"ON":"OFF - press (o) :: try to connect the kinect.") << endl << endl
     << "press (m) :: switch between modes" << endl;
-    ofDrawBitmapString(reportStream.str(), 10, 20);
+    ofDrawBitmapString(reportStream.str(), 10, ofGetHeight() - 100);
     
     
     if(mode == NORMAL_MODE) {

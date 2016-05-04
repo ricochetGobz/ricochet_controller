@@ -31,7 +31,6 @@ public:
     void update();
     void draw(int mode);
     bool kinectIsConnected();
-    void setDepthNearValue(bool white);
     void open();
     
 private:
@@ -43,27 +42,33 @@ private:
     ofParameter <int> nBlobs;
     ofParameter <int> nCubes;
     // OpenCV controls
-    ofParameterGroup resultControls;
-    ofParameter <bool> bDepthNearValue;
+    ofParameterGroup thresholdControls;
     ofParameter <int> nearThreshold;
     ofParameter <int> farThreshold;
+    ofParameterGroup reworkControls;
+    ofParameter <bool> bBlur;
+    ofParameter <int> threshold;
+    ofParameterGroup renderControls;
     ofParameter <int> minArea;
     ofParameter <int> maxArea;
+    
 
     
     void drawPointCloud();
+    void drawContourFinder(float x, float y, float w, float h);
     ofxKinect kinect;
     
     ofxCvColorImage colorImg;
+    ofxCvGrayscaleImage depthImg;
     
-    ofxCvGrayscaleImage grayImage; // grayscale depth image
+    ofxCvGrayscaleImage reworkImg; // grayscale depth image
+    ofxCvGrayscaleImage thresholdImg; // the near thresholded image
     ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
     ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
     
     ofxCvContourFinder contourFinder;
     
     bool bDrawPointCloud;
-    bool depthNearValue;
     
     // used for viewing the point cloud
     ofEasyCam easyCam;
