@@ -30,12 +30,17 @@ class KinectController {
 
 public:
     //// VARIABLES ////
+    vector<ofRectangle> detectedCubes;
+    
     //// METHODES ////
+    // Basics
     void init();
     void update(int _mode);
     void draw();
+
     bool kinectIsConnected();
     void open();
+    vector<ofRectangle> getDetectedCubes();
 
 private:
     //// VARIABLES ////
@@ -56,10 +61,15 @@ private:
     ofParameterGroup reworkControls;
     ofParameter <bool> bBlur;
     ofParameter <int> threshold;
-    // cnotour finder render controls
+    // contour finder render controls
     ofParameterGroup renderControls;
     ofParameter <int> minArea;
     ofParameter <int> maxArea;
+    // cube detection controls
+    ofParameterGroup cubeDetectionControls;
+    ofParameter <int> size;
+    ofParameter <int> dilationTolerance;
+    ofParameter <int> sizeTolerance;
 
     // KINECT / VIDEO
     ofxKinect kinect;

@@ -65,10 +65,8 @@ void KinectController::init() {
     gui.addVariableLister(stats);
     //Threshold controls
     thresholdControls.setName("OpenCV threshold");
-    // !!TEMP!! // (sauv : 165.0 - 158.0)
-    thresholdControls.add(nearThreshold.set("nearThreshold", 149.0, 1.0, 255.0));
-    thresholdControls.add(farThreshold.set("farThreshold", 146.0, 1.0, 255.0));
-    // !!TEMP!! //
+    thresholdControls.add(nearThreshold.set("nearThreshold", 149.0, 1.0, 255.0)); // (sauv : 165.0)
+    thresholdControls.add(farThreshold.set("farThreshold", 146.0, 1.0, 255.0)); // (sauv : 158.0)
     gui.addGroup(thresholdControls);
     // Rework controls
     reworkControls.setName("OpenCV rework");
@@ -77,11 +75,14 @@ void KinectController::init() {
     gui.addGroup(reworkControls);
     // Render controls
     renderControls.setName("OpenCV render");
-    // !!TEMP!! // ( sauv : 300.0)
-    renderControls.add(minArea.set("minArea", 231.0, 1.0, 3000.0));
-    // !!TEMP!! //
+    renderControls.add(minArea.set("minArea", 231.0, 1.0, 3000.0)); // ( sauv : 300.0)
     renderControls.add(maxArea.set("maxArea", 1040.0, 1.0, (OC_WIDTH*OC_HEIGHT)));
     gui.addGroup(renderControls);
+    cubeDetectionControls.setName("Cube detection");
+    cubeDetectionControls.add(size.set("size", 27, 10, 60));
+    cubeDetectionControls.add(dilationTolerance.set("dilationTolerance", 5, 0, 15));
+    cubeDetectionControls.add(sizeTolerance.set("sizeTolerance", 8, 0, 30));
+    gui.addGroup(cubeDetectionControls);
 }
 
 // UPDATE --------------------------------------------------------------
@@ -107,6 +108,8 @@ void KinectController::update(int _mode) {
     if(tempVidPlayer.isFrameNew()) {
     // !!TEMP!! //
 
+        //// OPEN CV UPDATE /////
+
         // load grayscale depth image from the kinect source
         // !!TEMP!! //
         //colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
@@ -115,7 +118,7 @@ void KinectController::update(int _mode) {
         depthImg = colorImg;
         // !!TEMP!! //
 
-        //// THRESHOLD /////
+        // THRESHOLD
         // we do two thresholds - one for the far plane and one for the near plane
         // we then do a cvAnd to get the pixels which are a union of the two thresholds
         grayThreshNear = depthImg;
@@ -126,12 +129,12 @@ void KinectController::update(int _mode) {
         // update the cv images
         thresholdImg.flagImageChanged();
 
-        //// REWORK RENDER /////
+        // REWORK RENDER
         reworkImg = thresholdImg;
         if(bBlur) reworkImg.blurHeavily();
         if(threshold > 0) reworkImg.threshold(gui.getValueI("OpenCV_rework:threshold"));
 
-        //// CONTOURS FINDER /////
+        // CONTOURS FINDER
         // find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
         // also, find holes is set to true so we will get interior contours as well....
         contourFinder.findContours(reworkImg,
@@ -139,6 +142,19 @@ void KinectController::update(int _mode) {
                                    gui.getValueI("OpenCV_render:maxArea"),
                                    20, false);
     }
+
+    //// CUBES FOUNDS UPDATE /////
+
+    vector<ofRectangle> _detectedCubes;
+
+    for(int i = 0; i < contourFinder.nBlobs; i++) {
+        ofRectangle r = contourFinder.blobs.at(i).boundingRect;
+        if((abs(r.width - r.height) < gui.getValueI("Cube_detection:dilationTolerance"))
+           && (abs((r.width - gui.getValueI("Cube_detection:size"))) < gui.getValueI("Cube_detection:sizeTolerance"))) _detectedCubes.push_back(r);
+    }
+
+    detectedCubes = _detectedCubes;
+
 
 }
 
@@ -187,32 +203,28 @@ void KinectController::drawPointCloud() {
 }
 void KinectController::drawContourFinder(float x, float y, float w, float h) {
     ofNoFill();
+    //// DRAW CONTOURS /////
     ofDrawRectangle(x, y, w, h);
-    // we could draw the whole contour finder
     contourFinder.draw(x, y, w, h);
 
-    // or, instead we can draw each blob individually from the blobs vector,
-    // this is how to get access to them:
-    //    for(int i = 0; i < contourFinder.nBlobs; i++) {
-    //        ofRectangle r = contourFinder.blobs.at(i).boundingRect;
-    //        r.x = x + (w*r.x)/320;
-    //        r.y = y + (h*r.y)/240;
-    //        r.width =  (w*r.width)/320;
-    //        r.height = (h*r.height)/240;
-    //
-    //        ofSetColor(255);
-    //        ofDrawRectangle(r);
-    //
-    //        // TODO Analyse blob
-    //    }
+    //// DRAW CUBES FOUND /////
+    ofSetColor(255);
+    for(vector<ofRectangle>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
+      (*it).x = x + (w * (*it).x) / kinect.width;
+      (*it).y = y + (h * (*it).y) / kinect.height;
+      (*it).width =  (w * (*it).width) / kinect.width;
+      (*it).height = (h * (*it).height) / kinect.height;
+
+      ofDrawRectangle((*it));
+    }
 }
 
-// KINECTISCONNECTED --------------------------------------------------------------
-bool KinectController::kinectIsConnected(){
+// KINECTISCONNECTED -----------------------------------------------------------
+bool KinectController::kinectIsConnected() {
     return kinect.isConnected();
 }
 
-// OPEN (connect kinect) --------------------------------------------------------------
+// OPEN (connect kinect) -------------------------------------------------------
 void KinectController::open() {
     kinect.open();
 }

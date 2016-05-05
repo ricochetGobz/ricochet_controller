@@ -59,7 +59,8 @@ void ofApp::update(){
     }
 
     //// BLOBS CHECKING ////
-    // TODO tester les blobs détectés par la kinect
+    //kinectCtrl.detectedCubes;
+    
 
     //// CUBES UPDATE ////
     // TODO désincrémenter le livecicle
