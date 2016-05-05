@@ -1,6 +1,5 @@
 //
 //  KinectController.h
-//  V 0.1.2
 //  ricochet_test_kinect
 //
 //  Created by Boulay Jérémie on 15/04/2016.
@@ -14,30 +13,34 @@
 #include "ofxKinect.h"
 #include "ofxControlPanel.h"
 
+//// CONST ////
+// Mode
 #define NORMAL_MODE 0
 #define CALIBRATION_MODE 1
 #define CLOUD_MODE 2
-
+// Screen size
 #define RES 1.33333
 #define WIDTH 800
 #define HEIGHT WIDTH/RES
 #define OC_WIDTH 200
 #define OC_HEIGHT OC_WIDTH/RES
 
+
 class KinectController {
- 
+
 public:
+    //// VARIABLES ////
+    //// METHODES ////
     void init();
-    void update();
-    void draw(int mode);
+    void update(int _mode);
+    void draw();
     bool kinectIsConnected();
     void open();
-    
+
 private:
-    
-    // TEMP VIDEO PLAYER
-    ofVideoPlayer tempVidPlayer;
-    
+    //// VARIABLES ////
+    int mode;
+
     // GUI
     ofxControlPanel gui;
     // Infos
@@ -45,38 +48,46 @@ private:
     ofParameter <float> appFrameRate;
     ofParameter <int> nBlobs;
     ofParameter <int> nCubes;
-    // OpenCV controls
+    // threshold controls
     ofParameterGroup thresholdControls;
     ofParameter <int> nearThreshold;
     ofParameter <int> farThreshold;
+    // rework controls
     ofParameterGroup reworkControls;
     ofParameter <bool> bBlur;
     ofParameter <int> threshold;
+    // cnotour finder render controls
     ofParameterGroup renderControls;
     ofParameter <int> minArea;
     ofParameter <int> maxArea;
-    
 
-    
-    void drawPointCloud();
-    void drawContourFinder(float x, float y, float w, float h);
+    // KINECT / VIDEO
     ofxKinect kinect;
-    
+    // !!TEMP!! //
+    ofVideoPlayer tempVidPlayer;
+    // !!TEMP!! //
+
+    // OPENCV
     ofxCvColorImage colorImg;
-    ofxCvGrayscaleImage depthImg;
-    
-    ofxCvGrayscaleImage reworkImg; // grayscale depth image
-    ofxCvGrayscaleImage thresholdImg; // the near thresholded image
+    ofxCvGrayscaleImage depthImg; // grayscale depth image
+    // Threshold render
     ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
     ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
-    
+    ofxCvGrayscaleImage thresholdImg;
+    // Reworking
+    ofxCvGrayscaleImage reworkImg;
+    // contour finder
     ofxCvContourFinder contourFinder;
-    
+
+    // POINT CLOUD
     bool bDrawPointCloud;
-    
     // used for viewing the point cloud
     ofEasyCam easyCam;
 
+
+    //// METHODES ////
+    void drawPointCloud();
+    void drawContourFinder(float x, float y, float w, float h);
 };
 
 #endif /* KinectController_h */

@@ -11,26 +11,30 @@
 
 #include "ofMain.h"
 
+//// CONST ////
+#define SIZE_MAX 265
+#define FORCE_MIN 0.9
+#define VEL 0.05
+
 class Echo{
+
 public :
-    // Constructor
+    //// VARIABLES ////
+    //// METHODES ////
     Echo(ofPoint _pos);
-    
-    // Methods
     void expand();
     void draw();
     bool checkCubeCollision(ofPoint _cubePos);
-    bool souldRemoved();
-    
+    bool souldRemove();
+
 private :
-    // Vars
-    float size = 5;
+    //// VARIABLES ////
+    float size = 5.0;
+    float expandForce = 99.0;
+
     ofPoint pos;
-    ofColor color;
-    
-    float sizeMax = 265;
-    float expandForce = 99;
-    float vel = 0.05;
+
+    //// METHODES ////
 };
 
 #endif /* Echo_h */

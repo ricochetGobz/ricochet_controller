@@ -7,52 +7,60 @@
 #include "Cube.h"
 #include "EchoContainer.h"
 
-
+//// CONST ////
+// Communication
 #define RECEIVER_PORT 5555
 
+// mode
 #define NORMAL_MODE 0
 #define CALIBRATION_MODE 1
 #define CLOUD_MODE 2
 
 
 class ofApp : public ofBaseApp{
-    
+
 public:
+    //// VARIABLES ////
+    //// METHODES ////
     void setup();
     void update();
     void draw();
     void exit();
-    
+
     void keyPressed(int key);
     void mouseDragged(int x, int y, int button);
     void mousePressed(int x, int y, int button);
     void mouseReleased(int x, int y, int button);
 
-    
+
 private:
+
+    //// VARIABLES ////
+    // Mode
     int mode;
-    
-    // CONTROLLERS
-    ServerController server;
-    // !!!! THE RECEIVER DOESN'T WORK INTO NODEBRIGDE
-    ofxOscReceiver server_receive;
-    
-    KinectController kinect;
-    
-    
-    // TEMPS
+
+    // !!TEMP!! //
     int cubeDragged;
     int nCube = 8;
     bool mouseDown = false;
-    bool mouseMove = false;    
-    
-    // COMPONENTS
+    bool mouseMove = false;
+    // !!TEMP!! //
+
+    // Controllers
+    ServerController server;
+    ofxOscReceiver server_receive;  // !!!! THE RECEIVER DOESN'T WORK
+                                    // !!!! INTO NODEBRIGDE
+    KinectController kinectCtrl;
+
+    // Components
     vector<Cube> cubes;
     vector<EchoContainer> echoContainers;
-    
-    void createEchoContainer(Cube _cube);
-    
-    
-    // AUDIO PART
+
+    // Audio
     vector<ofSoundPlayer> sounds;
+
+
+    //// METHODES ////
+    void createEchoContainer(Cube _cube);
+
 };

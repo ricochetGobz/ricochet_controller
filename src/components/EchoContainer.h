@@ -13,27 +13,24 @@
 #include "Echo.h"
 
 class EchoContainer {
-    public:
-        // Constructor
-        EchoContainer(Cube _cube);
 
-        // VARS
-        vector<Echo> echoes;
+public:
+    //// VARIABLES ////
+    vector<Echo> echoes;
 
-        // METHODS
-        void checkEchoCollision(Cube _cube);
-        void update();
-        void draw();
+    //// METHODES ////
+    EchoContainer(Cube _cube);
+    void checkEchoCollision(Cube _cube);
+    void update();
+    void draw();
 
-    private:
-        // VARS
-        vector<int> cubesTouched;
-        /* temps */
-        bool echoWithVel;
-
-        // METHODS
-        void createEcho(Cube _cube);
-        bool isAlreadyTouched(int _cubeId);
+private:
+    //// VARIABLES ////
+    vector<int> cubesTouched;
+    
+    //// METHODES ////
+    void createEcho(Cube _cube);
+    bool isAlreadyTouched(int _cubeId);
 };
 
 #endif /* EchoContainer_hpp */

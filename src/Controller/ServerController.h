@@ -11,19 +11,20 @@
 
 #include "ofxOsc.h"
 
+//// CONST ////
+// Host
 #define HOST "localhost"
-
+// Ports
 #define SENDER_PORT 4444
 #define RECEIVER_PORT 5555
-
-// SENDERS
+// Senders address
 #define OF_CONNECTED "/OPConnected"
 #define OF_DISCONNECTED "/OPDisconnected"
 #define KINECT_CONNECTED "/KConnected"
 #define KINECT_DISCONNECTED "/KDisconnected"
 #define PLAY_CUBE "/playCube"
 
-// RECEIVERS
+// Reveicers address
 #define SERVER_STARTED "/serverStarted"
 #define SERVER_DOWN "/serverDown"
 #define WEB_RENDER_CONNECTED "/WRConnected"
@@ -31,31 +32,40 @@
 #define NEW_CUBE_CONNECTED "/newCubeConnected"
 
 class ServerController {
-    
+
 public:
-    // Constructor
+    //// VARIABLES ////
+    //// METHODES ////
     ServerController();
-    
+
+    // receive address
     void checkAddress(string address);
+    // senders
     void sendOPConnected();
     void sendOPDisconnected();
     void sendOFStatusChange(bool isConnected);
     void sendKinectStatusChange(bool isConnected);
     void sendPlayCube(int cubeId, int soundId, int x, int y);
+    // checking
     bool isStarted();
     bool webRenderIsConnected();
     bool kinectIsConnected();
+    // setters
     void setKinectStatus(bool status);
-    
-    
+
+
 private:
+    //// VARIABLES ////
+    // status
     bool serverStarted = false;
     bool webRenderConnected = false;
     bool kinectConnected = false;
 
+    // sender / receiver
     //ofxOscReceiver receive; // DOESN T WORK HERE
     ofxOscSender sender;
-    
+
+    //// METHODES ////
     void send(string address, string arg);
 };
 

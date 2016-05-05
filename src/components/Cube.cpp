@@ -9,52 +9,45 @@
 #include "Cube.h"
 #include "echo.h"
 
-//--------------------------------------------------------------
+// CONSTRUCTOR --------------------------------------------------------------
 Cube::Cube(ofPoint _pos, int _id, ServerController _server){
-    color.set( ofRandom(255), ofRandom(255), ofRandom(255));
-    pos = _pos;
-    posMid.x = pos.x - size / 2;
-    posMid.y = pos.y - size / 2;
     cubeId = _id;
-    
     server = _server;
+    moveTo(_pos);
+
+    color.set( ofRandom(255), ofRandom(255), ofRandom(255));
 }
 
-//--------------------------------------------------------------
+// DRAW --------------------------------------------------------------
 void Cube::draw(){
     ofNoFill();
     ofSetColor(color);
-    posMid.x = pos.x - size / 2;
-    posMid.y = pos.y - size / 2;
-    ofDrawRectangle(posMid,size,size);
+    ofDrawRectangle(posToDraw, SIZE, SIZE);
     if(contactZoneShowed){
-        ofDrawCircle(pos.x, pos.y, contactArea);
+        ofDrawCircle(pos.x, pos.y, CONTACT_AREA);
     }
 }
 
-//--------------------------------------------------------------
+// LOAD SOUND ------------------------------------------------------------------
 void Cube::loadSound(string soundPath){
-        cubeSound.load(soundPath);
+    cubeSound.load(soundPath);
 }
 
-//--------------------------------------------------------------
+// MOVE TO ---------------------------------------------------------------------
 void Cube::moveTo(ofPoint _pos){
-    pos = ofPoint( _pos.x, _pos.y);
+    pos.set(_pos);
+    posToDraw.x = pos.x - SIZE / 2;
+    posToDraw.y = pos.y - SIZE / 2;
 }
 
-//--------------------------------------------------------------
+// PLAY ------------------------------------------------------------------------
 void Cube::play(){
     cubeSound.play();
-    // TODO envoyer une requête au serveur
-    server.sendPlayCube(cubeId, -1, posMid.x, posMid.y);
+    server.sendPlayCube(cubeId, -1, posToDraw.x, posToDraw.y);
 }
 
-//--------------------------------------------------------------
+// POINT IS INSIDE -------------------------------------------------------------
 bool Cube::pointIsInside(ofPoint pointPos){
-    
     float _dist = ofDist(pos.x, pos.y, pointPos.x, pointPos.y);
-    if(_dist < size/2){
-        return true;
-    }
-    return false;
+    return (_dist < (SIZE / 2));
 }

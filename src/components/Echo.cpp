@@ -8,35 +8,30 @@
 
 #include "Echo.h"
 
-//--------------------------------------------------------------
+// CONSTRUCTOR --------------------------------------------------------------
 Echo::Echo(ofPoint _pos){
-    color.set(255.0, 255.0, 255.0);
     pos = _pos;
 }
 
-//--------------------------------------------------------------
+// DRAW --------------------------------------------------------------
 void Echo::draw(){
     ofNoFill();
-    ofSetColor(color);
+    ofSetColor(255.0, 255.0, 255.0);
     ofDrawCircle(pos.x, pos.y, size);
 }
 
-//--------------------------------------------------------------
+// EXPAND (update) --------------------------------------------------------------
 void Echo::expand(){
-    
-    expandForce = (sizeMax - size) * vel;
+    expandForce = (SIZE_MAX - size) * VEL;
     size += expandForce;
 }
 
-bool Echo::souldRemoved() {
-    
-    return (expandForce < 0.9);
-    //return (size > sizeMax);
+// SOULD REMOVED --------------------------------------------------------------
+bool Echo::souldRemove() {
+    return (expandForce < FORCE_MIN);
 }
 
-//--------------------------------------------------------------
+// CHECK CUBE COLLISION --------------------------------------------------------------
 bool Echo::checkCubeCollision(ofPoint _cubePos){
-    float _dist = ofDist( pos.x, pos.y, _cubePos.x, _cubePos.y);
-    
-    return (size >= _dist);
+    return (size >= ofDist( pos.x, pos.y, _cubePos.x, _cubePos.y));
 }
