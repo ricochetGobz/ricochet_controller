@@ -38,5 +38,4 @@ openFrameworksUniversal.a
 libs/openFrameworksCompiled/lib/*/*
 !libs/openFrameworksCompiled/lib/*/.gitkeep
 
-bin/ricochet_controller.app/**
-bin/ricochet_controller.app/Contents/MacOS/ricochet_controller
+bin/ricochet_controllerDebug.app/

@@ -32,6 +32,11 @@ void KinectController::init() {
     grayThreshNear.allocate(kinect.width, kinect.height);
     grayThreshFar.allocate(kinect.width, kinect.height);
     
+    // TEMPS
+    tempVidPlayer.load("videoKinectDepth.mp4");
+    tempVidPlayer.play();
+    tempVidPlayer.setLoopState(OF_LOOP_NORMAL);
+    
     
     ///// GUI INIT ////
     gui.setup("Ricochet - DEBUG", 0, 0, ofGetWidth(), ofGetHeight());
@@ -39,7 +44,8 @@ void KinectController::init() {
     gui.setWhichPanel(0);
     gui.setWhichColumn(0);
     gui.addDrawableRect("Kinect Video", &colorImg, OC_WIDTH, OC_HEIGHT);
-    gui.addDrawableRect("Kinect Depth", &depthImg, OC_WIDTH, OC_HEIGHT);
+    //gui.addDrawableRect("Kinect Depth", &depthImg, OC_WIDTH, OC_HEIGHT);
+    gui.addDrawableRect("Kinect Depth", &tempVidPlayer, OC_WIDTH, OC_HEIGHT);
     gui.setWhichColumn(1);
     gui.addDrawableRect("OpenCV Threshold", &thresholdImg, OC_WIDTH, OC_HEIGHT);
     gui.addDrawableRect("OpenCV Render", &reworkImg, OC_WIDTH*2, OC_HEIGHT*2);
@@ -53,8 +59,9 @@ void KinectController::init() {
     
     //Threshold controls
     thresholdControls.setName("OpenCV threshold");
-    thresholdControls.add(nearThreshold.set("nearThreshold", 165.0, 1.0, 255.0));
-    thresholdControls.add(farThreshold.set("farThreshold", 158.0, 1.0, 255.0));
+    // TEMP (sauv : 165.0 - 158.0)
+    thresholdControls.add(nearThreshold.set("nearThreshold", 149.0, 1.0, 255.0));
+    thresholdControls.add(farThreshold.set("farThreshold", 146.0, 1.0, 255.0));
     gui.addGroup(thresholdControls);
     // Rework controls
     reworkControls.setName("OpenCV rework");
@@ -63,7 +70,8 @@ void KinectController::init() {
     gui.addGroup(reworkControls);
     // Render controls
     renderControls.setName("OpenCV render");
-    renderControls.add(minArea.set("minArea", 370.0, 1.0, 3000.0));
+    // TEMP ( sauv : 300.0)
+    renderControls.add(minArea.set("minArea", 231.0, 1.0, 3000.0));
     renderControls.add(maxArea.set("maxArea", 1040.0, 1.0, (OC_WIDTH*OC_HEIGHT)));
     gui.addGroup(renderControls);
 }
@@ -78,11 +86,17 @@ void KinectController::update() {
     kinect.update();
     
     // there is a new frame and we are connected
-    if(kinect.isFrameNew()) {
+    //if(kinect.isFrameNew()) {
+    tempVidPlayer.update();
+    if(tempVidPlayer.isFrameNew()) {
         
         // load grayscale depth image from the kinect source
-        colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
-        depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+        //colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
+        //depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+        
+        // TEMP
+        colorImg.setFromPixels(tempVidPlayer.getPixels(), kinect.width, kinect.height);
+        depthImg = colorImg;
         
         // THRESHOLD
         // we do two thresholds - one for the far plane and one for the near plane

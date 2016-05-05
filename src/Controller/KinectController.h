@@ -34,6 +34,10 @@ public:
     void open();
     
 private:
+    
+    // TEMP VIDEO PLAYER
+    ofVideoPlayer tempVidPlayer;
+    
     // GUI
     ofxControlPanel gui;
     // Infos
