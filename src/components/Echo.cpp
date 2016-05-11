@@ -9,16 +9,23 @@
 #include "Echo.h"
 
 // CONSTRUCTOR --------------------------------------------------------------
-Echo::Echo(ofRectangle _cubeZone){
-    center = _cubeZone.getCenter();
-    sizeMax = _cubeZone.width * CONTACT_RATIO;
+Echo::Echo(ofPoint _pos){
+    pos = _pos;
 }
 
 // DRAW --------------------------------------------------------------
-void Echo::draw(){
+void Echo::draw(ofRectangle _renderZone){
+    
+    //// UPDATE POS IN TERMS OF RENDERZONE ////
+    float _contourFinderSize = _renderZone.width * CONTOUR_FINDER_RATIO;
+    // pos = screenPos + ((screenSize * cubePos) / kinectSize) + (contourFinderSize / 2);
+    // equ = _x + ((_w * pos.x) / _kinectWidth) +((_ w * CONTOUR_FINDER_RATIO) / 2);
+    center.set(_renderZone.x + ((_renderZone.width * pos.x) / 640) + (_contourFinderSize / 2),
+               _renderZone.y + ((_renderZone.height * pos.y) / 480) + (_contourFinderSize / 2));
+
     ofNoFill();
     ofSetColor(255.0, 255.0, 255.0);
-    ofDrawCircle(center, size);
+    ofDrawCircle(center.x, center.y, (_renderZone.width / 640) * size);
 }
 
 // EXPAND (update) --------------------------------------------------------------
@@ -34,5 +41,5 @@ bool Echo::souldRemove() {
 
 // CHECK CUBE COLLISION --------------------------------------------------------------
 bool Echo::checkCubeCollision(ofPoint _cubePos){
-    return (size >= ofDist(center.x, center.y, _cubePos.x, _cubePos.y));
+    return (size >= ofDist( pos.x, pos.y, _cubePos.x, _cubePos.y));
 }

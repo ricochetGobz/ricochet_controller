@@ -12,7 +12,8 @@
 #include "ofMain.h"
 
 //// CONST ////
-#define CONTACT_RATIO 2
+#define CONTOUR_FINDER_RATIO 0.04
+
 #define FORCE_MIN 0.5
 #define VEL 0.05
 
@@ -21,9 +22,9 @@ class Echo{
 public :
     //// VARIABLES ////
     //// METHODES ////
-    Echo(ofRectangle _cubeZone);
+    Echo(ofPoint _pos);
     void expand();
-    void draw();
+    void draw(ofRectangle _renderZone);
     bool checkCubeCollision(ofPoint _cubePos);
     bool souldRemove();
 
@@ -33,7 +34,8 @@ private :
     float expandForce = 99.0;
 
     ofPoint center;
-    float sizeMax;
+    ofPoint pos;
+    float sizeMax = 128; // cubeSize / 2 - ((640 / 10) * 2);
 
     //// METHODES ////
 };
