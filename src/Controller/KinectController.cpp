@@ -65,7 +65,7 @@ void KinectController::init() {
     gui.addVariableLister(stats);
     //Threshold controls
     thresholdControls.setName("OpenCV threshold");
-    thresholdControls.add(nearThreshold.set("nearThreshold", 149.0, 1.0, 255.0)); // (sauv : 165.0)
+    thresholdControls.add(nearThreshold.set("nearThreshold", 255.0, 1.0, 255.0)); // (sauv : 165.0)
     thresholdControls.add(farThreshold.set("farThreshold", 146.0, 1.0, 255.0)); // (sauv : 158.0)
     gui.addGroup(thresholdControls);
     // Rework controls
@@ -86,14 +86,10 @@ void KinectController::init() {
 }
 
 // UPDATE --------------------------------------------------------------
-void KinectController::update(int _mode) {
-    //// MODE UPDATE /////
-    mode = _mode;
+void KinectController::update() {
     //// GUI UPDATE /////
-    if(mode == CALIBRATION_MODE) {
-        gui.update();
-        appFrameRate = ofGetFrameRate();
-    }
+    gui.update();
+    appFrameRate = ofGetFrameRate();
     nBlobs = contourFinder.nBlobs;
 
     //// KINECT VIDEO UPDATE /////
@@ -144,42 +140,37 @@ void KinectController::update(int _mode) {
     }
 
     //// CUBES FOUNDS UPDATE /////
-
     vector<ofRectangle> _detectedCubes;
-
+    // for each forms found
     for(int i = 0; i < contourFinder.nBlobs; i++) {
         ofRectangle r = contourFinder.blobs.at(i).boundingRect;
+        
+        // if is aproximatively a square && if is approximatively at the good size.
         if((abs(r.width - r.height) < gui.getValueI("Cube_detection:dilationTolerance"))
            && (abs((r.width - gui.getValueI("Cube_detection:size"))) < gui.getValueI("Cube_detection:sizeTolerance"))) _detectedCubes.push_back(r);
     }
 
     detectedCubes = _detectedCubes;
-
-
 }
 
-// DRAW --------------------------------------------------------------
-// - DRAW POINT CLOUD --------------------------------------------------------------
+// DRAW ------------------------------------------------------------------------------
+// - DRAW RENDER ---------------------------------------------------------------------
+// - DRAW CONTROL PANEL --------------------------------------------------------------
+// - DRAW POINT CLOUD ----------------------------------------------------------------
 // - DRAW CONTOUR FINDER--------------------------------------------------------------
-void KinectController::draw() {
-    if(mode == NORMAL_MODE) {
-        kinect.draw(2, 2, ofGetWidth() - 4, ofGetHeight() - 4);
-        drawContourFinder(2, 2, ofGetWidth() - 4, ofGetHeight() - 4);
-
-    } else if (mode == CALIBRATION_MODE){
-        gui.draw();
-        drawContourFinder(227, 246, OC_WIDTH*2, OC_HEIGHT*2);
-
-    } else if (mode == CLOUD_MODE) {
-
-        easyCam.begin();
-        drawPointCloud();
-        easyCam.end();
-    }
+void KinectController::drawRender(ofRectangle _renderZone) {
+    kinect.draw(_renderZone);
+    drawContourFinder(_renderZone);
+}
+void KinectController::drawControlPanel(ofRectangle _renderZone) {
+    gui.draw();
+    drawContourFinder(_renderZone);
 }
 void KinectController::drawPointCloud() {
     int w = 640;
     int h = 480;
+    easyCam.begin();
+    
     ofMesh mesh;
     mesh.setMode(OF_PRIMITIVE_POINTS);
     int step = 2;
@@ -200,23 +191,13 @@ void KinectController::drawPointCloud() {
     mesh.drawVertices();
     glDisable(GL_DEPTH_TEST);
     ofPopMatrix();
+    
+    easyCam.end();
 }
-void KinectController::drawContourFinder(float x, float y, float w, float h) {
+void KinectController::drawContourFinder(ofRectangle _renderZone) {
     ofNoFill();
-    //// DRAW CONTOURS /////
-    ofDrawRectangle(x, y, w, h);
-    contourFinder.draw(x, y, w, h);
-
-    //// DRAW CUBES FOUND /////
-    ofSetColor(255);
-    for(vector<ofRectangle>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
-      (*it).x = x + (w * (*it).x) / kinect.width;
-      (*it).y = y + (h * (*it).y) / kinect.height;
-      (*it).width =  (w * (*it).width) / kinect.width;
-      (*it).height = (h * (*it).height) / kinect.height;
-
-      ofDrawRectangle((*it));
-    }
+    ofDrawRectangle(_renderZone);
+    contourFinder.draw(_renderZone);
 }
 
 // KINECTISCONNECTED -----------------------------------------------------------
@@ -225,6 +206,6 @@ bool KinectController::kinectIsConnected() {
 }
 
 // OPEN (connect kinect) -------------------------------------------------------
-void KinectController::open() {
+void KinectController::openKinect() {
     kinect.open();
 }

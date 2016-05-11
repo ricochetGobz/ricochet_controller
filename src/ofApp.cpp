@@ -18,26 +18,10 @@ void ofApp::setup(){
 
     //// SOUND INIT ////
     vector< ofSoundPlayer>::iterator itSounds = sounds.begin();
-
-    // !!TEMP!! //
-    //// CUBE INIT ////
-    /* Pushback, pour entrer un objet dans mon tableaux d'objet "cube".     */
-    for(int i = 0; i < nCube; i++) {
-        cubes.push_back(*new Cube(ofPoint((ofGetWidth()*i/nCube) + 50, 50.0), i, server));
-        cubes[i].loadSound("./sounds/note_" + std::to_string((i%6)+1) +".mp3");
-    }
-    // !!TEMP!! //
 }
 
 
 // UPDATE --------------------------------------------------------------
-// - SHOULDREMOVE (for ofRemove) --------------------------------------------------------------
-bool shouldRemove(EchoContainer &c) {
-    if(c.echoes.size() == 0) {
-        return true;
-    }
-    return false;
-}
 void ofApp::update(){
 
     //// SERVER UPDATE : OSC MESSAGE RECEIVED ////
@@ -51,55 +35,43 @@ void ofApp::update(){
     }
 
     //// KINECT UPDATE ////
-    kinectCtrl.update(mode);
+    kinectCtrl.update();
     // Check kinect connection and send information to the server
     if(server.kinectIsConnected() != kinectCtrl.kinectIsConnected()){
         server.setKinectStatus(kinectCtrl.kinectIsConnected());
         server.sendKinectStatusChange(server.kinectIsConnected());
     }
 
-    //// BLOBS CHECKING ////
-    //kinectCtrl.detectedCubes;
-    
+    //// CHECK CUBE DETECTED BY THE KINECT AND UPDATE CUBES LIFES ////
+    cubeManager.update(kinectCtrl.detectedCubes);
 
-    //// CUBES UPDATE ////
-    // TODO désincrémenter le livecicle
-
-    //// ECHOES UPDATE ////
-    // check if echoContainers are alive
-    ofRemove(echoContainers, shouldRemove);
-    for (vector<EchoContainer>::iterator itWave = echoContainers.begin(); itWave != echoContainers.end(); ++itWave) {
-        (*itWave).update();
-        for(vector<Cube>::iterator it = cubes.begin(); it != cubes.end(); ++it){
-            (*itWave).checkEchoCollision((*it));
-        }
-    }
 }
 
 // DRAW --------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(100, 100, 100);
 
-    //// KINECT RENDER DRAW ////
-    kinectCtrl.draw();
-
-    //// CUBES INFORMATIONS ////
-    if(mode == NORMAL_MODE) {
-        // Cubes detected
-        for(vector<Cube>::iterator it = cubes.begin(); it != cubes.end(); ++it){
-            (*it).draw();
-        }
-        // echoes
-        for (vector<EchoContainer>::iterator it = echoContainers.begin(); it != echoContainers.end(); ++it) {
-            (*it).draw();
-        }
-
-        // !!TEMP!! //
-        if(cubeDragged >= 0 && mouseDown){
-            cubes[cubeDragged].contactZoneShowed = true;
-        }
-        // !!TEMP!! //
+    //// DRAW KINECT RENDER && OPENCV RESULT ////
+    switch(mode) {
+        case NORMAL_MODE:
+            renderZone.set(2, 2, ofGetWidth() - 4, ofGetHeight() - 4);
+            
+            kinectCtrl.drawRender(renderZone);
+            cubeManager.draw(renderZone);
+            break;
+        case CALIBRATION_MODE:
+            renderZone.set(227, 246, OC_WIDTH*2, OC_HEIGHT*2);
+            
+            kinectCtrl.drawControlPanel(renderZone);
+            cubeManager.draw(renderZone);
+            break;
+        case CLOUD_MODE:
+            kinectCtrl.drawPointCloud();
+            break;
+        default:
+            break;
     }
+    
 
     //// CONNECTION INFORMATION ////
     ofSetColor(255, 255, 255);
@@ -113,12 +85,6 @@ void ofApp::draw(){
     ofFill();
 }
 
-// CREATE ECHO CONTAINER -----------------------------------------------
-void ofApp::createEchoContainer(Cube _cube){
-    EchoContainer newEchoContainer = *new EchoContainer(_cube);
-    echoContainers.push_back(newEchoContainer);
-}
-
 // EVENTS --------------------------------------------------------------
 void ofApp::keyPressed(int key){
     if(key == 'm') {
@@ -127,44 +93,15 @@ void ofApp::keyPressed(int key){
             mode = 0;
         }
     } else if(key == 'o'){
-        kinectCtrl.open();
+        kinectCtrl.openKinect();
     }
 }
 
 // !!TEMP!! //
-// MOUSE DRAGGED --------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-    if(mouseDown) {
-        mouseMove = true;
-        cout << " Cube Draged" << endl;
-        cubes[cubeDragged].moveTo(ofPoint(x, y));
-    }
-}
-// MOUSE PRESSED --------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-    for(vector<Cube>::iterator it = cubes.begin(); it != cubes.end(); ++it) {
-
-        if((*it).pointIsInside(ofPoint(x, y))) {
-            cout << " Cube Draged" << endl;
-            (*it).moveTo(ofPoint(x, y));
-            mouseDown = true;
-            cubeDragged = (*it).cubeId;
-        }
-    }
-}
 // MOUSE RELEASED --------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-    if(mouseDown) {
-    cout << " Cube Clicked" << endl;
-
-    if(!mouseMove) createEchoContainer(cubes[cubeDragged]);
-    mouseDown = false;
-    mouseMove = false;
-
-    // Init contactZone
-    cubes[cubeDragged].contactZoneShowed = false;
-    cubeDragged = -1;
-    }
+    cubeManager.onClick(x, y);
+    
 }
 // !!TEMP!! //
 

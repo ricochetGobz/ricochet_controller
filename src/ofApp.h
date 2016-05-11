@@ -4,8 +4,7 @@
 #include "ofxOsc.h"
 #include "ServerController.h"
 #include "KinectController.h"
-#include "Cube.h"
-#include "EchoContainer.h"
+#include "CubeManager.h"
 
 //// CONST ////
 // Communication
@@ -15,6 +14,13 @@
 #define NORMAL_MODE 0
 #define CALIBRATION_MODE 1
 #define CLOUD_MODE 2
+
+// Screen size
+#define RES 1.33333
+#define WIDTH 800
+#define HEIGHT WIDTH/RES
+#define OC_WIDTH 200
+#define OC_HEIGHT OC_WIDTH/RES
 
 
 class ofApp : public ofBaseApp{
@@ -28,8 +34,6 @@ public:
     void exit();
 
     void keyPressed(int key);
-    void mouseDragged(int x, int y, int button);
-    void mousePressed(int x, int y, int button);
     void mouseReleased(int x, int y, int button);
 
 
@@ -38,13 +42,7 @@ private:
     //// VARIABLES ////
     // Mode
     int mode;
-
-    // !!TEMP!! //
-    int cubeDragged;
-    int nCube = 8;
-    bool mouseDown = false;
-    bool mouseMove = false;
-    // !!TEMP!! //
+    ofRectangle renderZone;
 
     // Controllers
     ServerController server;
@@ -53,14 +51,11 @@ private:
     KinectController kinectCtrl;
 
     // Components
-    vector<Cube> cubes;
-    vector<EchoContainer> echoContainers;
+    CubeManager cubeManager = *new CubeManager(server);
 
     // Audio
     vector<ofSoundPlayer> sounds;
 
 
     //// METHODES ////
-    void createEchoContainer(Cube _cube);
-
 };

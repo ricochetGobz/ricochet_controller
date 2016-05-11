@@ -49,6 +49,7 @@
 		9D97FDF450CC66E11F05E279 /* guiTypePanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08549D86F2263BAFA64AE5D1 /* guiTypePanel.cpp */; };
 		9FEF7AFAD4DDFFD2A55AA54A /* simpleFileLister.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDD9E60039A29DAFB013CDBD /* simpleFileLister.cpp */; };
 		A1A0FADDBF41894141DFC02F /* Echo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12583B61ACD580EF4C842FFC /* Echo.cpp */; };
+		A29FE8671CDD342400BF1248 /* CubeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A29FE8651CDD342400BF1248 /* CubeManager.cpp */; };
 		ACE7DC9A3223ED5EE1B80074 /* cameras.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DBD37876A11E46E4D7069B3 /* cameras.c */; };
 		ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADD194746185E2DA11468377 /* IpEndpointName.cpp */; };
 		AFDB30162A060AFBAB041DAB /* KinectController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F30E4FA9E66DA5F62FC292C5 /* KinectController.cpp */; };
@@ -283,6 +284,8 @@
 		A0399084868E7CAFB7E3D8E9 /* retina.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = retina.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/contrib/retina.hpp; sourceTree = SOURCE_ROOT; };
 		A15E0125B8C9B7F01DED5695 /* matrix.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = matrix.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/matrix.h; sourceTree = SOURCE_ROOT; };
 		A1E5C3C977BF213B183ABC28 /* block.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = block.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/block.hpp; sourceTree = SOURCE_ROOT; };
+		A29FE8651CDD342400BF1248 /* CubeManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CubeManager.cpp; path = components/CubeManager.cpp; sourceTree = "<group>"; };
+		A29FE8661CDD342400BF1248 /* CubeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubeManager.h; path = components/CubeManager.h; sourceTree = "<group>"; };
 		A2AAA8CA403479E6FCDF920E /* OscHostEndianness.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscHostEndianness.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscHostEndianness.h; sourceTree = SOURCE_ROOT; };
 		A2C86A44C1FD1CB1DD189DFA /* transform.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = transform.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/transform.hpp; sourceTree = SOURCE_ROOT; };
 		A2EE5E80B134EA52A8B369D2 /* eigen.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = eigen.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/eigen.hpp; sourceTree = SOURCE_ROOT; };
@@ -707,12 +710,14 @@
 		65A0BDBA3A16D6F3D73C3AED /* components */ = {
 			isa = PBXGroup;
 			children = (
+				DD6616DD1C9E121CEDDD8F5D /* EchoContainer.cpp */,
+				8A03B5AAFB6F818C4CA2EAC5 /* EchoContainer.h */,
+				A29FE8651CDD342400BF1248 /* CubeManager.cpp */,
+				A29FE8661CDD342400BF1248 /* CubeManager.h */,
 				5BD3689D23F835355D8DFE87 /* Cube.cpp */,
 				8331B1CB879B95B68AB8069B /* Cube.h */,
 				12583B61ACD580EF4C842FFC /* Echo.cpp */,
 				33F593D3A40FC541328DA743 /* Echo.h */,
-				DD6616DD1C9E121CEDDD8F5D /* EchoContainer.cpp */,
-				8A03B5AAFB6F818C4CA2EAC5 /* EchoContainer.h */,
 			);
 			name = components;
 			sourceTree = "<group>";
@@ -1346,6 +1351,7 @@
 				7ADB04AF67C568EAFAEBA546 /* ofxKinectExtras.cpp in Sources */,
 				686B0DF6249B52E1A85B39EC /* ofxKinect.cpp in Sources */,
 				0F8F016776681D468C0D0949 /* audio.c in Sources */,
+				A29FE8671CDD342400BF1248 /* CubeManager.cpp in Sources */,
 				ACE7DC9A3223ED5EE1B80074 /* cameras.c in Sources */,
 				F4135EEFC911E9ED211FB6F9 /* core.c in Sources */,
 				E55DEEF784A10419E444669E /* flags.c in Sources */,

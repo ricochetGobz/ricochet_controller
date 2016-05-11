@@ -29,7 +29,7 @@ void EchoContainer::update() {
 }
 
 // DRAW --------------------------------------------------------------
-void EchoContainer::draw() {
+void EchoContainer::draw(ofRectangle _renderZone) {
     for(vector<Echo>::iterator it = echoes.begin(); it != echoes.end(); ++it){
         (*it).draw();
     }
@@ -39,19 +39,19 @@ void EchoContainer::draw() {
 void EchoContainer::createEcho(Cube _cube) {
     // Save the native cube like touched
     cubesTouched.push_back(_cube.cubeId);
-    echoes.push_back(*new Echo(_cube.pos));
+    echoes.push_back(*new Echo(_cube.drawedShape));
 
     _cube.play();
 }
 
 // CHECK ECHO COLLISION --------------------------------------------------------------
 void EchoContainer::checkEchoCollision(Cube _cube) {
-
+    
     if(isAlreadyTouched(_cube.cubeId)) return;
 
     for(vector<Echo>::iterator it = echoes.begin(); it != echoes.end(); ++it) {
         // If echoes can activate another cubes
-        if((*it).checkCubeCollision(_cube.pos)) {
+        if((*it).checkCubeCollision(_cube.drawedShape.getCenter())) {
             createEcho(_cube);
             return;
         }

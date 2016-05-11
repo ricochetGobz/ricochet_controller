@@ -22,7 +22,7 @@ public:
     EchoContainer(Cube _cube);
     void checkEchoCollision(Cube _cube);
     void update();
-    void draw();
+    void draw(ofRectangle _renderZone);
 
 private:
     //// VARIABLES ////

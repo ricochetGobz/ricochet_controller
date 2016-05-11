@@ -35,16 +35,19 @@ public:
     //// METHODES ////
     // Basics
     void init();
-    void update(int _mode);
-    void draw();
+    void update();
+    
+    // draw methods
+    void drawRender(ofRectangle _renderZone);
+    void drawControlPanel(ofRectangle _renderZone);
+    void drawPointCloud();
 
+    // kinect methods
     bool kinectIsConnected();
-    void open();
-    vector<ofRectangle> getDetectedCubes();
+    void openKinect();
 
 private:
     //// VARIABLES ////
-    int mode;
 
     // GUI
     ofxControlPanel gui;
@@ -96,8 +99,7 @@ private:
 
 
     //// METHODES ////
-    void drawPointCloud();
-    void drawContourFinder(float x, float y, float w, float h);
+    void drawContourFinder(ofRectangle _renderZone);
 };
 
 #endif /* KinectController_h */

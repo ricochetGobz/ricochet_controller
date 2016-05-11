@@ -13,30 +13,42 @@
 #include "ServerController.h"
 
 //// CONST ////
-#define SIZE 70
-#define CONTACT_AREA 245.0
+#define CUBE_RATIO 0.1
+#define CONTOUR_FINDER_RATIO 0.04
+#define CONTACT_RATIO 2
+// lifecicle
+#define LIFECICLE_START 50
+#define LIFECICLE_ACTIVE 200
+#define LIFECICLE_MAX 1000
 
 class Cube{
 public:
     //// VARIABLES ////
     int cubeId;
+    int linkedId = -1;
     bool contactZoneShowed = false;
     ofPoint pos;
+    ofRectangle drawedShape;
+    
     //// METHODES ////
     Cube(ofPoint _pos, int _id, ServerController _server);
 
-    void draw();
-    void moveTo(ofPoint _pos);
+    void draw(ofRectangle _renderZone);
     void play();
     void loadSound(string soundPath);
-    bool pointIsInside(ofPoint _pointPos);
+    bool pointIsInsideDrawedShape(ofPoint _pointPos);
+    //lifecicle
+    void reduceLifeCicle();
+    void increaseLifeCicle();
+    bool isDead();
+    bool isActive();
 
 private:
     //// VARIABLES ////
     // id of sound
     int faceId;
-    // position
-    ofPoint posToDraw;
+    int lifeCicle;
+    // other
     ofColor color;
     ofSoundPlayer cubeSound;
     // server saved here

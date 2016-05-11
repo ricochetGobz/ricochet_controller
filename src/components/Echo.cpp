@@ -9,20 +9,21 @@
 #include "Echo.h"
 
 // CONSTRUCTOR --------------------------------------------------------------
-Echo::Echo(ofPoint _pos){
-    pos = _pos;
+Echo::Echo(ofRectangle _cubeZone){
+    center = _cubeZone.getCenter();
+    sizeMax = _cubeZone.width * CONTACT_RATIO;
 }
 
 // DRAW --------------------------------------------------------------
 void Echo::draw(){
     ofNoFill();
     ofSetColor(255.0, 255.0, 255.0);
-    ofDrawCircle(pos.x, pos.y, size);
+    ofDrawCircle(center, size);
 }
 
 // EXPAND (update) --------------------------------------------------------------
 void Echo::expand(){
-    expandForce = (SIZE_MAX - size) * VEL;
+    expandForce = (sizeMax - size) * VEL;
     size += expandForce;
 }
 
@@ -33,5 +34,5 @@ bool Echo::souldRemove() {
 
 // CHECK CUBE COLLISION --------------------------------------------------------------
 bool Echo::checkCubeCollision(ofPoint _cubePos){
-    return (size >= ofDist( pos.x, pos.y, _cubePos.x, _cubePos.y));
+    return (size >= ofDist(center.x, center.y, _cubePos.x, _cubePos.y));
 }
