@@ -32,7 +32,7 @@ public:
 
 private:
     //// VARIABLES ////
-    int idIncremented = 0;
+    int idIncremented;
     ServerController server;
     
     vector<EchoContainer> echoContainers;

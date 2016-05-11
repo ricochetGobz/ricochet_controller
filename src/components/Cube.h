@@ -13,6 +13,7 @@
 #include "ServerController.h"
 
 //// CONST ////
+// drawerConvertor
 #define CUBE_RATIO 0.1
 #define CONTOUR_FINDER_RATIO 0.04
 #define CONTACT_RATIO 2
@@ -42,6 +43,8 @@ public:
     void increaseLifeCicle();
     bool isDead();
     bool isActive();
+    // link with hard cube
+    bool isKnow();
 
 private:
     //// VARIABLES ////

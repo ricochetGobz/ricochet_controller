@@ -79,9 +79,9 @@ void KinectController::init() {
     renderControls.add(maxArea.set("maxArea", 1040.0, 1.0, (OC_WIDTH*OC_HEIGHT)));
     gui.addGroup(renderControls);
     cubeDetectionControls.setName("Cube detection");
-    cubeDetectionControls.add(size.set("size", 27, 10, 60));
+    cubeDetectionControls.add(size.set("size", 25, 10, 60));
     cubeDetectionControls.add(dilationTolerance.set("dilationTolerance", 5, 0, 15));
-    cubeDetectionControls.add(sizeTolerance.set("sizeTolerance", 8, 0, 30));
+    cubeDetectionControls.add(sizeTolerance.set("sizeTolerance", 7, 0, 30));
     gui.addGroup(cubeDetectionControls);
 }
 

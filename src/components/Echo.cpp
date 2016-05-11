@@ -11,6 +11,16 @@
 // CONSTRUCTOR --------------------------------------------------------------
 Echo::Echo(ofPoint _pos){
     pos = _pos;
+    
+    size = 5.0;
+    expandForce = 99.0;
+}
+// UPDATE --------------------------------------------------------------
+void Echo::update(){
+    
+    //// UPDATE EXPAND ////
+    expandForce = (SIZE_MAX - size) * VEL;
+    size += expandForce;
 }
 
 // DRAW --------------------------------------------------------------
@@ -26,12 +36,6 @@ void Echo::draw(ofRectangle _renderZone){
     ofNoFill();
     ofSetColor(255.0, 255.0, 255.0);
     ofDrawCircle(center.x, center.y, (_renderZone.width / 640) * size);
-}
-
-// EXPAND (update) --------------------------------------------------------------
-void Echo::expand(){
-    expandForce = (sizeMax - size) * VEL;
-    size += expandForce;
 }
 
 // SOULD REMOVED --------------------------------------------------------------

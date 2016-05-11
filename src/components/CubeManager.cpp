@@ -10,6 +10,8 @@
 
 
 CubeManager::CubeManager(ServerController _server){
+    idIncremented = 0;
+    
     server = server;
 }
 
@@ -57,11 +59,13 @@ void CubeManager::update(vector<ofRectangle> _detectedCubes) {
         checkDetectedCube((*it));
     }
 
+    //// CUBES FOUNDED UPDATE ////
     for(vector<Cube>::iterator it = cubes.begin(); it != cubes.end(); ++it){
         
         (*it).reduceLifeCicle();
         
-        if((*it).isActive()){
+        // Check if all detected cubes is binded at hard cube
+        if((*it).isActive() && !(*it).isKnow()){
             // TODO faire correspondre les cubes avec les id connues.
             // REGARDER LE TABLEAU DES DERNIERS CUBES DRAGGEES
             // SI IL Y EN A UN

@@ -24,7 +24,7 @@ void EchoContainer::update() {
     ofRemove(echoes, shouldRemove);
 
     for(vector<Echo>::iterator it = echoes.begin(); it != echoes.end(); ++it){
-        (*it).expand();
+        (*it).update();
     }
 }
 

@@ -20,6 +20,7 @@ Cube::Cube(ofPoint _pos, int _id, ServerController _server){
 }
 
 // DRAW --------------------------------------------------------------
+// POINT IS INSIDE DRAWED SHAPE -------------------------------------------------------------
 void Cube::draw(ofRectangle _renderZone){
     
     //// UPDATE POS IN TERMS OF RENDERZONE ////
@@ -52,6 +53,12 @@ void Cube::draw(ofRectangle _renderZone){
 //    ofDrawCircle(drawedShape.getCenter(), drawedShape.width * CONTACT_RATIO);
 //  }
 }
+bool Cube::pointIsInsideDrawedShape(ofPoint _pointPos){
+    return ( _pointPos.x > drawedShape.x
+            && _pointPos.y > drawedShape.y
+            && _pointPos.x < drawedShape.x + drawedShape.width
+            && _pointPos.y < drawedShape.y + drawedShape.height );
+}
 
 // LOAD SOUND ------------------------------------------------------------------
 void Cube::loadSound(string soundPath){
@@ -62,14 +69,6 @@ void Cube::loadSound(string soundPath){
 void Cube::play(){
     cubeSound.play();
     server.sendPlayCube(cubeId, -1, pos.x, pos.y);
-}
-
-// POINT IS INSIDE DRAWED SHAPE -------------------------------------------------------------
-bool Cube::pointIsInsideDrawedShape(ofPoint _pointPos){
-    return ( _pointPos.x > drawedShape.x
-             && _pointPos.y > drawedShape.y
-             && _pointPos.x < drawedShape.x + drawedShape.width
-             && _pointPos.y < drawedShape.y + drawedShape.height );
 }
 
 // INCREASE LIFE CICLE ---------------------------------------------------------
@@ -86,4 +85,9 @@ bool Cube::isDead() {
 }
 bool Cube::isActive() {
   return (lifeCicle > LIFECICLE_ACTIVE);
+}
+
+// IS KNOW ---------------------------------------------------------
+bool Cube::isKnow() {
+    return (linkedId != -1);
 }
