@@ -17,10 +17,11 @@
 #define CUBE_RATIO 0.1
 #define CONTOUR_FINDER_RATIO 0.04
 #define CONTACT_RATIO 2
-// lifecicle
-#define LIFECICLE_START 50
-#define LIFECICLE_ACTIVE 200
-#define LIFECICLE_MAX 1000
+// lifetime
+#define LIFETIME_INCREMENT 10
+#define LIFETIME_START 50
+#define LIFETIME_ACTIVE 200
+#define LIFETIME_MAX 1000
 
 class Cube{
 public:
@@ -35,6 +36,7 @@ public:
     Cube(ofPoint _pos, int _id, ServerController _server);
 
     void draw(ofRectangle _renderZone);
+    void update();
     void play();
     void loadSound(string soundPath);
     bool pointIsInsideDrawedShape(ofPoint _pointPos);
@@ -48,14 +50,18 @@ public:
 
 private:
     //// VARIABLES ////
+    
     // id of sound
     int faceId;
-    int lifeCicle;
-    // other
+    
     ofColor color;
     ofSoundPlayer cubeSound;
+    
     // server saved here
     ServerController server;
+    
+    // lifetime
+    int lifetime = 50;
 };
 
 #endif /* Cube_h */

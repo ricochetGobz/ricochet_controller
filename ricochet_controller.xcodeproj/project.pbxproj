@@ -50,6 +50,7 @@
 		9FEF7AFAD4DDFFD2A55AA54A /* simpleFileLister.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDD9E60039A29DAFB013CDBD /* simpleFileLister.cpp */; };
 		A1A0FADDBF41894141DFC02F /* Echo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12583B61ACD580EF4C842FFC /* Echo.cpp */; };
 		A29FE8671CDD342400BF1248 /* CubeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A29FE8651CDD342400BF1248 /* CubeManager.cpp */; };
+		A2C3AC321CE5287B00352C35 /* GuiController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2C3AC301CE5287B00352C35 /* GuiController.cpp */; };
 		ACE7DC9A3223ED5EE1B80074 /* cameras.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DBD37876A11E46E4D7069B3 /* cameras.c */; };
 		ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADD194746185E2DA11468377 /* IpEndpointName.cpp */; };
 		AFDB30162A060AFBAB041DAB /* KinectController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F30E4FA9E66DA5F62FC292C5 /* KinectController.cpp */; };
@@ -287,6 +288,8 @@
 		A29FE8651CDD342400BF1248 /* CubeManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CubeManager.cpp; path = components/CubeManager.cpp; sourceTree = "<group>"; };
 		A29FE8661CDD342400BF1248 /* CubeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubeManager.h; path = components/CubeManager.h; sourceTree = "<group>"; };
 		A2AAA8CA403479E6FCDF920E /* OscHostEndianness.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscHostEndianness.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscHostEndianness.h; sourceTree = SOURCE_ROOT; };
+		A2C3AC301CE5287B00352C35 /* GuiController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuiController.cpp; sourceTree = "<group>"; };
+		A2C3AC311CE5287B00352C35 /* GuiController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuiController.h; sourceTree = "<group>"; };
 		A2C86A44C1FD1CB1DD189DFA /* transform.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = transform.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/transform.hpp; sourceTree = SOURCE_ROOT; };
 		A2EE5E80B134EA52A8B369D2 /* eigen.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = eigen.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/eigen.hpp; sourceTree = SOURCE_ROOT; };
 		A3411731962D0402217F182B /* fast_marching.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = fast_marching.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/videostab/fast_marching.hpp; sourceTree = SOURCE_ROOT; };
@@ -647,6 +650,8 @@
 				CCE12A1EF343B458A08BA3B6 /* KinectController.h */,
 				7D2F3A10F2E8941CF50D9956 /* ServerController.cpp */,
 				56286879209BF5B4F928CAAD /* ServerController.h */,
+				A2C3AC301CE5287B00352C35 /* GuiController.cpp */,
+				A2C3AC311CE5287B00352C35 /* GuiController.h */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1323,6 +1328,7 @@
 				CD42AEC96D6A33C54201FF21 /* EchoContainer.cpp in Sources */,
 				AFDB30162A060AFBAB041DAB /* KinectController.cpp in Sources */,
 				630334C2EBA001312D8BC047 /* ServerController.cpp in Sources */,
+				A2C3AC321CE5287B00352C35 /* GuiController.cpp in Sources */,
 				CBA68AD61765B24C0BFD9886 /* guiBaseObject.cpp in Sources */,
 				7830622D2831D72613A1D3CE /* guiCallback.cpp in Sources */,
 				E8A48D51B598B0E8012410D2 /* guiCallbackValue.cpp in Sources */,

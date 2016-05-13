@@ -7,18 +7,17 @@
 //
 
 #include "CubeManager.h"
+#include "ofxOpenCv.h"
 
 
 CubeManager::CubeManager(ServerController _server){
     idIncremented = 0;
-    
     server = server;
 }
 
-
-// UPDATE --------------------------------------------------------------
-// - SHOULD REMOVE --------------------------------------------------------------
-// - SHOULDREMOVE (for ofRemove) --------------------------------------------------------------
+// - SHOULD REMOVE (echo container) --------------------------------------------------------------
+// - SHOULDREMOVE CUBE (for ofRemove) --------------------------------------------------------------
+// - CHECK DETECTED CUBE --------------------------------------------------------------
 bool shouldRemove(EchoContainer &c) {
     if(c.echoes.size() == 0) {
         return true;
@@ -28,10 +27,11 @@ bool shouldRemove(EchoContainer &c) {
 bool shouldRemoveCube(Cube &e){
     return e.isDead();
 }
+
 void CubeManager::checkDetectedCube(ofRectangle _cubeDetected) {
     for(vector<Cube>::iterator it = cubes.begin(); it != cubes.end(); ++it){
+        // If cube is already into the area
         if(ofDist(_cubeDetected.x, _cubeDetected.y, (*it).pos.x, (*it).pos.y) < 10) {
-            // UN CUBE EST DEJA A CETTE PLACE
             (*it).increaseLifeCicle();
             return;
         }
@@ -41,28 +41,30 @@ void CubeManager::checkDetectedCube(ofRectangle _cubeDetected) {
     cubes.push_back(*new Cube(ofPoint(_cubeDetected.x, _cubeDetected.y), idIncremented, server));
     idIncremented++;
 }
-void CubeManager::update(vector<ofRectangle> _detectedCubes) {
+
+void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTolerance, int _cubeSizeTolerance, int _cubeSizeCaptured) {
     
-    //// ECHOES UPDATE ////
-    // check if echoContainers are alive
-    ofRemove(echoContainers, shouldRemove);
-    for (vector<EchoContainer>::iterator itWave = echoContainers.begin(); itWave != echoContainers.end(); ++itWave) {
-        (*itWave).update();
-        for(vector<Cube>::iterator itCube = cubes.begin(); itCube != cubes.end(); ++itCube){
-            if((*itCube).isActive()) (*itWave).checkEchoCollision((*itCube));
+    //// CUBES FOUNDS UPDATE /////
+    vector<ofRectangle> detectedCubes;
+    // for each forms found
+    for(int i = 0; i < _contourFinder.nBlobs; i++) {
+        ofRectangle r = _contourFinder.blobs.at(i).boundingRect;
+        
+        // if is aproximatively a square && if is approximatively at the good size.
+        if((abs(r.width - r.height) < _cubeDilationTolerance) && (abs((r.width - _cubeSizeCaptured)) < _cubeSizeTolerance)) {
+         detectedCubes.push_back(r);
         }
     }
 
-
     //// Check if a new cube position is detected ////
-    for(vector<ofRectangle>::iterator it = _detectedCubes.begin(); it != _detectedCubes.end(); ++it){
+    for(vector<ofRectangle>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
         checkDetectedCube((*it));
     }
 
     //// CUBES FOUNDED UPDATE ////
     for(vector<Cube>::iterator it = cubes.begin(); it != cubes.end(); ++it){
         
-        (*it).reduceLifeCicle();
+        (*it).update();
         
         // Check if all detected cubes is binded at hard cube
         if((*it).isActive() && !(*it).isKnow()){
@@ -77,6 +79,16 @@ void CubeManager::update(vector<ofRectangle> _detectedCubes) {
     }
     
     ofRemove(cubes, shouldRemoveCube);
+    
+    //// ECHOES UPDATE ////
+    // check if echoContainers are alive
+    ofRemove(echoContainers, shouldRemove);
+    for (vector<EchoContainer>::iterator itWave = echoContainers.begin(); itWave != echoContainers.end(); ++itWave) {
+        (*itWave).update();
+        for(vector<Cube>::iterator itCube = cubes.begin(); itCube != cubes.end(); ++itCube){
+            if((*itCube).isActive()) (*itWave).checkEchoCollision((*itCube));
+        }
+    }
 }
 
 // DRAW --------------------------------------------------------------
@@ -92,7 +104,7 @@ void CubeManager::draw(ofRectangle _renderZone) {
 }
 
 // ON CLICK -----------------------------------------------
-void CubeManager::onClick(int _x, int _y) {
+void CubeManager::mouseReleased(int _x, int _y) {
     for(vector<Cube>::iterator it = cubes.begin(); it != cubes.end(); ++it) {
         if((*it).isActive() && (*it).pointIsInsideDrawedShape(ofPoint(_x, _y))) {
             createEchoContainer((*it));

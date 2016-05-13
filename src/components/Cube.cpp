@@ -12,11 +12,14 @@
 // CONSTRUCTOR --------------------------------------------------------------
 Cube::Cube(ofPoint _pos, int _id, ServerController _server){
     pos = _pos;
-    lifeCicle = LIFECICLE_START;
     cubeId = _id;
     server = _server;
 
     color.set( ofRandom(255), ofRandom(255), ofRandom(255));
+}
+
+void Cube::update() {
+    reduceLifeCicle();
 }
 
 // DRAW --------------------------------------------------------------
@@ -72,22 +75,23 @@ void Cube::play(){
 }
 
 // INCREASE LIFE CICLE ---------------------------------------------------------
-// - IS DEAD ------------------------------------------------------------------
+// RECUDE LIFE CICLE -----------------------------------------------------------
+// - IS DEAD -------------------------------------------------------------------
 // - IS ACTIVE -----------------------------------------------------------------
 void Cube::increaseLifeCicle() {
-  if(lifeCicle < LIFECICLE_MAX) lifeCicle += 15;
+  if(lifetime < LIFETIME_MAX) lifetime += (LIFETIME_INCREMENT * 1.5);
 }
 void Cube::reduceLifeCicle() {
-  lifeCicle -= 10;
+  lifetime -= LIFETIME_INCREMENT;
 }
 bool Cube::isDead() {
-  return (lifeCicle < 0);
+  return (lifetime < 0);
 }
 bool Cube::isActive() {
-  return (lifeCicle > LIFECICLE_ACTIVE);
+  return (lifetime > LIFETIME_ACTIVE);
 }
 
-// IS KNOW ---------------------------------------------------------
+// IS KNOW ---------------------------------------------------------------------
 bool Cube::isKnow() {
     return (linkedId != -1);
 }

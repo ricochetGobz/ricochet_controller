@@ -1,5 +1,6 @@
 #include "ofApp.h"
 
+
 // SETUP --------------------------------------------------------------
 void ofApp::setup(){
     cout << "ofApp::setup" << endl;
@@ -8,6 +9,7 @@ void ofApp::setup(){
     ofSetFrameRate(60);
     ofSetLogLevel(OF_LOG_VERBOSE);
     ofSetCircleResolution(60);
+    ofSetVerticalSync(true);
 
     //// SERVER INIT ////
     server_receive.setup(RECEIVER_PORT);
@@ -15,14 +17,59 @@ void ofApp::setup(){
 
     //// KINECT INIT ////
     kinectCtrl.init();
-
+    
     //// SOUND INIT ////
     vector< ofSoundPlayer>::iterator itSounds = sounds.begin();
+
+    //// GUI INIT ////
+    gui.setup("Ricochet - DEBUG", 0, 0, ofGetWidth(), ofGetHeight());
+    // --------- PANEL 1 : DEBUG
+    gui.setWhichPanel(0);
+    // ----- Column 1
+    gui.setWhichColumn(0);
+    gui.addDrawableRect("Kinect Video", &kinectCtrl.colorImg, OC_WIDTH, OC_HEIGHT);
+    //gui.addDrawableRect("Kinect Depth", &_depthImg, OC_WIDTH, OC_HEIGHT);
+    // !!TEMP!! //
+    gui.addDrawableRect("Kinect Depth", &kinectCtrl.tempVidPlayer, OC_WIDTH, OC_HEIGHT);
+    // !!TEMP!! //
+    // ----- Column 2
+    gui.setWhichColumn(1);
+    gui.addDrawableRect("OpenCV Threshold", &kinectCtrl.thresholdImg, OC_WIDTH, OC_HEIGHT);
+    gui.addDrawableRect("OpenCV Render", &kinectCtrl.reworkImg, OC_WIDTH*2, OC_HEIGHT*2);
+    // ----- Column 3
+    gui.setWhichColumn(2);
+    // Stats
+    gui.addChartPlotter(appFrameRate, 30, 80);
+    stats.setName("Stats");
+    stats.add( nBlobs.set("Blobs founds", 0) );
+    stats.add( nCubes.set("Cubes founds", 0) );
+    gui.addVariableLister(stats);
+    //Threshold controls
+    thresholdControls.setName("OpenCV threshold");
+    thresholdControls.add(nearThreshold.set("nearThreshold", 255.0, 1.0, 255.0)); // (sauv : 165.0)
+    thresholdControls.add(farThreshold.set("farThreshold", 146.0, 1.0, 255.0)); // (sauv : 158.0)
+    gui.addGroup(thresholdControls);
+    // Render controls
+    renderControls.setName("OpenCV render");
+    renderControls.add(bBlur.set("Blur", false));
+    renderControls.add(threshold.set("threshold", 0.0, 0.0, 255.0));
+    renderControls.add(minArea.set("minArea", 231.0, 1.0, 3000.0)); // ( sauv : 300.0)
+    renderControls.add(maxArea.set("maxArea", 1040.0, 1.0, (OC_WIDTH*OC_HEIGHT)));
+    gui.addGroup(renderControls);
+    cubeDetection.setName("Cube detection");
+    cubeDetection.add(sizeCaptured.set("sizeCaptured", 27, 10, 60));
+    cubeDetection.add(dilationTolerance.set("dilationTolerance", 6, 0, 15));
+    cubeDetection.add(sizeTolerance.set("sizeTolerance", 9, 0, 30));
+    gui.addGroup(cubeDetection);
 }
 
 
 // UPDATE --------------------------------------------------------------
 void ofApp::update(){
+    //// GUI UPDATE /////
+    gui.update();
+    appFrameRate = ofGetFrameRate();
+    nBlobs = kinectCtrl.contourFinder.nBlobs;
 
     //// SERVER UPDATE : OSC MESSAGE RECEIVED ////
     while(server_receive.hasWaitingMessages()){
@@ -32,10 +79,18 @@ void ofApp::update(){
         cout << address << endl;
 
         server.checkAddress(address);
+
+        // TODO check address for oNCubeDragged ect
     }
 
     //// KINECT UPDATE ////
-    kinectCtrl.update();
+    kinectCtrl.update(bBlur,
+                      gui.getValueI("OpenCV_threshold:nearThreshold"),
+                      gui.getValueI("OpenCV_threshold:farThreshold"),
+                      gui.getValueI("OpenCV_render:threshold"),
+                      gui.getValueI("OpenCV_render:minArea"),
+                      gui.getValueI("OpenCV_render:maxArea"));
+
     // Check kinect connection and send information to the server
     if(server.kinectIsConnected() != kinectCtrl.kinectIsConnected()){
         server.setKinectStatus(kinectCtrl.kinectIsConnected());
@@ -43,8 +98,10 @@ void ofApp::update(){
     }
 
     //// CHECK CUBE DETECTED BY THE KINECT AND UPDATE CUBES LIFES ////
-    cubeManager.update(kinectCtrl.detectedCubes);
-
+    cubeManager.update(kinectCtrl.contourFinder,
+                       gui.getValueI("Cube_detection:dilationTolerance"),
+                       gui.getValueI("Cube_detection:sizeTolerance"),
+                       gui.getValueI("Cube_detection:sizeCaptured"));
 }
 
 // DRAW --------------------------------------------------------------
@@ -55,13 +112,12 @@ void ofApp::draw(){
     switch(mode) {
         case NORMAL_MODE:
             renderZone.set(2, 2, ofGetWidth() - 4, ofGetHeight() - 4);
-            
             kinectCtrl.drawRender(renderZone);
             cubeManager.draw(renderZone);
             break;
         case CALIBRATION_MODE:
             renderZone.set(227, 246, OC_WIDTH*2, OC_HEIGHT*2);
-            
+            gui.draw();
             kinectCtrl.drawControlPanel(renderZone);
             cubeManager.draw(renderZone);
             break;
@@ -71,7 +127,7 @@ void ofApp::draw(){
         default:
             break;
     }
-    
+
 
     //// CONNECTION INFORMATION ////
     ofSetColor(255, 255, 255);
@@ -100,8 +156,7 @@ void ofApp::keyPressed(int key){
 // !!TEMP!! //
 // MOUSE RELEASED --------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-    cubeManager.onClick(x, y);
-    
+    cubeManager.mouseReleased(x, y);
 }
 // !!TEMP!! //
 

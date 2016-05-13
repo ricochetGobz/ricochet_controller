@@ -10,6 +10,7 @@
 #define CubeManager_h
 
 #include "Cube.h"
+#include "ofxOpenCv.h"
 #include "EchoContainer.h"
 #include "ServerController.h"
 
@@ -19,22 +20,26 @@ class CubeManager {
 
 public:
     //// VARIABLES ////
-    vector<Cube> cubes;
 
     //// METHODES ////
     CubeManager(ServerController _server);
-    void update(vector<ofRectangle> _detectedCubes);
-    void draw(ofRectangle _renderZone);
-
-    void checkDetectedCube(ofRectangle _cubeDetected);
+    void update(ofxCvContourFinder &_contourFinder,
+                int _cubeDilationTolerance,
+                int _cubeSizeTolerance,
+                int _cubeSizeCaptured);
     
-    void onClick(int _x, int _y);
+    void draw(ofRectangle _renderZone);
+    
+    // events
+    void checkDetectedCube(ofRectangle _cubeDetected);
+    void mouseReleased(int _x, int _y);
 
 private:
     //// VARIABLES ////
     int idIncremented;
     ServerController server;
     
+    vector<Cube> cubes;
     vector<EchoContainer> echoContainers;
 
     //// METHODES ////
