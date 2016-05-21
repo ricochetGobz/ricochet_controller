@@ -10,9 +10,7 @@
 #include "Cube.h"
 
 
-EchoContainer::EchoContainer(Cube _cube){
-    createEcho(_cube);
-}
+EchoContainer::EchoContainer(){}
 
 
 // UPDATE --------------------------------------------------------------
@@ -36,26 +34,24 @@ void EchoContainer::draw(ofRectangle _renderZone) {
 }
 
 // CREATE ECHO --------------------------------------------------------------
-void EchoContainer::createEcho(Cube _cube) {
+void EchoContainer::createEcho(int _cubeId, ofPoint _cubePos) {
     // Save the native cube like touched
-    cubesTouched.push_back(_cube.cubeId);
-    echoes.push_back(*new Echo(_cube.pos));
-
-    _cube.play();
+    cubesTouched.push_back(_cubeId);
+    echoes.push_back(*new Echo(_cubePos));
 }
 
 // CHECK ECHO COLLISION --------------------------------------------------------------
-void EchoContainer::checkEchoCollision(Cube _cube) {
+bool EchoContainer::checkEchoesCollision(int _cubeId, ofPoint _cubePos) {
     
-    if(isAlreadyTouched(_cube.cubeId)) return;
+    if(isAlreadyTouched(_cubeId)) return false;
 
     for(vector<Echo>::iterator it = echoes.begin(); it != echoes.end(); ++it) {
         // If echoes can activate another cubes
-        if((*it).checkCubeCollision(_cube.pos)) {
-            createEcho(_cube);
-            return;
+        if((*it).checkCubeCollision(_cubePos)) {
+            return true;
         }
     }
+    return false;
 }
 
 // IS ALREADY TOUCHED --------------------------------------------------------------

@@ -10,9 +10,8 @@
 #include "ofxOpenCv.h"
 
 
-CubeManager::CubeManager(ServerController _server){
+CubeManager::CubeManager(ServerController* _serv, function_type _sendPlayCube):serv_(_serv),sendPlayCube_(_sendPlayCube){
     idIncremented = 0;
-    server = server;
 }
 
 // - SHOULD REMOVE (echo container) --------------------------------------------------------------
@@ -38,7 +37,7 @@ void CubeManager::checkDetectedCube(ofRectangle _cubeDetected) {
     }
     
     //// NO CUBE IN THIS PLACE ////
-    cubes.push_back(*new Cube(ofPoint(_cubeDetected.x, _cubeDetected.y), idIncremented, server));
+    cubes.push_back(*new Cube(_cubeDetected.position, idIncremented));
     idIncremented++;
 }
 
@@ -86,7 +85,9 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
     for (vector<EchoContainer>::iterator itWave = echoContainers.begin(); itWave != echoContainers.end(); ++itWave) {
         (*itWave).update();
         for(vector<Cube>::iterator itCube = cubes.begin(); itCube != cubes.end(); ++itCube){
-            if((*itCube).isActive()) (*itWave).checkEchoCollision((*itCube));
+            if((*itCube).isActive() && (*itWave).checkEchoesCollision((*itCube).cubeId, (*itCube).pos)) {
+                playCube(&(*itWave), &(*itCube));
+            }
         }
     }
 }
@@ -107,13 +108,20 @@ void CubeManager::draw(ofRectangle _renderZone) {
 void CubeManager::mouseReleased(int _x, int _y) {
     for(vector<Cube>::iterator it = cubes.begin(); it != cubes.end(); ++it) {
         if((*it).isActive() && (*it).pointIsInsideDrawedShape(ofPoint(_x, _y))) {
-            createEchoContainer((*it));
+            createEchoContainer(&(*it));
         }
     }
 }
 
 // CREATE ECHO CONTAINER -----------------------------------------------
-void CubeManager::createEchoContainer(Cube _cube){
-    EchoContainer newEchoContainer = *new EchoContainer(_cube);
+void CubeManager::createEchoContainer(Cube* _cube){
+    EchoContainer newEchoContainer = *new EchoContainer();
+    playCube(&newEchoContainer, _cube);
     echoContainers.push_back(newEchoContainer);
+}
+// PLAY CUBE ----
+void CubeManager::playCube(EchoContainer* _echoContainer, Cube* _cube) {
+    _echoContainer->createEcho(_cube->cubeId, _cube->pos);
+    (serv_->*sendPlayCube_)(_cube->cubeId, -1, _cube->pos);
+    _cube->play();
 }

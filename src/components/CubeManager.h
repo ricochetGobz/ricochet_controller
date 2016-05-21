@@ -15,14 +15,15 @@
 #include "ServerController.h"
 
 
-
 class CubeManager {
 
 public:
     //// VARIABLES ////
+    typedef void (ServerController::*function_type)(int, int, ofPoint);
 
     //// METHODES ////
-    CubeManager(ServerController _server);
+    CubeManager(ServerController* _serv, function_type _sendPlayCube);
+    
     void update(ofxCvContourFinder &_contourFinder,
                 int _cubeDilationTolerance,
                 int _cubeSizeTolerance,
@@ -37,13 +38,16 @@ public:
 private:
     //// VARIABLES ////
     int idIncremented;
-    ServerController server;
+    
+    ServerController* serv_;
+    function_type sendPlayCube_;
     
     vector<Cube> cubes;
     vector<EchoContainer> echoContainers;
 
     //// METHODES ////
-    void createEchoContainer(Cube _cube);
+    void createEchoContainer(Cube* _cube);
+    void playCube(EchoContainer* _echoContainer, Cube* _cube);
 };
 
 #endif /* CubeManager_h */

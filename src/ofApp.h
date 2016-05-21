@@ -8,8 +8,6 @@
 #include "ofxControlPanel.h"
 
 //// CONST ////
-// Communication
-#define RECEIVER_PORT 5555
 
 // mode
 #define NORMAL_MODE 0
@@ -22,6 +20,19 @@
 #define HEIGHT WIDTH/RATIO
 #define OC_WIDTH 200
 #define OC_HEIGHT OC_WIDTH/RATIO
+
+// Communication
+#define RECEIVER_PORT 5555
+// Reveicers address
+#define SERVER_STARTED "/serverStarted"
+#define SERVER_DOWN "/serverDown"
+#define WEB_RENDER_CONNECTED "/WRConnected"
+#define WEB_RENDER_DISCONNECTED "/WRDisconnected"
+#define CUBE_CONNECTED "/cubeConnected"
+#define CUBE_DISCONNECTED "/cubeDisconnected"
+#define CUBE_TOUCHED "/cubeTouched"
+#define CUBE_DRAGGED "/cubeDragged"
+#define CUBE_DRAG_END "/cubeDragEnd"
 
 
 class ofApp : public ofBaseApp{
@@ -45,16 +56,21 @@ private:
     ofRectangle renderZone;
 
     // Controllers
-    ServerController server;
+    ServerController server ;
     ofxOscReceiver server_receive;  // !!!! THE RECEIVER DOESN'T WORK
                                     // !!!! INTO NODEBRIGDE
     KinectController kinectCtrl;
 
     // Components
-    CubeManager cubeManager = *new CubeManager(server);
+    CubeManager cubeManager = *new CubeManager(&server, &ServerController::sendPlayCube);
     
     // Audio
     vector<ofSoundPlayer> sounds;
+    
+    // Status
+    bool serverStarted = false;
+    bool webRenderConnected = false;
+    bool kinectConnected = false;
     
     // GUI
     ofxControlPanel gui;
@@ -81,4 +97,5 @@ private:
 
 
     //// METHODES ////
+    void checkReceivedAddress(string _address);
 };

@@ -10,10 +10,9 @@
 #include "echo.h"
 
 // CONSTRUCTOR --------------------------------------------------------------
-Cube::Cube(ofPoint _pos, int _id, ServerController _server){
+Cube::Cube(ofPoint _pos, int _id){
     pos = _pos;
     cubeId = _id;
-    server = _server;
 
     color.set( ofRandom(255), ofRandom(255), ofRandom(255));
 }
@@ -71,7 +70,7 @@ void Cube::loadSound(string soundPath){
 // PLAY ------------------------------------------------------------------------
 void Cube::play(){
     cubeSound.play();
-    server.sendPlayCube(cubeId, -1, pos.x, pos.y);
+    //server.sendPlayCube(cubeId, -1, pos.x, pos.y);
 }
 
 // INCREASE LIFE CICLE ---------------------------------------------------------

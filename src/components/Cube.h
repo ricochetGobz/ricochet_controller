@@ -10,7 +10,6 @@
 #define Cube_h
 
 #include "ofMain.h"
-#include "ServerController.h"
 
 //// CONST ////
 // drawerConvertor
@@ -33,7 +32,7 @@ public:
     ofRectangle drawedShape;
     
     //// METHODES ////
-    Cube(ofPoint _pos, int _id, ServerController _server);
+    Cube(ofPoint _pos, int _id);
 
     void draw(ofRectangle _renderZone);
     void update();
@@ -56,10 +55,7 @@ private:
     
     ofColor color;
     ofSoundPlayer cubeSound;
-    
-    // server saved here
-    ServerController server;
-    
+
     // lifetime
     int lifetime = 50;
 };

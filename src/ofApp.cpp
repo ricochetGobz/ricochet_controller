@@ -65,6 +65,7 @@ void ofApp::setup(){
 
 
 // UPDATE --------------------------------------------------------------
+// CHECK RECEIVED ADDRESS --------------------------------------------------------------
 void ofApp::update(){
     //// GUI UPDATE /////
     gui.update();
@@ -77,10 +78,10 @@ void ofApp::update(){
         server_receive.getNextMessage(&m);
         string address = m.getAddress();
         cout << address << endl;
-
-        server.checkAddress(address);
-
-        // TODO check address for oNCubeDragged ect
+    
+        // switch not support string
+        checkReceivedAddress(address);
+       
     }
 
     //// KINECT UPDATE ////
@@ -92,9 +93,9 @@ void ofApp::update(){
                       gui.getValueI("OpenCV_render:maxArea"));
 
     // Check kinect connection and send information to the server
-    if(server.kinectIsConnected() != kinectCtrl.kinectIsConnected()){
-        server.setKinectStatus(kinectCtrl.kinectIsConnected());
-        server.sendKinectStatusChange(server.kinectIsConnected());
+    if(kinectConnected != kinectCtrl.kinectIsConnected()){
+        kinectConnected = kinectCtrl.kinectIsConnected();
+        server.sendKinectStatusChange(kinectConnected);
     }
 
     //// CHECK CUBE DETECTED BY THE KINECT AND UPDATE CUBES LIFES ////
@@ -102,6 +103,55 @@ void ofApp::update(){
                        gui.getValueI("Cube_detection:dilationTolerance"),
                        gui.getValueI("Cube_detection:sizeTolerance"),
                        gui.getValueI("Cube_detection:sizeCaptured"));
+}
+
+void ofApp::checkReceivedAddress(string _address) {
+    if(_address == SERVER_STARTED ) {
+        cout << "Node server started" << endl;
+        if(!serverStarted){
+            cout << "err" << endl;
+            serverStarted = true;
+            server.sendOFStatusChange(true);
+            server.sendKinectStatusChange(kinectConnected);
+        }
+        
+    } else if ( _address == SERVER_DOWN ) {
+        cout << "Node server down" << endl;
+        serverStarted = false;
+        webRenderConnected = false;
+        
+    } else if( _address == WEB_RENDER_CONNECTED ){
+        cout << "web render connected" << endl;
+        webRenderConnected = true;
+        
+    } else if ( _address == WEB_RENDER_DISCONNECTED ){
+        cout << "web render disconnected" << endl;
+        webRenderConnected = false;
+        
+    } else if( _address == CUBE_CONNECTED){
+        // TODO
+        // Add this cube ID into the list of cube connected
+        
+    } else if( _address == CUBE_DISCONNECTED){
+        // TODO
+        // Remove this cube ID into the list of cube connected
+        
+    } else if( _address == CUBE_TOUCHED){
+        // TODO
+        // get cube id
+        // send cubeManager.cubeTouched(id)
+        
+    } else if( _address == CUBE_DRAGGED){
+        // TODO
+        // get cube id
+        // send cubeManager.cubeDragged(id)
+        
+    } else if( _address == CUBE_DRAG_END){
+        // TODO
+        // get cube id
+        // send cubeManager.cubeDragEnd(id)
+        
+    }
 }
 
 // DRAW --------------------------------------------------------------
@@ -132,9 +182,9 @@ void ofApp::draw(){
     //// CONNECTION INFORMATION ////
     ofSetColor(255, 255, 255);
     stringstream reportStream;
-    reportStream << "Node.js Server: " << ((server.isStarted())?"ON":"OFF") << endl
-    << "Web Render: " << ((server.webRenderIsConnected())?"ON":"OFF") << endl
-    << "Kinect: " << ((server.kinectIsConnected())?"ON":"OFF - press (o) :: try to connect the kinect.") << endl << endl
+    reportStream << "Node.js Server: " << ((serverStarted)?"ON":"OFF") << endl
+    << "Web Render: " << ((webRenderConnected)?"ON":"OFF") << endl
+    << "Kinect: " << ((kinectConnected)?"ON":"OFF - press (o) :: try to connect the kinect.") << endl << endl
     << "press (m) :: switch between modes" << endl;
     ofDrawBitmapString(reportStream.str(), 10, ofGetHeight() - 100);
 

@@ -19,17 +19,18 @@ public:
     vector<Echo> echoes;
 
     //// METHODES ////
-    EchoContainer(Cube _cube);
-    void checkEchoCollision(Cube _cube);
+    EchoContainer();
     void update();
     void draw(ofRectangle _renderZone);
+    
+    bool checkEchoesCollision(int _cubeId, ofPoint _cubePos);
+    void createEcho(int _cubeId, ofPoint _cubePos);
 
 private:
     //// VARIABLES ////
     vector<int> cubesTouched;
     
     //// METHODES ////
-    void createEcho(Cube _cube);
     bool isAlreadyTouched(int _cubeId);
 };
 
