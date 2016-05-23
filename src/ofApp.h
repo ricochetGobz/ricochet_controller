@@ -24,15 +24,15 @@
 // Communication
 #define RECEIVER_PORT 5555
 // Reveicers address
-#define SERVER_STARTED "/serverStarted"
-#define SERVER_DOWN "/serverDown"
-#define WEB_RENDER_CONNECTED "/WRConnected"
-#define WEB_RENDER_DISCONNECTED "/WRDisconnected"
-#define CUBE_CONNECTED "/cubeConnected"
-#define CUBE_DISCONNECTED "/cubeDisconnected"
-#define CUBE_TOUCHED "/cubeTouched"
-#define CUBE_DRAGGED "/cubeDragged"
-#define CUBE_DRAG_END "/cubeDragEnd"
+#define SERVER_CONNECTED "/S_Connected"
+#define SERVER_DISCONNECTED "/S_Disconnected"
+#define WEB_RENDER_CONNECTED "/WR_Connected"
+#define WEB_RENDER_DISCONNECTED "/WR_Disconnected"
+#define CUBE_CONNECTED "/C_Connected"
+#define CUBE_DISCONNECTED "/C_Disconnected"
+#define CUBE_TOUCHED "/C_Touched"
+#define CUBE_DRAGGED "/C_Dragged"
+#define CUBE_DRAG_END "/C_DragEnd"
 
 
 class ofApp : public ofBaseApp{

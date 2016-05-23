@@ -106,7 +106,7 @@ void ofApp::update(){
 }
 
 void ofApp::checkReceivedAddress(string _address) {
-    if(_address == SERVER_STARTED ) {
+    if(_address == SERVER_CONNECTED ) {
         cout << "Node server started" << endl;
         if(!serverStarted){
             cout << "err" << endl;
@@ -115,7 +115,7 @@ void ofApp::checkReceivedAddress(string _address) {
             server.sendKinectStatusChange(kinectConnected);
         }
         
-    } else if ( _address == SERVER_DOWN ) {
+    } else if ( _address == SERVER_DISCONNECTED ) {
         cout << "Node server down" << endl;
         serverStarted = false;
         webRenderConnected = false;

@@ -17,11 +17,11 @@
 // Ports
 #define SENDER_PORT 4444
 // Senders address
-#define OF_CONNECTED "/OPConnected"
-#define OF_DISCONNECTED "/OPDisconnected"
-#define KINECT_CONNECTED "/KConnected"
-#define KINECT_DISCONNECTED "/KDisconnected"
-#define PLAY_CUBE "/playCube"
+#define OF_CONNECTED "/OF_Connected"
+#define OF_DISCONNECTED "/OF_Disconnected"
+#define KINECT_CONNECTED "/K_Connected"
+#define KINECT_DISCONNECTED "/K_Disconnected"
+#define PLAY_CUBE "/C_Played"
 
 class ServerController {
 
