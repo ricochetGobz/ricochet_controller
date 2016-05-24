@@ -43,5 +43,5 @@ void ServerController::sendKinectStatusChange(bool isConnected) {
     }
 }
 void ServerController::sendPlayCube(int cubeId, int soundId, ofPoint pos) {
-    send(PLAY_CUBE, "{cubeId:"+ofToString(cubeId)+", soundId:"+ofToString(soundId)+", x:"+ofToString(pos.x)+", y:"+ofToString(pos.y)+"}");
+    send(PLAY_CUBE, "{\"cubeId\":"+ofToString(cubeId)+", \"soundId\":"+ofToString(soundId)+", \"x\":"+ofToString(pos.x)+", \"y\":"+ofToString(pos.y)+"}");
 }
