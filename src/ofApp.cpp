@@ -28,9 +28,10 @@ void ofApp::setup(){
     // ----- Column 1
     gui.setWhichColumn(0);
     gui.addDrawableRect("Kinect Video", &kinectCtrl.colorImg, OC_WIDTH, OC_HEIGHT);
-    //gui.addDrawableRect("Kinect Depth", &_depthImg, OC_WIDTH, OC_HEIGHT);
+    
     // !!TEMP!! //
-    gui.addDrawableRect("Kinect Depth", &kinectCtrl.tempVidPlayer, OC_WIDTH, OC_HEIGHT);
+    //gui.addDrawableRect("Kinect Depth", &kinectCtrl.depthImg, OC_WIDTH, OC_HEIGHT);
+    gui.addDrawableRect("Kinect Depth", &kinectCtrl.depthImg, OC_WIDTH, OC_HEIGHT);
     // !!TEMP!! //
     // ----- Column 2
     gui.setWhichColumn(1);
@@ -46,18 +47,18 @@ void ofApp::setup(){
     gui.addVariableLister(stats);
     //Threshold controls
     thresholdControls.setName("OpenCV threshold");
-    thresholdControls.add(nearThreshold.set("nearThreshold", 255.0, 1.0, 255.0)); // (sauv : 165.0)
-    thresholdControls.add(farThreshold.set("farThreshold", 146.0, 1.0, 255.0)); // (sauv : 158.0)
+    thresholdControls.add(nearThreshold.set("nearThreshold", 255.0, 1.0, 255.0));
+    thresholdControls.add(farThreshold.set("farThreshold", 214.0, 1.0, 255.0));
     gui.addGroup(thresholdControls);
     // Render controls
     renderControls.setName("OpenCV render");
     renderControls.add(bBlur.set("Blur", false));
     renderControls.add(threshold.set("threshold", 0.0, 0.0, 255.0));
-    renderControls.add(minArea.set("minArea", 231.0, 1.0, 3000.0)); // ( sauv : 300.0)
-    renderControls.add(maxArea.set("maxArea", 1040.0, 1.0, (OC_WIDTH*OC_HEIGHT)));
+    renderControls.add(minArea.set("minArea", 1165.0, 1.0, 3000.0)); // ( sauv : 300.0)
+    renderControls.add(maxArea.set("maxArea", 1500.0, 1.0, (OC_WIDTH*OC_HEIGHT)));
     gui.addGroup(renderControls);
     cubeDetection.setName("Cube detection");
-    cubeDetection.add(sizeCaptured.set("sizeCaptured", 27, 10, 60));
+    cubeDetection.add(sizeCaptured.set("sizeCaptured", 44, 10, 60));
     cubeDetection.add(dilationTolerance.set("dilationTolerance", 6, 0, 15));
     cubeDetection.add(sizeTolerance.set("sizeTolerance", 9, 0, 30));
     gui.addGroup(cubeDetection);

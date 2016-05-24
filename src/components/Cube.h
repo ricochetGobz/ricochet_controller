@@ -14,7 +14,7 @@
 //// CONST ////
 // drawerConvertor
 #define CUBE_RATIO 0.1
-#define CONTOUR_FINDER_RATIO 0.04
+#define CONTOUR_FINDER_RATIO 0.03
 #define CONTACT_RATIO 2
 // lifetime
 #define LIFETIME_INCREMENT 10

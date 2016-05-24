@@ -19,7 +19,7 @@ public:
     //// VARIABLES ////
     
     // !!TEMP!! //
-    ofVideoPlayer tempVidPlayer;
+    //ofVideoPlayer tempVidPlayer;
     // !!TEMP!! //
     
     // OPENCV

@@ -34,9 +34,9 @@ void KinectController::init() {
     grayThreshFar.allocate(kinect.width, kinect.height);
 
     // !!TEMP!! //
-    tempVidPlayer.load("videoKinectDepth.mp4");
-    tempVidPlayer.play();
-    tempVidPlayer.setLoopState(OF_LOOP_NORMAL);
+    // tempVidPlayer.load("videoKinectDepth.mp4");
+    // tempVidPlayer.play();
+    // tempVidPlayer.setLoopState(OF_LOOP_NORMAL);
     // !!TEMP!! //
 
 }
@@ -50,24 +50,24 @@ void KinectController::update(bool _bBlur,
                               int _maxArea) {
     //// KINECT VIDEO UPDATE /////
     // !!TEMP!! //
-    //kinect.update();
-    tempVidPlayer.update();
+    kinect.update();
+    //tempVidPlayer.update();
     // !!TEMP!! //
 
     // there is a new frame and we are connected
     // !!TEMP!! //
-    //if(kinect.isFrameNew()) {
-    if(tempVidPlayer.isFrameNew()) {
+    if(kinect.isFrameNew()) {
+    //if(tempVidPlayer.isFrameNew()) {
     // !!TEMP!! //
 
         //// OPEN CV UPDATE /////
 
         // load grayscale depth image from the kinect source
         // !!TEMP!! //
-        //colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
-        //depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
-        colorImg.setFromPixels(tempVidPlayer.getPixels(), kinect.width, kinect.height);
-        depthImg = colorImg;
+        colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
+        depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+        //colorImg.setFromPixels(tempVidPlayer.getPixels(), kinect.width, kinect.height);
+        //depthImg = colorImg;
         // !!TEMP!! //
 
         // THRESHOLD
