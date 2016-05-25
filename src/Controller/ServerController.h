@@ -21,6 +21,7 @@
 #define OF_DISCONNECTED "/OF_Disconnected"
 #define KINECT_CONNECTED "/K_Connected"
 #define KINECT_DISCONNECTED "/K_Disconnected"
+#define NBR_CUBE_FOUNDED "/C_NbrCubesFounded"
 #define PLAY_CUBE "/C_Played"
 
 class ServerController {
@@ -35,6 +36,7 @@ public:
     void sendOPDisconnected();
     void sendOFStatusChange(bool isConnected);
     void sendKinectStatusChange(bool isConnected);
+    void sendNbrOfCubeFoundedChange(int nCubesFounded);
     void sendPlayCube(int cubeId, int soundId, ofPoint pos);
 
 private:

@@ -55,7 +55,12 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
         }
     }
 
-    //// Check if a new cube position is detected ////
+    /* Check if a new cube position is detected :
+     *
+     * We have a list of detected cube and we want to check if cube is already exist on
+     * this place.
+     *
+     */
     for(vector<ofRectangle>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
         checkDetectedCube((*it));
     }
@@ -113,6 +118,30 @@ void CubeManager::mouseReleased(int _x, int _y) {
     }
 }
 
+// CUBE CONNECTED --------------------------------------------------
+// CUBE DISCONNECTED -----------------------------------------------
+// CUBE TOUCHED ----------------------------------------------------
+// CCUBE DRAGGED ---------------------------------------------------
+// CUBE DRAG END ---------------------------------------------------
+void CubeManager::cubeConnected(int cubeId) {
+    
+}
+void CubeManager::cubeDisconnected(int cubeId) {
+    
+}
+void CubeManager::cubeTouched(int cubeId) {
+    
+}
+void CubeManager::cubeDragged(int cubeId) {
+    // TODO
+    // Supprimer la position du cube connecté.
+    // mettre le cube écouté dans une phase d'attende de positionnement.
+}
+void CubeManager::cubeDragEnd(int cubeId) {
+    // TODO
+    // ????
+}
+
 // CREATE ECHO CONTAINER -----------------------------------------------
 void CubeManager::createEchoContainer(Cube* _cube){
     EchoContainer newEchoContainer = *new EchoContainer();
@@ -124,4 +153,9 @@ void CubeManager::playCube(EchoContainer* _echoContainer, Cube* _cube) {
     _echoContainer->createEcho(_cube->cubeId, _cube->pos);
     (serv_->*sendPlayCube_)(_cube->cubeId, -1, _cube->pos);
     _cube->play();
+}
+
+
+int CubeManager::getNbrCubesFounded() {
+    return cubes.size();
 }

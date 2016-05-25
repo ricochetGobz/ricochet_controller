@@ -32,8 +32,16 @@ public:
     void draw(ofRectangle _renderZone);
     
     // events
-    void checkDetectedCube(ofRectangle _cubeDetected);
     void mouseReleased(int _x, int _y);
+    // - cube events
+    void cubeConnected(int cubeId);
+    void cubeDisconnected(int cubeId);
+    void cubeTouched(int cubeId);
+    void cubeDragged(int cubeId);
+    void cubeDragEnd(int cubeId);
+    
+    // getters
+    int getNbrCubesFounded();
 
 private:
     //// VARIABLES ////
@@ -47,6 +55,7 @@ private:
 
     //// METHODES ////
     void createEchoContainer(Cube* _cube);
+    void checkDetectedCube(ofRectangle _cubeDetected);
     void playCube(EchoContainer* _echoContainer, Cube* _cube);
 };
 

@@ -58,7 +58,7 @@ void ofApp::setup(){
     renderControls.add(maxArea.set("maxArea", 1500.0, 1.0, (OC_WIDTH*OC_HEIGHT)));
     gui.addGroup(renderControls);
     cubeDetection.setName("Cube detection");
-    cubeDetection.add(sizeCaptured.set("sizeCaptured", 44, 10, 60));
+    cubeDetection.add(sizeCaptured.set("sizeCaptured", 46, 10, 60));
     cubeDetection.add(dilationTolerance.set("dilationTolerance", 6, 0, 15));
     cubeDetection.add(sizeTolerance.set("sizeTolerance", 9, 0, 30));
     gui.addGroup(cubeDetection);
@@ -104,6 +104,19 @@ void ofApp::update(){
                        gui.getValueI("Cube_detection:dilationTolerance"),
                        gui.getValueI("Cube_detection:sizeTolerance"),
                        gui.getValueI("Cube_detection:sizeCaptured"));
+    
+    // TEMPS
+    checkNbrOfCubeFounded();
+    
+}
+
+void ofApp::checkNbrOfCubeFounded() {
+    int _nCubesFounded = cubeManager.getNbrCubesFounded();
+    if(_nCubesFounded != nCubes) {
+        // TODO send to the server
+        nCubes = _nCubesFounded;
+        server.sendNbrOfCubeFoundedChange(nCubes);
+    }
 }
 
 void ofApp::checkReceivedAddress(string _address) {
@@ -149,9 +162,10 @@ void ofApp::checkReceivedAddress(string _address) {
         
     } else if( _address == CUBE_DRAG_END){
         // TODO
-        // get cube id
-        // send cubeManager.cubeDragEnd(id)
+        // cubeManager.cubeDragEnd(cubeId);
         
+        // Check nbr for cube founded to the tutorial
+        checkNbrOfCubeFounded();
     }
 }
 
