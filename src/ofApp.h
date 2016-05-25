@@ -98,5 +98,5 @@ private:
 
     //// METHODES ////
     void checkReceivedAddress(string _address);
-    void checkNbrOfCubeFounded();
+    void checkNbrOfCubeFound();
 };

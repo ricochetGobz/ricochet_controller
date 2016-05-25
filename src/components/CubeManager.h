@@ -41,7 +41,7 @@ public:
     void cubeDragEnd(int cubeId);
     
     // getters
-    int getNbrCubesFounded();
+    int getNbrCubesFound();
 
 private:
     //// VARIABLES ////

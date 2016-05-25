@@ -65,7 +65,7 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
         checkDetectedCube((*it));
     }
 
-    //// CUBES FOUNDED UPDATE ////
+    //// CUBES FOUND UPDATE ////
     for(vector<Cube>::iterator it = cubes.begin(); it != cubes.end(); ++it){
         
         (*it).update();
@@ -156,6 +156,6 @@ void CubeManager::playCube(EchoContainer* _echoContainer, Cube* _cube) {
 }
 
 
-int CubeManager::getNbrCubesFounded() {
+int CubeManager::getNbrCubesFound() {
     return cubes.size();
 }

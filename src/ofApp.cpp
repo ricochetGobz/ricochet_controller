@@ -106,16 +106,16 @@ void ofApp::update(){
                        gui.getValueI("Cube_detection:sizeCaptured"));
     
     // TEMPS
-    checkNbrOfCubeFounded();
+    checkNbrOfCubeFound();
     
 }
 
-void ofApp::checkNbrOfCubeFounded() {
-    int _nCubesFounded = cubeManager.getNbrCubesFounded();
-    if(_nCubesFounded != nCubes) {
+void ofApp::checkNbrOfCubeFound() {
+    int _nCubesFound = cubeManager.getNbrCubesFound();
+    if(_nCubesFound != nCubes) {
         // TODO send to the server
-        nCubes = _nCubesFounded;
-        server.sendNbrOfCubeFoundedChange(nCubes);
+        nCubes = _nCubesFound;
+        server.sendNbrOfCubeFoundChange(nCubes);
     }
 }
 
@@ -164,8 +164,8 @@ void ofApp::checkReceivedAddress(string _address) {
         // TODO
         // cubeManager.cubeDragEnd(cubeId);
         
-        // Check nbr for cube founded to the tutorial
-        checkNbrOfCubeFounded();
+        // Check nbr for cube found to the tutorial
+        checkNbrOfCubeFound();
     }
 }
 
