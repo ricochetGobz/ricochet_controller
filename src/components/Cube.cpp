@@ -13,8 +13,6 @@
 Cube::Cube(ofPoint _pos, int _id){
     pos = _pos;
     cubeId = _id;
-
-    color.set( ofRandom(255), ofRandom(255), ofRandom(255));
 }
 
 void Cube::update() {
@@ -24,7 +22,7 @@ void Cube::update() {
 // DRAW --------------------------------------------------------------
 // POINT IS INSIDE DRAWED SHAPE -------------------------------------------------------------
 void Cube::draw(ofRectangle _renderZone){
-    
+
     //// UPDATE POS IN TERMS OF RENDERZONE ////
     float _cubeSize = _renderZone.width * CUBE_RATIO;
     float _contourFinderSize = _renderZone.width * CONTOUR_FINDER_RATIO;
@@ -34,23 +32,26 @@ void Cube::draw(ofRectangle _renderZone){
                     _renderZone.y + ((_renderZone.height * pos.y) / 480) - ((_cubeSize - _contourFinderSize) / 2),
                     _cubeSize,
                     _cubeSize);
-    
+
 
     //// DRAW CUBE ////
     ofNoFill();
-    if(isActive()) {
-        ofSetColor(color);
-        
-        stringstream reportStream;
-        reportStream << "_id: " << cubeId << endl
-        << "id: " << linkedId << endl;
-        ofDrawBitmapString(reportStream.str(), drawedShape.x + 2, drawedShape.y - 18);
-        
+
+    if(isKnow()) {
+        ofSetColor(255, 255, 255, 255);
+    } else if(isActive()) {
+        ofSetColor(255, 68, 41, 255);
     } else {
-        ofSetColor(255, 255, 255, 50);
+        ofSetColor(56, 247, 83, 255);
     }
+
+    stringstream reportStream;
+    reportStream << "_id: " << cubeId << endl
+    << "id: " << linkedId << endl;
+    ofDrawBitmapString(reportStream.str(), drawedShape.x + 2, drawedShape.y - 18);
+
     ofDrawRectangle(drawedShape);
-        
+
 //  if(contactZoneShowed){
 //    ofDrawCircle(drawedShape.getCenter(), drawedShape.width * CONTACT_RATIO);
 //  }
@@ -70,7 +71,6 @@ void Cube::loadSound(string soundPath){
 // PLAY ------------------------------------------------------------------------
 void Cube::play(){
     cubeSound.play();
-    //server.sendPlayCube(cubeId, -1, pos.x, pos.y);
 }
 
 // INCREASE LIFE CICLE ---------------------------------------------------------
