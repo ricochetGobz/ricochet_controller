@@ -65,9 +65,8 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
         updateDetectedCube((*it));
     }
 
-    //// CUBES FOUNDED UPDATE ////
+    //// CUBES FOUND UPDATE ////
     for(vector<Cube>::iterator it = cubesDetected.begin(); it != cubesDetected.end(); ++it){
-
         (*it).update();
 
         // Check if all detected cubes is binded at hard cube
@@ -155,7 +154,6 @@ void CubeManager::playCube(EchoContainer* _echoContainer, Cube* _cube) {
     _cube->play();
 }
 
-
-int CubeManager::getNbrCubesFounded() {
+int CubeManager::getNbrCubesFound() {
     return cubesDetected.size();
 }

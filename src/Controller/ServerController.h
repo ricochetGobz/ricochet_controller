@@ -21,7 +21,7 @@
 #define OF_DISCONNECTED "/openframeworks/disconnected"
 #define KINECT_CONNECTED "/kinect/connected"
 #define KINECT_DISCONNECTED "/kinect/disconnected"
-#define NBR_CUBE_FOUNDED "/cubes/nfound"
+#define NBR_CUBE_FOUND "/cubes/nfound"
 #define PLAY_CUBE "/cube/played"
 
 class ServerController {
@@ -36,7 +36,7 @@ public:
     void sendOPDisconnected();
     void sendOFStatusChange(bool isConnected);
     void sendKinectStatusChange(bool isConnected);
-    void sendNbrOfCubeFoundedChange(int nCubesFounded);
+    void sendNbrOfCubeFoundChange(int nCubesFound);
     void sendPlayCube(int cubeId, int soundId, ofPoint pos);
 
 private:

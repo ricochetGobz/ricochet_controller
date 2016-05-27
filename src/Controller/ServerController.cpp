@@ -19,7 +19,7 @@ ServerController::ServerController(){
 // SEND ------------------------------------------------------------------------
 // - SEND OF STATUS CHANGE------------------------------------------------------
 // - SEND KINECT STATUS CHANGE--------------------------------------------------
-// - SEND NBR OF CUBE FOUNDED CHANGE -------------------------------------------
+// - SEND NBR OF CUBE FOUND CHANGE -------------------------------------------
 // - SEND PLAY CUBE ------------------------------------------------------------
 void ServerController::send(string address, string arg) {
     ofxOscMessage m;
@@ -43,8 +43,8 @@ void ServerController::sendKinectStatusChange(bool isConnected) {
         send(KINECT_DISCONNECTED, "");
     }
 }
-void ServerController::sendNbrOfCubeFoundedChange(int nCubesFounded){
-    send(NBR_CUBE_FOUNDED, ofToString(nCubesFounded));
+void ServerController::sendNbrOfCubeFoundChange(int nCubesFound){
+    send(NBR_CUBE_FOUND, ofToString(nCubesFound));
 }
 void ServerController::sendPlayCube(int cubeId, int soundId, ofPoint pos) {
     send(PLAY_CUBE, "{\"cubeId\":"+ofToString(cubeId)+", \"soundId\":"+ofToString(soundId)+", \"x\":"+ofToString(pos.x)+", \"y\":"+ofToString(pos.y)+"}");
