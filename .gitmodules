@@ -1,6 +1,9 @@
 [submodule "ricochet_render"]
-	path = ricochet_render
-	url = git@github.com:ricochetGobz/ricochet_render.git
+  path = ricochet_render
+  url = git@github.com:ricochetGobz/ricochet_render.git
 [submodule "ricochet_server"]
-	path = ricochet_server
-	url = git@github.com:ricochetGobz/ricochet_server.git
+  path = ricochet_server
+  url = git@github.com:ricochetGobz/ricochet_server.git
+[submodule "ricochet_gallery"]
+  path = ricochet_gallery
+  url = git@github.com:ricochetGobz/ricochet_gallery.git
