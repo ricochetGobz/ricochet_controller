@@ -50,6 +50,7 @@
 		9FEF7AFAD4DDFFD2A55AA54A /* simpleFileLister.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDD9E60039A29DAFB013CDBD /* simpleFileLister.cpp */; };
 		A1A0FADDBF41894141DFC02F /* Echo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12583B61ACD580EF4C842FFC /* Echo.cpp */; };
 		A29FE8671CDD342400BF1248 /* CubeManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A29FE8651CDD342400BF1248 /* CubeManager.cpp */; };
+		A2BB9DAC1CF9658200EC5886 /* ConnectedCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2BB9DAA1CF9658200EC5886 /* ConnectedCube.cpp */; };
 		ACE7DC9A3223ED5EE1B80074 /* cameras.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DBD37876A11E46E4D7069B3 /* cameras.c */; };
 		ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADD194746185E2DA11468377 /* IpEndpointName.cpp */; };
 		AFDB30162A060AFBAB041DAB /* KinectController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F30E4FA9E66DA5F62FC292C5 /* KinectController.cpp */; };
@@ -287,6 +288,8 @@
 		A29FE8651CDD342400BF1248 /* CubeManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CubeManager.cpp; path = components/CubeManager.cpp; sourceTree = "<group>"; };
 		A29FE8661CDD342400BF1248 /* CubeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubeManager.h; path = components/CubeManager.h; sourceTree = "<group>"; };
 		A2AAA8CA403479E6FCDF920E /* OscHostEndianness.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscHostEndianness.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscHostEndianness.h; sourceTree = SOURCE_ROOT; };
+		A2BB9DAA1CF9658200EC5886 /* ConnectedCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectedCube.cpp; path = components/ConnectedCube.cpp; sourceTree = "<group>"; };
+		A2BB9DAB1CF9658200EC5886 /* ConnectedCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectedCube.h; path = components/ConnectedCube.h; sourceTree = "<group>"; };
 		A2C86A44C1FD1CB1DD189DFA /* transform.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = transform.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/device/transform.hpp; sourceTree = SOURCE_ROOT; };
 		A2EE5E80B134EA52A8B369D2 /* eigen.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = eigen.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/eigen.hpp; sourceTree = SOURCE_ROOT; };
 		A3411731962D0402217F182B /* fast_marching.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = fast_marching.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/videostab/fast_marching.hpp; sourceTree = SOURCE_ROOT; };
@@ -718,6 +721,8 @@
 				8331B1CB879B95B68AB8069B /* Cube.h */,
 				12583B61ACD580EF4C842FFC /* Echo.cpp */,
 				33F593D3A40FC541328DA743 /* Echo.h */,
+				A2BB9DAA1CF9658200EC5886 /* ConnectedCube.cpp */,
+				A2BB9DAB1CF9658200EC5886 /* ConnectedCube.h */,
 			);
 			name = components;
 			sourceTree = "<group>";
@@ -1364,6 +1369,7 @@
 				1D5F3298C2FA073628012944 /* ofxCvContourFinder.cpp in Sources */,
 				169D3C72FDE6C5590A1616F5 /* ofxCvFloatImage.cpp in Sources */,
 				FB09C6B2A1DA0EA217240CB8 /* ofxCvGrayscaleImage.cpp in Sources */,
+				A2BB9DAC1CF9658200EC5886 /* ConnectedCube.cpp in Sources */,
 				E212C821D1064B92DD953A42 /* ofxCvHaarFinder.cpp in Sources */,
 				63020F16C7E8DED980111241 /* ofxCvImage.cpp in Sources */,
 				D3301F6A0B43BB293ED97C1D /* ofxCvShortImage.cpp in Sources */,

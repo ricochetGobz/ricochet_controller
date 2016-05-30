@@ -192,10 +192,12 @@ void ofApp::draw(){
         default:
             break;
     }
-
-
-    //// CONNECTION INFORMATION ////
+    
     ofSetColor(255, 255, 255);
+    //// CUBES CONNECTED INFORMATION ////
+    stringstream cubeConnectedStream = cubeManager.getConnectedCubesStatus();
+    ofDrawBitmapString(cubeConnectedStream.str(), 10, ofGetHeight() - 360);
+    //// CONNECTION INFORMATION ////
     stringstream reportStream;
     reportStream << "Node.js Server: " << ((serverStarted)?"ON":"OFF") << endl
     << "Web Render: " << ((webRenderConnected)?"ON":"OFF") << endl
