@@ -37,17 +37,17 @@ void Cube::draw(ofRectangle _renderZone){
     //// DRAW CUBE ////
     ofNoFill();
 
-    if(isKnow()) {
-        ofSetColor(255, 255, 255, 255);
+    if(isLinkedToConnectedCube()) {
+        ofSetColor(56, 247, 83, 255);
     } else if(isActive()) {
         ofSetColor(255, 68, 41, 255);
     } else {
-        ofSetColor(56, 247, 83, 255);
+        ofSetColor(255, 255, 255, 255);
     }
 
     stringstream reportStream;
-    reportStream << "_id: " << cubeId << endl
-    << "id: " << linkedId << endl;
+    reportStream << "cubeId: " << cubeId << endl
+    << "connectedCubeId: " << connectedCubeId << endl;
     ofDrawBitmapString(reportStream.str(), drawedShape.x + 2, drawedShape.y - 18);
 
     ofDrawRectangle(drawedShape);
@@ -91,6 +91,6 @@ bool Cube::isActive() {
 }
 
 // IS KNOW ---------------------------------------------------------------------
-bool Cube::isKnow() {
-    return (linkedId != -1);
+bool Cube::isLinkedToConnectedCube() {
+    return (connectedCubeId != -1);
 }

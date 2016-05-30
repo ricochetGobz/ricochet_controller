@@ -26,7 +26,7 @@ class Cube{
 public:
     //// VARIABLES ////
     int cubeId;
-    int linkedId = -1;
+    int connectedCubeId = -1;
     bool contactZoneShowed = false;
     ofPoint pos;
     ofRectangle drawedShape;
@@ -45,7 +45,7 @@ public:
     bool isDead();
     bool isActive();
     // link with hard cube
-    bool isKnow();
+    bool isLinkedToConnectedCube();
 
 private:
     //// VARIABLES ////
