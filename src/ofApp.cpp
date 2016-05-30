@@ -49,11 +49,13 @@ void ofApp::setup(){
     thresholdControls.setName("OpenCV threshold");
     thresholdControls.add(nearThreshold.set("nearThreshold", 255.0, 1.0, 255.0));
     thresholdControls.add(farThreshold.set("farThreshold", 182.0, 1.0, 255.0));
+
     gui.addGroup(thresholdControls);
     // Render controls
     renderControls.setName("OpenCV render");
     renderControls.add(bBlur.set("Blur", false));
     renderControls.add(threshold.set("threshold", 0.0, 0.0, 255.0));
+
     renderControls.add(minArea.set("minArea", 554.0, 1.0, 3000.0)); // ( sauv : 300.0)
     renderControls.add(maxArea.set("maxArea", 1500.0, 1.0, (OC_WIDTH*OC_HEIGHT)));
     gui.addGroup(renderControls);
