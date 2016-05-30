@@ -23,14 +23,14 @@ public:
 
     //// METHODES ////
     CubeManager(ServerController* _serv, function_type _sendPlayCube);
-    
+
     void update(ofxCvContourFinder &_contourFinder,
                 int _cubeDilationTolerance,
                 int _cubeSizeTolerance,
                 int _cubeSizeCaptured);
-    
+
     void draw(ofRectangle _renderZone);
-    
+
     // events
     void mouseReleased(int _x, int _y);
     // - cube events
@@ -39,23 +39,25 @@ public:
     void cubeTouched(int cubeId);
     void cubeDragged(int cubeId);
     void cubeDragEnd(int cubeId);
-    
+
     // getters
     int getNbrCubesFound();
 
 private:
     //// VARIABLES ////
     int idIncremented;
-    
+
     ServerController* serv_;
     function_type sendPlayCube_;
-    
-    vector<Cube> cubes;
+
+    // TODO create 2 classes
+    vector<Cube> cubesDetected;
+    vector<Cube> cubesConnected;
     vector<EchoContainer> echoContainers;
 
     //// METHODES ////
     void createEchoContainer(Cube* _cube);
-    void checkDetectedCube(ofRectangle _cubeDetected);
+    void updateDetectedCube(ofRectangle _cubeDetected);
     void playCube(EchoContainer* _echoContainer, Cube* _cube);
 };
 
