@@ -38,6 +38,7 @@ void CubeManager::checkDetectedCube(ofRectangle _cubeDetected) {
     
     //// NO CUBE IN THIS PLACE ////
     cubes.push_back(*new Cube(_cubeDetected.position, idIncremented));
+    cubes[cubes.size()-1].loadSound("./sounds/note_" + std::to_string(((cubes.size()-1)%6)+1) +".wav");
     idIncremented++;
 }
 
