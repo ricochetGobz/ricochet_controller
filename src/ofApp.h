@@ -97,6 +97,6 @@ private:
 
 
     //// METHODES ////
-    void checkReceivedAddress(string _address);
+    void checkReceivedAddress(string _address, ofxOscMessage _m);
     void checkNbrOfCubeFound();
 };

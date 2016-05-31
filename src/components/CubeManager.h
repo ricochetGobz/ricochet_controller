@@ -15,6 +15,10 @@
 #include "EchoContainer.h"
 #include "ServerController.h"
 
+#define INACTIVE 0
+#define DRAGGED 1
+#define TOUCHED 2
+
 
 class CubeManager {
 
@@ -38,7 +42,7 @@ public:
     // - cube events
     void cubeConnected(int _connectedCubeId, int _faceId);
     void cubeDisconnected(int _connectedCubeId);
-    void cubeTouched(int _connectedCubeId);
+    void cubeTouched(int _connectedCubeId, int _connectedSoundId);
     void cubeDragged(int _connectedCubeId);
     void cubeDragEnd(int _connectedCubeId);
     void cubeFaceChanged(int _connectedCubeId, int _faceId);

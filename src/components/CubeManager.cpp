@@ -138,25 +138,34 @@ void CubeManager::cubeDisconnected(int _connectedCubeId) {
     map<int, ConnectedCube>::iterator it = connectedCubes.find(_connectedCubeId);
 
     // TODO déconnecter le detectedCube avec cette id
-    
+
     if (it != connectedCubes.end()) {
         connectedCubes.erase(it);
     }
 }
 
-void CubeManager::cubeTouched(int _connectedCubeId) {
+void CubeManager::cubeTouched(int _connectedCubeId, int _connectedSoundId) {
+    cout << "cube touched" << endl;
 
+    // TODO Parcourir les id pour dire quel cube a été touched.
+    connectedCubes[_connectedCubeId].setStatus(TOUCHED); // TEMPS
+
+    // Si le cubeConnecté est bindé avec un cube détecté
+        // Lancer le touch
+        // A la fin du touch supprimer le touched
 }
 
 void CubeManager::cubeDragged(int _connectedCubeId) {
     // TODO
     // Supprimer la position du cube connecté.
     // mettre le cube écouté dans une phase d'attende de positionnement.
+    connectedCubes[_connectedCubeId].setStatus(DRAGGED);
 }
 
 void CubeManager::cubeDragEnd(int _connectedCubeId) {
     // TODO
     // ????
+    connectedCubes[_connectedCubeId].setStatus(INACTIVE);
 }
 
 void CubeManager::cubeFaceChanged(int _connectedCubeId, int _faceId) {
@@ -184,10 +193,10 @@ int CubeManager::getNbrCubesFound() {
 stringstream CubeManager::getConnectedCubesStatus() {
     stringstream reportStream;
     reportStream << "Cubes Connected: " << endl;
-    
+
     for (std::map<int, ConnectedCube>::iterator it=connectedCubes.begin(); it!=connectedCubes.end(); ++it) {
-        reportStream << "Cube " << it->first << " => " << &it->second.status << endl;
+        reportStream << "Cube " << it->first << " => " << it->second.getStatus() << endl;
     }
-    
+
     return reportStream;
 }
