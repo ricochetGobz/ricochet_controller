@@ -134,6 +134,7 @@ void ofApp::checkReceivedAddress(string _address, ofxOscMessage _m) {
         cout << "Node server down : " << endl;
         serverStarted = false;
         webRenderConnected = false;
+        cubeManager.removeAllConnectedCubes();
     } else if( _address == WEB_RENDER_CONNECTED ){
         cout << "web render connected : " << endl;
         webRenderConnected = true;
@@ -141,20 +142,20 @@ void ofApp::checkReceivedAddress(string _address, ofxOscMessage _m) {
         cout << "web render disconnected : " << endl;
         webRenderConnected = false;
     } else if( _address == CUBE_CONNECTED){
-        cout << "cube connected : " << _m.getArgAsInt(0) << " - " << _m.getArgAsInt(1) << endl;
+        cout << "cube connected : " << _m.getArgAsInt(0) << ", " << _m.getArgAsInt(1) << endl;
         cubeManager.cubeConnected(_m.getArgAsInt(0), _m.getArgAsInt(1));
     } else if( _address == CUBE_DISCONNECTED) {
         cout << "cube disconnected : " << _m.getArgAsInt(0) << endl;
         cubeManager.cubeDisconnected(_m.getArgAsInt(0));
     } else if( _address == CUBE_TOUCHED) {
-        cout << "cube touched : " << _m.getArgAsInt(0) << " - " << _m.getArgAsInt(1) << endl;
+        cout << "cube touched : " << _m.getArgAsInt(0) << ", " << _m.getArgAsInt(1) << endl;
         cubeManager.cubeTouched(_m.getArgAsInt(0), _m.getArgAsInt(1));
     } else if( _address == CUBE_DRAGGED){
         cout << "cube dragged : " << _m.getArgAsInt(0) << endl;
         cubeManager.cubeDragged(_m.getArgAsInt(0));
     } else if( _address == CUBE_DRAG_END){
-        cout << "cube drag end : "  << _m.getArgAsInt(0) << endl;
-        cubeManager.cubeDragEnd(_m.getArgAsInt(0));
+        cout << "cube drag end : "  << _m.getArgAsInt(0) << ", " << _m.getArgAsInt(1) << endl;
+        cubeManager.cubeDragEnd(_m.getArgAsInt(0), _m.getArgAsInt(1));
         
         // Check nbr for cube found to the tutorial
         checkNbrOfCubeFound();

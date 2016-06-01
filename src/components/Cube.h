@@ -46,6 +46,8 @@ public:
     bool isActive();
     // link with hard cube
     bool isLinkedToConnectedCube();
+    
+    void setFace(int _faceId);
 
 private:
     //// VARIABLES ////

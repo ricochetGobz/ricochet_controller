@@ -14,6 +14,7 @@
 #define INACTIVE 0
 #define DRAGGED 1
 #define TOUCHED 2
+#define DRAG_END 3
 
 
 class ConnectedCube {
@@ -27,6 +28,8 @@ public:
     //// METHODES ////
     ConnectedCube(int _connectedCubeId, int _faceId);
     ConnectedCube();
+    
+    void update();
 
     bool isLinkedToCube();
 
@@ -37,6 +40,7 @@ private:
     //// VARIABLES ////
     // id of sound
     int faceId;
+    int statusLifetime = -1;
 };
 
 

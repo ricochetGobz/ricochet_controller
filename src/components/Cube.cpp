@@ -94,3 +94,8 @@ bool Cube::isActive() {
 bool Cube::isLinkedToConnectedCube() {
     return (connectedCubeId != -1);
 }
+
+// SET FACE -----
+void Cube::setFace(int _faceId) {
+    faceId = _faceId;
+}
