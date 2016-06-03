@@ -16,7 +16,7 @@ Cube::Cube(ofPoint _pos, int _id){
 }
 
 void Cube::update() {
-    reduceLifeCicle();
+    if(!isLinkedToConnectedCube()) reduceLifeCicle();
 }
 
 // DRAW --------------------------------------------------------------
@@ -39,8 +39,12 @@ void Cube::draw(ofRectangle _renderZone){
 
     if(isLinkedToConnectedCube()) {
         ofSetColor(56, 247, 83, 255);
-    } else if(isActive()) {
-        ofSetColor(255, 68, 41, 255);
+    } else if(isDetected()) {
+        if(isSeachingCubeMode()) {
+            ofSetColor(255, 251, 111, 255);
+        } else {
+            ofSetColor(255, 68, 41, 255);
+        }
     } else {
         ofSetColor(255, 255, 255, 255);
     }
@@ -70,13 +74,15 @@ void Cube::loadSound(string soundPath){
 
 // PLAY ------------------------------------------------------------------------
 void Cube::play(){
+    // TEST si le son est bien loaded
     cubeSound.play();
 }
 
 // INCREASE LIFE CICLE ---------------------------------------------------------
 // RECUDE LIFE CICLE -----------------------------------------------------------
 // - IS DEAD -------------------------------------------------------------------
-// - IS ACTIVE -----------------------------------------------------------------
+// - IS DETECTED ---------------------------------------------------------------
+// - IS LINKED TO CONNECTED CUBE -----------------------------------------------
 void Cube::increaseLifeCicle() {
   if(lifetime < LIFETIME_MAX) lifetime += (LIFETIME_INCREMENT * 1.5);
 }
@@ -86,11 +92,18 @@ void Cube::reduceLifeCicle() {
 bool Cube::isDead() {
   return (lifetime < 0);
 }
-bool Cube::isActive() {
-  return (lifetime > LIFETIME_ACTIVE);
+bool Cube::isDetected() {
+  return (lifetime > LIFETIME_DETECTED);
 }
-
-// IS KNOW ---------------------------------------------------------------------
+bool Cube::isSeachingCubeMode() {
+    return (lifetime > LIFETIME_DETECTED && lifetime < LIFETIME_SEACHING_CONNECTED_CUBE);
+}
 bool Cube::isLinkedToConnectedCube() {
     return (connectedCubeId != -1);
+}
+
+// SET FACE -----
+void Cube::setFace(int _faceId) {
+    faceId = _faceId;
+    if(_faceId != -1) loadSound("./sounds/note_" + to_string(_faceId) +".wav");
 }

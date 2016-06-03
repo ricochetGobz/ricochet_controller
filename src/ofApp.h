@@ -33,6 +33,7 @@
 #define CUBE_TOUCHED "/cube/touched"
 #define CUBE_DRAGGED "/cube/dragged"
 #define CUBE_DRAG_END "/cube/draggend"
+#define CUBE_FACE_CHANGED "/cube/facechanged"
 
 
 class ofApp : public ofBaseApp{
@@ -79,6 +80,7 @@ private:
     ofParameter <float> appFrameRate;
     ofParameter <int> nBlobs;
     ofParameter <int> nCubes;
+    ofParameter <bool> bDebugVideo;
     // threshold controls
     ofParameterGroup thresholdControls;
     ofParameter <int> nearThreshold;
@@ -97,6 +99,6 @@ private:
 
 
     //// METHODES ////
-    void checkReceivedAddress(string _address);
+    void checkReceivedAddress(string _address, ofxOscMessage _m);
     void checkNbrOfCubeFound();
 };

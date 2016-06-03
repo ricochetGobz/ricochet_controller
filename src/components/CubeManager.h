@@ -15,6 +15,10 @@
 #include "EchoContainer.h"
 #include "ServerController.h"
 
+#define INACTIVE 0
+#define DRAGGED 1
+#define TOUCHED 2
+
 
 class CubeManager {
 
@@ -31,21 +35,24 @@ public:
                 int _cubeSizeCaptured);
 
     void draw(ofRectangle _renderZone);
-    
+
 
     // events
     void mouseReleased(int _x, int _y);
     // - cube events
     void cubeConnected(int _connectedCubeId, int _faceId);
     void cubeDisconnected(int _connectedCubeId);
-    void cubeTouched(int _connectedCubeId);
+    void cubeTouched(int _connectedCubeId, int _connectedSoundId);
     void cubeDragged(int _connectedCubeId);
-    void cubeDragEnd(int _connectedCubeId);
+    void cubeDragEnd(int _connectedCubeId, int _connectedSoundId);
     void cubeFaceChanged(int _connectedCubeId, int _faceId);
 
     // getters
     int getNbrCubesFound();
+    Cube getDetectedCube(int _idCube);
     stringstream getConnectedCubesStatus();
+
+    void removeAllConnectedCubes();
 
 private:
     //// VARIABLES ////
@@ -54,9 +61,12 @@ private:
     ServerController* serv_;
     function_type sendPlayCube_;
 
-    vector<Cube> detectedCubes;
+    vector<Cube> detectedCubes; // TODO remplace vector to map
     map<int, ConnectedCube> connectedCubes;
     
+    map<int, int> connectedCubesDragged;
+    queue<int> lastConnectedCubesDragged;
+
     vector<EchoContainer> echoContainers;
 
     //// METHODES ////

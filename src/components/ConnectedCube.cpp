@@ -20,6 +20,45 @@ ConnectedCube::ConnectedCube(int _connectedCubeId, int _faceId){
     faceId = _faceId;
 }
 
+
+void ConnectedCube::update() {
+    // reduce lifetime of status
+    if(statusLifetime == 0) {
+        status = INACTIVE;
+    } else if (statusLifetime > 0) {
+        statusLifetime--;
+    }
+}
+
 bool ConnectedCube::isLinkedToCube() {
     return (cubeId != -1);
+}
+
+void ConnectedCube::setStatus(int _status) {
+    status = _status;
+    
+    switch (status) {
+        case DRAGGED:
+            statusLifetime = -1;
+            break;
+        case TOUCHED:
+        case DRAG_END:
+            statusLifetime = 25;
+            break;
+        default:
+            break;
+    }
+}
+
+string ConnectedCube::getStatus() {
+    switch (status) {
+        case INACTIVE:
+            return "inactive";
+        case DRAGGED:
+            return "dragged";
+        case TOUCHED:
+            return "touched";
+        default:
+            return "unknown";
+    }
 }

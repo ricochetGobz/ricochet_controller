@@ -17,7 +17,7 @@ void ofApp::setup(){
 
     //// KINECT INIT ////
     kinectCtrl.init();
-    
+
     //// SOUND INIT ////
     vector< ofSoundPlayer>::iterator itSounds = sounds.begin();
 
@@ -28,7 +28,7 @@ void ofApp::setup(){
     // ----- Column 1
     gui.setWhichColumn(0);
     gui.addDrawableRect("Kinect Video", &kinectCtrl.colorImg, OC_WIDTH, OC_HEIGHT);
-    
+
     // !!TEMP!! //
     //gui.addDrawableRect("Kinect Depth", &kinectCtrl.depthImg, OC_WIDTH, OC_HEIGHT);
     gui.addDrawableRect("Kinect Depth", &kinectCtrl.depthImg, OC_WIDTH, OC_HEIGHT);
@@ -47,8 +47,9 @@ void ofApp::setup(){
     gui.addVariableLister(stats);
     //Threshold controls
     thresholdControls.setName("OpenCV threshold");
+    thresholdControls.add(bDebugVideo.set("Debug Video", true)); // false
     thresholdControls.add(nearThreshold.set("nearThreshold", 255.0, 1.0, 255.0));
-    thresholdControls.add(farThreshold.set("farThreshold", 182.0, 1.0, 255.0));
+    thresholdControls.add(farThreshold.set("farThreshold", 174.0, 1.0, 255.0)); // 182
 
     gui.addGroup(thresholdControls);
     // Render controls
@@ -81,14 +82,15 @@ void ofApp::update(){
         server_receive.getNextMessage(&m);
         string address = m.getAddress();
         cout << address << endl;
-    
+
         // switch not support string
-        checkReceivedAddress(address);
-       
+        checkReceivedAddress(address, m);
+
     }
 
     //// KINECT UPDATE ////
-    kinectCtrl.update(bBlur,
+    kinectCtrl.update(bDebugVideo,
+                      bBlur,
                       gui.getValueI("OpenCV_threshold:nearThreshold"),
                       gui.getValueI("OpenCV_threshold:farThreshold"),
                       gui.getValueI("OpenCV_render:threshold"),
@@ -106,10 +108,9 @@ void ofApp::update(){
                        gui.getValueI("Cube_detection:dilationTolerance"),
                        gui.getValueI("Cube_detection:sizeTolerance"),
                        gui.getValueI("Cube_detection:sizeCaptured"));
-    
+
     // TEMPS
     checkNbrOfCubeFound();
-    
 }
 
 void ofApp::checkNbrOfCubeFound() {
@@ -121,7 +122,7 @@ void ofApp::checkNbrOfCubeFound() {
     }
 }
 
-void ofApp::checkReceivedAddress(string _address) {
+void ofApp::checkReceivedAddress(string _address, ofxOscMessage _m) {
     if(_address == SERVER_CONNECTED ) {
         cout << "Node server started" << endl;
         if(!serverStarted){
@@ -130,44 +131,38 @@ void ofApp::checkReceivedAddress(string _address) {
             server.sendOFStatusChange(true);
             server.sendKinectStatusChange(kinectConnected);
         }
-        
     } else if ( _address == SERVER_DISCONNECTED ) {
-        cout << "Node server down" << endl;
+        cout << "Node server down : " << endl;
         serverStarted = false;
         webRenderConnected = false;
-        
+        cubeManager.removeAllConnectedCubes();
     } else if( _address == WEB_RENDER_CONNECTED ){
-        cout << "web render connected" << endl;
+        cout << "web render connected : " << endl;
         webRenderConnected = true;
-        
     } else if ( _address == WEB_RENDER_DISCONNECTED ){
-        cout << "web render disconnected" << endl;
+        cout << "web render disconnected : " << endl;
         webRenderConnected = false;
-        
     } else if( _address == CUBE_CONNECTED){
-        // TODO
-        // Add this cube ID into the list of cube connected
-        
-    } else if( _address == CUBE_DISCONNECTED){
-        // TODO
-        // Remove this cube ID into the list of cube connected
-        
-    } else if( _address == CUBE_TOUCHED){
-        // TODO
-        // get cube id
-        // send cubeManager.cubeTouched(id)
-        
+        cout << "cube connected : " << _m.getArgAsInt(0) << ", " << _m.getArgAsInt(1) << endl;
+        cubeManager.cubeConnected(_m.getArgAsInt(0), _m.getArgAsInt(1));
+    } else if( _address == CUBE_DISCONNECTED) {
+        cout << "cube disconnected : " << _m.getArgAsInt(0) << endl;
+        cubeManager.cubeDisconnected(_m.getArgAsInt(0));
+    } else if( _address == CUBE_TOUCHED) {
+        cout << "cube touched : " << _m.getArgAsInt(0) << ", " << _m.getArgAsInt(1) << endl;
+        cubeManager.cubeTouched(_m.getArgAsInt(0), _m.getArgAsInt(1));
     } else if( _address == CUBE_DRAGGED){
-        // TODO
-        // get cube id
-        // send cubeManager.cubeDragged(id)
-        
+        cout << "cube dragged : " << _m.getArgAsInt(0) << endl;
+        cubeManager.cubeDragged(_m.getArgAsInt(0));
     } else if( _address == CUBE_DRAG_END){
-        // TODO
-        // cubeManager.cubeDragEnd(cubeId);
-        
+        cout << "cube drag end : "  << _m.getArgAsInt(0) << ", " << _m.getArgAsInt(1) << endl;
+        cubeManager.cubeDragEnd(_m.getArgAsInt(0), _m.getArgAsInt(1));
+
         // Check nbr for cube found to the tutorial
         checkNbrOfCubeFound();
+    } else if( _address == CUBE_FACE_CHANGED){
+        cout << "cube face changed : "  << _m.getArgAsInt(0) << ", " << _m.getArgAsInt(1) << endl;
+        cubeManager.cubeFaceChanged(_m.getArgAsInt(0), _m.getArgAsInt(1));
     }
 }
 
@@ -194,13 +189,14 @@ void ofApp::draw(){
         default:
             break;
     }
-    
+
     ofSetColor(255, 255, 255);
     //// CUBES CONNECTED INFORMATION ////
     stringstream cubeConnectedStream = cubeManager.getConnectedCubesStatus();
     ofDrawBitmapString(cubeConnectedStream.str(), 10, ofGetHeight() - 360);
     //// CONNECTION INFORMATION ////
     stringstream reportStream;
+    if(bDebugVideo) reportStream << "DEBUG MODE" << endl;
     reportStream << "Node.js Server: " << ((serverStarted)?"ON":"OFF") << endl
     << "Web Render: " << ((webRenderConnected)?"ON":"OFF") << endl
     << "Kinect: " << ((kinectConnected)?"ON":"OFF - press (o) :: try to connect the kinect.") << endl << endl
