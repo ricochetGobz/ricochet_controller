@@ -80,6 +80,7 @@ private:
     ofParameter <float> appFrameRate;
     ofParameter <int> nBlobs;
     ofParameter <int> nCubes;
+    ofParameter <bool> bDebugVideo;
     // threshold controls
     ofParameterGroup thresholdControls;
     ofParameter <int> nearThreshold;

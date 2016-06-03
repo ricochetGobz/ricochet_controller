@@ -47,8 +47,9 @@ void ofApp::setup(){
     gui.addVariableLister(stats);
     //Threshold controls
     thresholdControls.setName("OpenCV threshold");
+    thresholdControls.add(bDebugVideo.set("Debug Video", true)); // false
     thresholdControls.add(nearThreshold.set("nearThreshold", 255.0, 1.0, 255.0));
-    thresholdControls.add(farThreshold.set("farThreshold", 182.0, 1.0, 255.0));
+    thresholdControls.add(farThreshold.set("farThreshold", 174.0, 1.0, 255.0)); // 182
 
     gui.addGroup(thresholdControls);
     // Render controls
@@ -88,7 +89,8 @@ void ofApp::update(){
     }
 
     //// KINECT UPDATE ////
-    kinectCtrl.update(bBlur,
+    kinectCtrl.update(bDebugVideo,
+                      bBlur,
                       gui.getValueI("OpenCV_threshold:nearThreshold"),
                       gui.getValueI("OpenCV_threshold:farThreshold"),
                       gui.getValueI("OpenCV_render:threshold"),
@@ -194,6 +196,7 @@ void ofApp::draw(){
     ofDrawBitmapString(cubeConnectedStream.str(), 10, ofGetHeight() - 360);
     //// CONNECTION INFORMATION ////
     stringstream reportStream;
+    if(bDebugVideo) reportStream << "DEBUG MODE" << endl;
     reportStream << "Node.js Server: " << ((serverStarted)?"ON":"OFF") << endl
     << "Web Render: " << ((webRenderConnected)?"ON":"OFF") << endl
     << "Kinect: " << ((kinectConnected)?"ON":"OFF - press (o) :: try to connect the kinect.") << endl << endl

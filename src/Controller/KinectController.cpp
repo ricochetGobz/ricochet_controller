@@ -33,68 +33,62 @@ void KinectController::init() {
     grayThreshNear.allocate(kinect.width, kinect.height);
     grayThreshFar.allocate(kinect.width, kinect.height);
 
-    // !!TEMP!! //
-    // tempVidPlayer.load("videoKinectDepth.mp4");
-    // tempVidPlayer.play();
-    // tempVidPlayer.setLoopState(OF_LOOP_NORMAL);
-    // !!TEMP!! //
-
+    //// DEBUG TEMPS VIDEO ////
+     debugVideoDepth.load("videoKinectDepth2.mp4");
+     debugVideoDepth.play();
+     debugVideoDepth.setLoopState(OF_LOOP_NORMAL);
 }
 
 // UPDATE --------------------------------------------------------------
-void KinectController::update(bool _bBlur,
+void KinectController::update(bool _bDebugVideo,
+                              bool _bBlur,
                               int _nearThreshold,
                               int _farThreshold,
                               int _threshold,
                               int _minArea,
                               int _maxArea) {
-    //// KINECT VIDEO UPDATE /////
-    // !!TEMP!! //
-    kinect.update();
-    //tempVidPlayer.update();
-    // !!TEMP!! //
 
-    // there is a new frame and we are connected
-    // !!TEMP!! //
-    if(kinect.isFrameNew()) {
-    //if(tempVidPlayer.isFrameNew()) {
-    // !!TEMP!! //
+    //// OPEN CV UPDATE /////
+    if(_bDebugVideo) {
+        debugVideoDepth.update();
+        if(!debugVideoDepth.isFrameNew()) return;
 
-        //// OPEN CV UPDATE /////
+        colorImg.setFromPixels(debugVideoDepth.getPixels(), kinect.width, kinect.height);
+        depthImg = colorImg;
+    } else {
+        kinect.update();
+        if(!kinect.isFrameNew()) return;
 
         // load grayscale depth image from the kinect source
-        // !!TEMP!! //
         colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
-        // depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
-        //colorImg.setFromPixels(tempVidPlayer.getPixels(), kinect.width, kinect.height);
-        //depthImg = colorImg;
-        // !!TEMP!! //
-
-        // THRESHOLD
-        // we do two thresholds - one for the far plane and one for the near plane
-        // we then do a cvAnd to get the pixels which are a union of the two thresholds
-        grayThreshNear = depthImg;
-        grayThreshFar = depthImg;
-        grayThreshNear.threshold(_nearThreshold
-                                 , true);
-        grayThreshFar.threshold(_farThreshold);
-        cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), thresholdImg.getCvImage(), NULL);
-        // update the cv images
-        thresholdImg.flagImageChanged();
-
-        // REWORK RENDER
-        reworkImg = thresholdImg;
-        if(_bBlur) reworkImg.blurHeavily();
-        if(_threshold > 0) reworkImg.threshold(_threshold);
-
-        // CONTOURS FINDER
-        // find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
-        // also, find holes is set to true so we will get interior contours as well....
-        contourFinder.findContours(reworkImg,
-                                   _minArea,
-                                   _maxArea,
-                                   10, false);
+        depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
     }
+
+
+    // THRESHOLD
+    // we do two thresholds - one for the far plane and one for the near plane
+    // we then do a cvAnd to get the pixels which are a union of the two thresholds
+    grayThreshNear = depthImg;
+    grayThreshFar = depthImg;
+    grayThreshNear.threshold(_nearThreshold
+                             , true);
+    grayThreshFar.threshold(_farThreshold);
+    cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), thresholdImg.getCvImage(), NULL);
+    // update the cv images
+    thresholdImg.flagImageChanged();
+
+    // REWORK RENDER
+    reworkImg = thresholdImg;
+    if(_bBlur) reworkImg.blurHeavily();
+    if(_threshold > 0) reworkImg.threshold(_threshold);
+
+    // CONTOURS FINDER
+    // find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
+    // also, find holes is set to true so we will get interior contours as well....
+    contourFinder.findContours(reworkImg,
+                               _minArea,
+                               _maxArea,
+                               10, false);
 }
 
 // DRAW ------------------------------------------------------------------------------

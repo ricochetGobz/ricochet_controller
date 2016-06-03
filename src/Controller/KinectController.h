@@ -17,10 +17,7 @@ class KinectController {
 
 public:
     //// VARIABLES ////
-    
-    // !!TEMP!! //
-    //ofVideoPlayer tempVidPlayer;
-    // !!TEMP!! //
+    ofVideoPlayer debugVideoDepth;
     
     // OPENCV
     ofxCvColorImage colorImg;
@@ -38,7 +35,8 @@ public:
     //// METHODES ////
     // Basics
     void init();
-    void update(bool _bBlur,
+    void update(bool _bDebugVideo,
+                bool _bBlur,
                 int _nearThreshold,
                 int _farThreshold,
                 int _threshold,
