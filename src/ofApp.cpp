@@ -17,7 +17,7 @@ void ofApp::setup(){
 
     //// KINECT INIT ////
     kinectCtrl.init();
-    
+
     //// SOUND INIT ////
     vector< ofSoundPlayer>::iterator itSounds = sounds.begin();
 
@@ -28,7 +28,7 @@ void ofApp::setup(){
     // ----- Column 1
     gui.setWhichColumn(0);
     gui.addDrawableRect("Kinect Video", &kinectCtrl.colorImg, OC_WIDTH, OC_HEIGHT);
-    
+
     // !!TEMP!! //
     //gui.addDrawableRect("Kinect Depth", &kinectCtrl.depthImg, OC_WIDTH, OC_HEIGHT);
     gui.addDrawableRect("Kinect Depth", &kinectCtrl.depthImg, OC_WIDTH, OC_HEIGHT);
@@ -81,10 +81,10 @@ void ofApp::update(){
         server_receive.getNextMessage(&m);
         string address = m.getAddress();
         cout << address << endl;
-    
+
         // switch not support string
         checkReceivedAddress(address, m);
-       
+
     }
 
     //// KINECT UPDATE ////
@@ -106,10 +106,9 @@ void ofApp::update(){
                        gui.getValueI("Cube_detection:dilationTolerance"),
                        gui.getValueI("Cube_detection:sizeTolerance"),
                        gui.getValueI("Cube_detection:sizeCaptured"));
-    
+
     // TEMPS
     checkNbrOfCubeFound();
-    
 }
 
 void ofApp::checkNbrOfCubeFound() {
@@ -156,9 +155,12 @@ void ofApp::checkReceivedAddress(string _address, ofxOscMessage _m) {
     } else if( _address == CUBE_DRAG_END){
         cout << "cube drag end : "  << _m.getArgAsInt(0) << ", " << _m.getArgAsInt(1) << endl;
         cubeManager.cubeDragEnd(_m.getArgAsInt(0), _m.getArgAsInt(1));
-        
+
         // Check nbr for cube found to the tutorial
         checkNbrOfCubeFound();
+    } else if( _address == CUBE_FACE_CHANGED){
+        cout << "cube face changed : "  << _m.getArgAsInt(0) << ", " << _m.getArgAsInt(1) << endl;
+        cubeManager.cubeFaceChanged(_m.getArgAsInt(0), _m.getArgAsInt(1));
     }
 }
 
@@ -185,7 +187,7 @@ void ofApp::draw(){
         default:
             break;
     }
-    
+
     ofSetColor(255, 255, 255);
     //// CUBES CONNECTED INFORMATION ////
     stringstream cubeConnectedStream = cubeManager.getConnectedCubesStatus();

@@ -42,8 +42,13 @@ void CubeManager::updateDetectedCube(ofRectangle _cubeDetected) {
 
     //// NO CUBE IN THIS PLACE ////
     detectedCubes.push_back(*new Cube(_cubeDetected.position, idIncremented));
-    detectedCubes[detectedCubes.size()-1].loadSound("./sounds/note_" + std::to_string(((detectedCubes.size()-1)%6)+1) +".wav");
+
     idIncremented++;
+
+    // TEMPS
+    int note = 1;
+    if(detectedCubes.size()%2 != 0) note = 6;
+    detectedCubes[detectedCubes.size()-1].setFace(note);
 }
 
 // UPDATE ------------------------------------------------------------------------------------------------
@@ -73,14 +78,19 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
 
     //// CUBES FOUND UPDATE ////
     for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
-        (*it).update();
+        if(connectedCubesDragged.size() == 0) (*it).update();
 
         // Check if all detected cubes is binded at hard cube
-        if((*it).isActive() && !(*it).isLinkedToConnectedCube()){
+        if((*it).isSeachingCubeMode()){
+
+            // (*it).connectedCubeId = lastConnectedCubesDragged.front();
+            //lastConnectedCubesDragged.pop_front();
+
             // TODO faire correspondre les cubes avec les id connues.
             // REGARDER LE TABLEAU DES DERNIERS CUBES DRAGGEES
             // SI IL Y EN A UN
             // CUBE = CUBEID
+
             // CUBE LOCKED JUSQU'A CE QU'ON LE DRAG
             // SINON
             // CUBE INCONNE
@@ -88,7 +98,7 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
     }
 
     ofRemove(detectedCubes, shouldRemoveCube);
-    
+
     //// CUBES CONNECTED UPDATE ////
     for(map<int, ConnectedCube>::iterator itConnectedCube = connectedCubes.begin(); itConnectedCube != connectedCubes.end(); itConnectedCube++) {
         // update to reduce status lifetime
@@ -101,7 +111,8 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
     for (vector<EchoContainer>::iterator itWave = echoContainers.begin(); itWave != echoContainers.end(); ++itWave) {
         (*itWave).update();
         for(vector<Cube>::iterator itCube = detectedCubes.begin(); itCube != detectedCubes.end(); ++itCube){
-            if((*itCube).isActive() && (*itWave).checkEchoesCollision((*itCube).cubeId, (*itCube).pos)) {
+            // TODO remplacer is detected par isLinkedToConnectedCube();
+            if((*itCube).isDetected() && (*itWave).checkEchoesCollision((*itCube).cubeId, (*itCube).pos)) {
                 playCube(&(*itWave), &(*itCube));
             }
         }
@@ -123,7 +134,7 @@ void CubeManager::draw(ofRectangle _renderZone) {
 // ON CLICK -----------------------------------------------
 void CubeManager::mouseReleased(int _x, int _y) {
     for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it) {
-        if((*it).isActive() && (*it).pointIsInsideDrawedShape(ofPoint(_x, _y))) {
+        if((*it).isDetected() && (*it).pointIsInsideDrawedShape(ofPoint(_x, _y))) {
             createEchoContainer(&(*it));
         }
     }
@@ -159,7 +170,7 @@ void CubeManager::cubeTouched(int _connectedCubeId, int _connectedSoundId) {
 
     // TODO test si connecedCubes[_connectedCubeID] existe.
     ConnectedCube *_cubeTouched = &connectedCubes[_connectedCubeId];
-    
+
     _cubeTouched->setStatus(TOUCHED); // TEMPS
 
     // Si le cubeConnecté est bindé avec un cube détecté
@@ -169,7 +180,7 @@ void CubeManager::cubeTouched(int _connectedCubeId, int _connectedSoundId) {
         try {
             Cube _cube = getDetectedCube(_cubeTouched->cubeId);
             _cube.setFace(_connectedSoundId);
-            
+
             // Lancer un écho
             createEchoContainer(&_cube);
         } catch(const string * e) {
@@ -181,25 +192,43 @@ void CubeManager::cubeTouched(int _connectedCubeId, int _connectedSoundId) {
 }
 
 void CubeManager::cubeDragged(int _connectedCubeId) {
-    // TODO
-    // LOCK TOUT LES LIFETIME DES CUBES.
     // MESSAGE CUBE DRAGGED
     connectedCubes[_connectedCubeId].setStatus(DRAGGED);
-    // Si le cube est bindé a un cube positionné
-        // Supprimer la position du cube connecté.
-    // Sinon
+
+    // CONTRUCTION
+    // sauver le cube qui est draggué (plusieurs s'il le faut).
+    connectedCubesDragged[_connectedCubeId] = _connectedCubeId;
+    for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
+        // If cube is linked to this connectedCube
+        // TEST TEST
+        if((*it).connectedCubeId == _connectedCubeId) {
+            // TODO delete le pointer
+            (*it).connectedCubeId = -1;
+            return;
+        }
+    }
 }
 
 void CubeManager::cubeDragEnd(int _connectedCubeId, int _connectedSoundId) {
-    // TODO
-    // ????
-    // mettre le cube écouté dans une phase d'attende de positionnement.
     connectedCubes[_connectedCubeId].setStatus(DRAG_END);
+
+    // CONTRUCTION
+    // supprimer le cube dragged du map.
+    connectedCubesDragged.erase(_connectedCubeId);
+    // mettre le cube écouté dans une phase d'attende de positionnement.
+    // lastConnectedCubesDragged.push(_connectedCubeId);
 }
 
-void CubeManager::cubeFaceChanged(int _connectedCubeId, int _faceId) {
-    // TODO
-    // ????
+void CubeManager::cubeFaceChanged(int _connectedCubeId, int _connectedSoundId) {
+
+  // SAME TO CUBE TOUCHED
+
+//    try {
+//        Cube _cube = getDetectedCube(_cubeTouched->cubeId);
+//        _cube.setFace(_connectedSoundId);
+//    } catch(const string * e) {
+//        cout << e << " id : " << _cubeTouched->cubeId << endl;
+//    }
 }
 
 // CREATE ECHO CONTAINER -----------------------------------------------
@@ -211,18 +240,17 @@ void CubeManager::createEchoContainer(Cube* _cube){
 // PLAY CUBE ----
 void CubeManager::playCube(EchoContainer* _echoContainer, Cube* _cube) {
     _echoContainer->createEcho(_cube->cubeId, _cube->pos);
-    (serv_->*sendPlayCube_)(_cube->cubeId, -1, _cube->pos);
+    (serv_->*sendPlayCube_)(_cube->cubeId, _cube->faceId, _cube->pos);
     _cube->play();
 }
 
 // REMOVE ALL CONNECTED CUBES ------
 void CubeManager::removeAllConnectedCubes() {
 
-    // TODO removes all connected cubes and all detectedCubeBinded
-
+    // CONSTRUCTION
     connectedCubes.clear();
-    // TODO désaloué la mémoire dans le map avant de clear.
-    
+    // TODO désalouer la mémoire dans le map avant de clear.
+
     for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it) {
         (*it).connectedCubeId = -1;
     }

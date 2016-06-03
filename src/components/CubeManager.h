@@ -35,7 +35,7 @@ public:
                 int _cubeSizeCaptured);
 
     void draw(ofRectangle _renderZone);
-    
+
 
     // events
     void mouseReleased(int _x, int _y);
@@ -51,7 +51,7 @@ public:
     int getNbrCubesFound();
     Cube getDetectedCube(int _idCube);
     stringstream getConnectedCubesStatus();
-    
+
     void removeAllConnectedCubes();
 
 private:
@@ -64,6 +64,9 @@ private:
     vector<Cube> detectedCubes; // TODO remplace vector to map
     map<int, ConnectedCube> connectedCubes;
     
+    map<int, int> connectedCubesDragged;
+    queue<int> lastConnectedCubesDragged;
+
     vector<EchoContainer> echoContainers;
 
     //// METHODES ////
