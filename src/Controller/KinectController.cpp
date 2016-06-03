@@ -64,7 +64,7 @@ void KinectController::update(bool _bBlur,
 
         // load grayscale depth image from the kinect source
         // !!TEMP!! //
-        colorImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+        colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
         // depthImg.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
         //colorImg.setFromPixels(tempVidPlayer.getPixels(), kinect.width, kinect.height);
         //depthImg = colorImg;
@@ -103,8 +103,8 @@ void KinectController::update(bool _bBlur,
 // - DRAW POINT CLOUD ----------------------------------------------------------------
 // - DRAW CONTOUR FINDER--------------------------------------------------------------
 void KinectController::drawRender(ofRectangle _renderZone) {
-    kinect.drawDepth(_renderZone);
-    // drawContourFinder(_renderZone);
+    kinect.draw(_renderZone);
+    drawContourFinder(_renderZone);
 }
 void KinectController::drawControlPanel(ofRectangle _renderZone) {
     drawContourFinder(_renderZone);
