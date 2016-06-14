@@ -47,9 +47,9 @@ void ofApp::setup(){
     gui.addVariableLister(stats);
     //Threshold controls
     thresholdControls.setName("OpenCV threshold");
-    thresholdControls.add(bDebugVideo.set("Debug Video", true)); // false
+    thresholdControls.add(bDebugVideo.set("Debug Video", false));
     thresholdControls.add(nearThreshold.set("nearThreshold", 255.0, 1.0, 255.0));
-    thresholdControls.add(farThreshold.set("farThreshold", 174.0, 1.0, 255.0)); // 182
+    thresholdControls.add(farThreshold.set("farThreshold", 182.0, 1.0, 255.0)); // 182 // 174
 
     gui.addGroup(thresholdControls);
     // Render controls
@@ -57,12 +57,12 @@ void ofApp::setup(){
     renderControls.add(bBlur.set("Blur", false));
     renderControls.add(threshold.set("threshold", 0.0, 0.0, 255.0));
 
-    renderControls.add(minArea.set("minArea", 554.0, 1.0, 3000.0)); // ( sauv : 300.0)
+    renderControls.add(minArea.set("minArea", 300.0, 1.0, 3000.0)); // ( sauv : 300.0) // 554
     renderControls.add(maxArea.set("maxArea", 1500.0, 1.0, (OC_WIDTH*OC_HEIGHT)));
     gui.addGroup(renderControls);
     cubeDetection.setName("Cube detection");
     cubeDetection.add(sizeCaptured.set("sizeCaptured", 33, 10, 60));
-    cubeDetection.add(dilationTolerance.set("dilationTolerance", 6, 0, 15));
+    cubeDetection.add(dilationTolerance.set("dilationTolerance", 8, 0, 15));
     cubeDetection.add(sizeTolerance.set("sizeTolerance", 7, 0, 30));
     gui.addGroup(cubeDetection);
 }
