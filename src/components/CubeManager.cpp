@@ -40,15 +40,13 @@ void CubeManager::updateDetectedCube(ofRectangle _cubeDetected) {
         }
     }
 
-    //// NO CUBE IN THIS PLACE ////
+    //// NO CUBE IN THIS PLACE, NEW CUBE DETECTED ////
     detectedCubes.push_back(*new Cube(_cubeDetected.position, idIncremented));
 
     idIncremented++;
 
     // TEMPS
-    int note = 1;
-    if(detectedCubes.size()%2 != 0) note = 6;
-    detectedCubes[detectedCubes.size()-1].setFace(note);
+    detectedCubes[detectedCubes.size() - 1].setFace((idIncremented % 5) + 1);
 }
 
 // UPDATE ------------------------------------------------------------------------------------------------
@@ -83,8 +81,7 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
         // Check if all detected cubes is binded at hard cube
         if((*it).isSeachingCubeMode()){
 
-            // (*it).connectedCubeId = lastConnectedCubesDragged.front();
-            //lastConnectedCubesDragged.pop_front();
+            // (*it).connectedCubeId = lastConnectedCubesDragged.pop();
 
             // TODO faire correspondre les cubes avec les id connues.
             // REGARDER LE TABLEAU DES DERNIERS CUBES DRAGGEES
@@ -258,7 +255,13 @@ void CubeManager::removeAllConnectedCubes() {
 
 // GET NBR OF CUBES FOUND ------------------------------------------------
 int CubeManager::getNbrCubesFound() {
-    return detectedCubes.size();
+    int cubeFound = 0;
+    for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it) {
+        if((*it).isDetected()){
+            cubeFound++;
+        }
+    }
+    return cubeFound;
 }
 
 // GET DETECTED CUBE ------------------------------------------------------
