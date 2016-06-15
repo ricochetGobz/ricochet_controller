@@ -32,6 +32,7 @@ bool shouldRemoveConnectedCube(ConnectedCube &e) {
 }
 
 void CubeManager::updateDetectedCube(ofRectangle _cubeDetected) {
+    // Test if cube already exist
     for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
         // If cube is already into the area
         if(ofDist(_cubeDetected.x, _cubeDetected.y, (*it).pos.x, (*it).pos.y) < 10) {
@@ -40,11 +41,18 @@ void CubeManager::updateDetectedCube(ofRectangle _cubeDetected) {
         }
     }
 
-    //// NO CUBE IN THIS PLACE, NEW CUBE DETECTED ////
-    detectedCubes.push_back(*new Cube(_cubeDetected.position, idIncremented));
-
+    //// NO CUBE DETECTED, CREATE A NEW CUBE ////
     idIncremented++;
 
+    // If cube is positionned on chrono, prepare timer
+    if(ofDist(_cubeDetected.x, _cubeDetected.y, 330, 80) < 15) {
+        if(!cubeChrono) cubeChrono = new Cube(_cubeDetected.position, idIncremented);
+        cubeChrono->increaseLifeCicle();
+        return;
+    }
+
+    // Else, create a new generic cube
+    detectedCubes.push_back(*new Cube(_cubeDetected.position, idIncremented));
     // TEMPS
     detectedCubes[detectedCubes.size() - 1].setFace((idIncremented % 5) + 1);
 }
@@ -64,6 +72,13 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
         }
     }
 
+    //// CUBES CHRONO UPDATE /////
+    if(cubeChrono) {
+        cubeChrono->update();
+        if(cubeChrono->isDead()) cubeChrono = NULL;
+    }
+
+
     /* Check if a new cube position is detected :
      *
      * We have a list of detected cube and we want to check if cube is already exist on
@@ -79,7 +94,7 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
         if(connectedCubesDragged.size() == 0) (*it).update();
 
         // Check if all detected cubes is binded at hard cube
-        if((*it).isSeachingCubeMode()){
+        if ((*it).isSeachingCubeMode()) {
 
             // (*it).connectedCubeId = lastConnectedCubesDragged.pop();
 
@@ -116,11 +131,27 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
     }
 }
 
+// CHRONO IS ACTIVATE ----------------------------------------------------------
+bool CubeManager::chronoIsActivate() {
+    if(cubeChrono) {
+        cout << "chronoIsActivate" << cubeChrono->isDetected() << cubeChrono->locked << endl;
+        if(cubeChrono->isDetected() && !cubeChrono->locked) {
+            cubeChrono->locked = true;
+            return true;
+        }
+    }
+    return false;
+}
+
 // DRAW --------------------------------------------------------------
 void CubeManager::draw(ofRectangle _renderZone) {
+    // cubes
     for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
         (*it).draw(_renderZone);
     }
+    
+    // chrono
+    if(cubeChrono) cubeChrono->draw(_renderZone);
 
     // echoes
     for (vector<EchoContainer>::iterator it = echoContainers.begin(); it != echoContainers.end(); ++it) {

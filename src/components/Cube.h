@@ -30,6 +30,7 @@ public:
     int connectedCubeId = -1;
     int faceId = -1;
     bool contactZoneShowed = false;
+    bool locked = false;
     ofPoint pos;
     ofRectangle drawedShape;
     

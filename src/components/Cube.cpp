@@ -51,8 +51,9 @@ void Cube::draw(ofRectangle _renderZone){
 
     stringstream reportStream;
     reportStream << "cubeId: " << cubeId << endl
-    << "connectedCubeId: " << connectedCubeId << endl;
-    ofDrawBitmapString(reportStream.str(), drawedShape.x + 2, drawedShape.y - 18);
+    << "connectedCubeId: " << connectedCubeId << endl
+    << "x: " << pos.x << ", y: " << pos.y << endl;
+    ofDrawBitmapString(reportStream.str(), drawedShape.x + 2, drawedShape.y - 30);
 
     ofDrawRectangle(drawedShape);
 

@@ -19,6 +19,8 @@
 // Senders address
 #define OF_CONNECTED "/openframeworks/connected"
 #define OF_DISCONNECTED "/openframeworks/disconnected"
+#define OF_START_PLAYER "/openframeworks/startplayer"
+
 #define KINECT_CONNECTED "/kinect/connected"
 #define KINECT_DISCONNECTED "/kinect/disconnected"
 #define NBR_CUBE_FOUND "/cubes/nfound"
@@ -38,6 +40,7 @@ public:
     void sendKinectStatusChange(bool isConnected);
     void sendNbrOfCubeFoundChange(int nCubesFound);
     void sendPlayCube(int cubeId, int soundId, ofPoint pos);
+    void sendStartChono();
 
 private:
     //// VARIABLES ////

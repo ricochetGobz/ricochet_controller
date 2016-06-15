@@ -109,6 +109,12 @@ void ofApp::update(){
                        gui.getValueI("Cube_detection:sizeTolerance"),
                        gui.getValueI("Cube_detection:sizeCaptured"));
 
+    // check chrono activation
+    if(cubeManager.chronoIsActivate()){
+        cout << "chrono activate" << endl;
+        server.sendStartChono();
+    }
+
     // TEMPS
     checkNbrOfCubeFound();
 }

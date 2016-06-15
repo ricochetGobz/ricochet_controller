@@ -13,14 +13,14 @@ ServerController::ServerController(){
     //receive.setup(RECEIVER_PORT);
     sender.setup( HOST, SENDER_PORT );
     sendOFStatusChange(true);
-    // WARNING constructor called multiple 
 }
 
 // SEND ------------------------------------------------------------------------
 // - SEND OF STATUS CHANGE------------------------------------------------------
 // - SEND KINECT STATUS CHANGE--------------------------------------------------
-// - SEND NBR OF CUBE FOUND CHANGE -------------------------------------------
+// - SEND NBR OF CUBE FOUND CHANGE ---------------------------------------------
 // - SEND PLAY CUBE ------------------------------------------------------------
+// - SEND OF START CHRONO  -----------------------------------------------------
 void ServerController::send(string address, string arg) {
     ofxOscMessage m;
     m.setAddress( address );
@@ -48,4 +48,7 @@ void ServerController::sendNbrOfCubeFoundChange(int nCubesFound){
 }
 void ServerController::sendPlayCube(int cubeId, int soundId, ofPoint pos) {
     send(PLAY_CUBE, "{\"cubeId\":"+ofToString(cubeId)+", \"soundId\":"+ofToString(soundId)+", \"x\":"+ofToString(pos.x)+", \"y\":"+ofToString(pos.y)+"}");
+}
+void ServerController::sendStartChono() {
+  send(OF_START_PLAYER, "");
 }

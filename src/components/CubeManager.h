@@ -46,6 +46,9 @@ public:
     void cubeDragged(int _connectedCubeId);
     void cubeDragEnd(int _connectedCubeId, int _connectedSoundId);
     void cubeFaceChanged(int _connectedCubeId, int _faceId);
+    
+    // test
+    bool chronoIsActivate();
 
     // getters
     int getNbrCubesFound();
@@ -68,6 +71,8 @@ private:
     queue<int> lastConnectedCubesDragged;
 
     vector<EchoContainer> echoContainers;
+    
+    Cube * cubeChrono;
 
     //// METHODES ////
     void createEchoContainer(Cube* _cube);
