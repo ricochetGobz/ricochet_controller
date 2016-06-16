@@ -37,6 +37,8 @@ bool ConnectedCube::isLinkedToCube() {
 void ConnectedCube::setStatus(int _status) {
     status = _status;
     
+    cout << "status" << _status << endl;
+    
     switch (status) {
         case DRAGGED:
             statusLifetime = -1;
@@ -53,11 +55,13 @@ void ConnectedCube::setStatus(int _status) {
 string ConnectedCube::getStatus() {
     switch (status) {
         case INACTIVE:
-            return "inactive";
+            return "";
         case DRAGGED:
             return "dragged";
         case TOUCHED:
             return "touched";
+        case DRAG_END:
+            return "drag end";
         default:
             return "unknown";
     }

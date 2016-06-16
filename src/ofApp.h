@@ -32,7 +32,7 @@
 #define CUBE_DISCONNECTED "/cube/disconnected"
 #define CUBE_TOUCHED "/cube/touched"
 #define CUBE_DRAGGED "/cube/dragged"
-#define CUBE_DRAG_END "/cube/draggend"
+#define CUBE_DRAG_END "/cube/dragend"
 #define CUBE_FACE_CHANGED "/cube/facechanged"
 
 

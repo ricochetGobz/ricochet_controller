@@ -59,57 +59,66 @@ void CubeManager::updateDetectedCube(ofRectangle _cubeDetected) {
 
 // UPDATE ------------------------------------------------------------------------------------------------
 void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTolerance, int _cubeSizeTolerance, int _cubeSizeCaptured) {
-
-    //// CUBES FOUNDS UPDATE /////
-    vector<ofRectangle> _detectedShapes;
-    // for each forms found
-    for(int i = 0; i < _contourFinder.nBlobs; i++) {
-        ofRectangle r = _contourFinder.blobs.at(i).boundingRect;
-
-        // if is aproximatively a square && if is approximatively at the good size.
-        if((abs(r.width - r.height) < _cubeDilationTolerance) && (abs((r.width - _cubeSizeCaptured)) < _cubeSizeTolerance)) {
-         _detectedShapes.push_back(r);
+    
+    //// CUBES DETECTION UPDATE /////
+    // If no cubes moved
+    if(connectedCubesDragged.size() == 0) {
+        
+        vector<ofRectangle> _detectedShapes;
+        // for each forms found
+        for(int i = 0; i < _contourFinder.nBlobs; i++) {
+            ofRectangle r = _contourFinder.blobs.at(i).boundingRect;
+            
+            // if is aproximatively a square && if is approximatively at the good size.
+            if((abs(r.width - r.height) < _cubeDilationTolerance) && (abs((r.width - _cubeSizeCaptured)) < _cubeSizeTolerance)) {
+                _detectedShapes.push_back(r);
+            }
+        }
+        
+        //// CUBES CHRONO UPDATE /////
+        if(cubeChrono) {
+            cubeChrono->update();
+            if(cubeChrono->isDead()) cubeChrono = NULL;
+        }
+        
+        
+        /* Check if a new cube position is detected :
+         *
+         * We have a list of detected cube and we want to check if cube is already exist on
+         * this place.
+         *
+         */
+        for(vector<ofRectangle>::iterator it = _detectedShapes.begin(); it != _detectedShapes.end(); ++it){
+            updateDetectedCube((*it));
         }
     }
-
-    //// CUBES CHRONO UPDATE /////
-    if(cubeChrono) {
-        cubeChrono->update();
-        if(cubeChrono->isDead()) cubeChrono = NULL;
-    }
-
-
-    /* Check if a new cube position is detected :
-     *
-     * We have a list of detected cube and we want to check if cube is already exist on
-     * this place.
-     *
-     */
-    for(vector<ofRectangle>::iterator it = _detectedShapes.begin(); it != _detectedShapes.end(); ++it){
-        updateDetectedCube((*it));
-    }
-
+    
     //// CUBES FOUND UPDATE ////
     for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
-        if(connectedCubesDragged.size() == 0) (*it).update();
-
+        if(connectedCubesDragged.size() == 0) {
+            (*it).update();
+        } else if(!(*it).isDetected()) {
+            (*it).update();
+        }
+        
         // Check if all detected cubes is binded at hard cube
         if ((*it).isSeachingCubeMode()) {
-
+            
             // (*it).connectedCubeId = lastConnectedCubesDragged.pop();
-
+            
             // TODO faire correspondre les cubes avec les id connues.
             // REGARDER LE TABLEAU DES DERNIERS CUBES DRAGGEES
             // SI IL Y EN A UN
             // CUBE = CUBEID
-
+            
             // CUBE LOCKED JUSQU'A CE QU'ON LE DRAG
             // SINON
             // CUBE INCONNE
         }
     }
-
+    
     ofRemove(detectedCubes, shouldRemoveCube);
+    
 
     //// CUBES CONNECTED UPDATE ////
     for(map<int, ConnectedCube>::iterator itConnectedCube = connectedCubes.begin(); itConnectedCube != connectedCubes.end(); itConnectedCube++) {
@@ -243,6 +252,7 @@ void CubeManager::cubeDragEnd(int _connectedCubeId, int _connectedSoundId) {
     // CONTRUCTION
     // supprimer le cube dragged du map.
     connectedCubesDragged.erase(_connectedCubeId);
+    cout << connectedCubesDragged.size() << " connectedCube Dragged" << endl;
     // mettre le cube écouté dans une phase d'attende de positionnement.
     // lastConnectedCubesDragged.push(_connectedCubeId);
 }
