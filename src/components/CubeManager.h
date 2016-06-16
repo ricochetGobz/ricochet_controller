@@ -46,13 +46,14 @@ public:
     void cubeDragged(int _connectedCubeId);
     void cubeDragEnd(int _connectedCubeId, int _connectedSoundId);
     void cubeFaceChanged(int _connectedCubeId, int _faceId);
-    
+
     // test
     bool chronoIsActivate();
 
     // getters
     int getNbrCubesFound();
     Cube getDetectedCube(int _idCube);
+    ConnectedCube getConnectedCube(int _idConnectedCube); // TODO doesn't work
     stringstream getConnectedCubesStatus();
 
     void removeAllConnectedCubes();
@@ -66,12 +67,12 @@ private:
 
     vector<Cube> detectedCubes; // TODO remplace vector to map
     map<int, ConnectedCube> connectedCubes;
-    
+
     map<int, int> connectedCubesDragged;
     queue<int> lastConnectedCubesDragged;
 
     vector<EchoContainer> echoContainers;
-    
+
     Cube * cubeChrono;
 
     //// METHODES ////

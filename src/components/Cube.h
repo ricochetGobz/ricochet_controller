@@ -20,7 +20,7 @@
 #define LIFETIME_INCREMENT 10
 #define LIFETIME_START 50
 #define LIFETIME_DETECTED 200
-#define LIFETIME_SEACHING_CONNECTED_CUBE 250
+#define LIFETIME_SEACHING_CONNECTED_CUBE 210
 #define LIFETIME_MAX 1000
 
 class Cube{
@@ -33,7 +33,7 @@ public:
     bool locked = false;
     ofPoint pos;
     ofRectangle drawedShape;
-    
+
     //// METHODES ////
     Cube(ofPoint _pos, int _id);
 
@@ -45,17 +45,18 @@ public:
     //lifecicle
     void reduceLifeCicle();
     void increaseLifeCicle();
+    void kill();
     // link with hard cube
     bool isDead();
     bool isDetected();
     bool isSeachingCubeMode();
     bool isLinkedToConnectedCube();
-    
+
     void setFace(int _faceId);
 
 private:
     //// VARIABLES ////
-    
+
     ofColor color;
     ofSoundPlayer cubeSound;
 

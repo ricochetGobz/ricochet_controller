@@ -59,29 +59,29 @@ void CubeManager::updateDetectedCube(ofRectangle _cubeDetected) {
 
 // UPDATE ------------------------------------------------------------------------------------------------
 void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTolerance, int _cubeSizeTolerance, int _cubeSizeCaptured) {
-    
+
     //// CUBES DETECTION UPDATE /////
     // If no cubes moved
     if(connectedCubesDragged.size() == 0) {
-        
+
         vector<ofRectangle> _detectedShapes;
         // for each forms found
         for(int i = 0; i < _contourFinder.nBlobs; i++) {
             ofRectangle r = _contourFinder.blobs.at(i).boundingRect;
-            
+
             // if is aproximatively a square && if is approximatively at the good size.
             if((abs(r.width - r.height) < _cubeDilationTolerance) && (abs((r.width - _cubeSizeCaptured)) < _cubeSizeTolerance)) {
                 _detectedShapes.push_back(r);
             }
         }
-        
+
         //// CUBES CHRONO UPDATE /////
         if(cubeChrono) {
             cubeChrono->update();
             if(cubeChrono->isDead()) cubeChrono = NULL;
         }
-        
-        
+
+
         /* Check if a new cube position is detected :
          *
          * We have a list of detected cube and we want to check if cube is already exist on
@@ -92,33 +92,42 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
             updateDetectedCube((*it));
         }
     }
-    
+
     //// CUBES FOUND UPDATE ////
     for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
+        // Check if an action is currently being and manage update
         if(connectedCubesDragged.size() == 0) {
             (*it).update();
         } else if(!(*it).isDetected()) {
             (*it).update();
+        } else {
+            (*it).increaseLifeCicle();
         }
-        
-        // Check if all detected cubes is binded at hard cube
+
+        // If cube seach connectedCube
         if ((*it).isSeachingCubeMode()) {
-            
-            // (*it).connectedCubeId = lastConnectedCubesDragged.pop();
-            
-            // TODO faire correspondre les cubes avec les id connues.
-            // REGARDER LE TABLEAU DES DERNIERS CUBES DRAGGEES
-            // SI IL Y EN A UN
-            // CUBE = CUBEID
-            
-            // CUBE LOCKED JUSQU'A CE QU'ON LE DRAG
-            // SINON
-            // CUBE INCONNE
+
+            // Check if a connectedCube was been dragged recently
+            if(!lastConnectedCubesDragged.empty()) {
+
+                // Get id of cube gradded and remove in into the queue.
+                int _connectedCubeId = lastConnectedCubesDragged.front();
+                lastConnectedCubesDragged.pop();
+
+                // Saved into detectedcube the connectecCube id.
+                (*it).connectedCubeId = _connectedCubeId;
+
+                // Saved into connectedCube the detectedCube id.
+                map<int, ConnectedCube>::iterator itConnected = connectedCubes.find(_connectedCubeId);
+                if (itConnected != connectedCubes.end()) {
+                    connectedCubes[_connectedCubeId].cubeId = (*it).cubeId;
+                }
+            }
         }
     }
-    
+
     ofRemove(detectedCubes, shouldRemoveCube);
-    
+
 
     //// CUBES CONNECTED UPDATE ////
     for(map<int, ConnectedCube>::iterator itConnectedCube = connectedCubes.begin(); itConnectedCube != connectedCubes.end(); itConnectedCube++) {
@@ -158,7 +167,7 @@ void CubeManager::draw(ofRectangle _renderZone) {
     for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
         (*it).draw(_renderZone);
     }
-    
+
     // chrono
     if(cubeChrono) cubeChrono->draw(_renderZone);
 
@@ -232,15 +241,16 @@ void CubeManager::cubeDragged(int _connectedCubeId) {
     // MESSAGE CUBE DRAGGED
     connectedCubes[_connectedCubeId].setStatus(DRAGGED);
 
-    // CONTRUCTION
-    // sauver le cube qui est draggué (plusieurs s'il le faut).
+    // save the dragged cube
     connectedCubesDragged[_connectedCubeId] = _connectedCubeId;
+
+    // Reset linked id into connectdCubes and detectedCubes.
+    connectedCubes[_connectedCubeId].cubeId = -1;
     for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
-        // If cube is linked to this connectedCube
-        // TEST TEST
         if((*it).connectedCubeId == _connectedCubeId) {
             // TODO delete le pointer
             (*it).connectedCubeId = -1;
+            (*it).kill();
             return;
         }
     }
@@ -254,7 +264,7 @@ void CubeManager::cubeDragEnd(int _connectedCubeId, int _connectedSoundId) {
     connectedCubesDragged.erase(_connectedCubeId);
     cout << connectedCubesDragged.size() << " connectedCube Dragged" << endl;
     // mettre le cube écouté dans une phase d'attende de positionnement.
-    // lastConnectedCubesDragged.push(_connectedCubeId);
+    lastConnectedCubesDragged.push(_connectedCubeId);
 }
 
 void CubeManager::cubeFaceChanged(int _connectedCubeId, int _connectedSoundId) {
@@ -306,13 +316,26 @@ int CubeManager::getNbrCubesFound() {
 }
 
 // GET DETECTED CUBE ------------------------------------------------------
+// GET CONNECTED CUBE ------------------------------------------------------
 Cube CubeManager::getDetectedCube(int _idCube) {
     for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it){
         // If cube is already into the area
         if((*it).cubeId == _idCube) return (*it);
     }
+    // TODO THROW FAIT BUGGUER L'APP
+    throw string("CubeManager.getDetectedCube() ERROR : cubeDetected was not found");
+}
 
-    throw "CubeManager.getDetectedCube() ERROR : cubeDetected was not found";
+ConnectedCube CubeManager::getConnectedCube(int _connectedCubeId) {
+    // TODO DOESN T WORK
+    map<int, ConnectedCube>::iterator it = connectedCubes.find(_connectedCubeId);
+
+    if (it != connectedCubes.end()) {
+        ConnectedCube& _connectedCube = it->second;
+        return _connectedCube;
+    }
+
+    throw string("CubeManager.getConnectedCube() ERROR : cubeConnected was not found");
 }
 
 // GET CONNECTED CUBES STATUS ------------------------------------------
