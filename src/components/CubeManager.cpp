@@ -12,6 +12,7 @@
 
 CubeManager::CubeManager(ServerController* _serv, function_type _sendPlayCube):serv_(_serv),sendPlayCube_(_sendPlayCube){
     idIncremented = 0;
+    prevMillis = ofGetElapsedTimeMillis();
 }
 
 // - SHOULD REMOVE (echo container) --------------------------------------------------------------
@@ -62,7 +63,6 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
 
     //// CUBES DETECTION UPDATE /////
     // If no cubes moved
-    if(connectedCubesDragged.size() == 0) {
 
         vector<ofRectangle> _detectedShapes;
         // for each forms found
@@ -91,6 +91,11 @@ void CubeManager::update(ofxCvContourFinder &_contourFinder, int _cubeDilationTo
         for(vector<ofRectangle>::iterator it = _detectedShapes.begin(); it != _detectedShapes.end(); ++it){
             updateDetectedCube((*it));
         }
+    
+    // Remove last draggued cubes
+    if((ofGetElapsedTimeMillis() - prevMillis) > TIMEOUT_DRAGGING) {
+        prevMillis = ofGetElapsedTimeMillis();
+        if(!lastConnectedCubesDragged.empty()) lastConnectedCubesDragged.pop();
     }
 
     //// CUBES FOUND UPDATE ////
@@ -265,6 +270,7 @@ void CubeManager::cubeDragEnd(int _connectedCubeId, int _connectedSoundId) {
     cout << connectedCubesDragged.size() << " connectedCube Dragged" << endl;
     // mettre le cube écouté dans une phase d'attende de positionnement.
     lastConnectedCubesDragged.push(_connectedCubeId);
+    prevMillis = ofGetElapsedTimeMillis();
 }
 
 void CubeManager::cubeFaceChanged(int _connectedCubeId, int _connectedSoundId) {

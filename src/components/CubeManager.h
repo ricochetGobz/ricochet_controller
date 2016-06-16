@@ -19,6 +19,8 @@
 #define DRAGGED 1
 #define TOUCHED 2
 
+#define TIMEOUT_DRAGGING 1000
+
 
 class CubeManager {
 
@@ -74,6 +76,8 @@ private:
     vector<EchoContainer> echoContainers;
 
     Cube * cubeChrono;
+    
+    float prevMillis;
 
     //// METHODES ////
     void createEchoContainer(Cube* _cube);
