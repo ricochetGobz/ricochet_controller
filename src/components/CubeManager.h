@@ -40,7 +40,8 @@ public:
 
 
     // events
-    void mouseReleased(int _x, int _y);
+    void mouseLeftReleased(int _x, int _y);
+    void mouseRightReleased(int _x, int _y);
     // - cube events
     void cubeConnected(int _connectedCubeId, int _faceId);
     void cubeDisconnected(int _connectedCubeId);

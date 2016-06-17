@@ -46,7 +46,7 @@ void CubeManager::updateDetectedCube(ofRectangle _cubeDetected) {
     idIncremented++;
 
     // If cube is positionned on chrono, prepare timer
-    if(ofDist(_cubeDetected.x, _cubeDetected.y, 330, 80) < 15) {
+    if(ofDist(_cubeDetected.x, _cubeDetected.y, 327, 55) < 15) {
         if(!cubeChrono) cubeChrono = new Cube(_cubeDetected.position, idIncremented);
         cubeChrono->increaseLifeCicle();
         return;
@@ -182,11 +182,26 @@ void CubeManager::draw(ofRectangle _renderZone) {
     }
 }
 
-// ON CLICK -----------------------------------------------
-void CubeManager::mouseReleased(int _x, int _y) {
+// ON CLIK LEFT  -----------------------------------------------
+// ON CLIK RIGHT -----------------------------------------------
+void CubeManager::mouseLeftReleased(int _x, int _y) {
     for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it) {
         if((*it).isDetected() && (*it).pointIsInsideDrawedShape(ofPoint(_x, _y))) {
             createEchoContainer(&(*it));
+        }
+    }
+}
+void CubeManager::mouseRightReleased(int _x, int _y) {
+    for(vector<Cube>::iterator it = detectedCubes.begin(); it != detectedCubes.end(); ++it) {
+        if((*it).isDetected() && (*it).pointIsInsideDrawedShape(ofPoint(_x, _y))) {
+            int _faceId = (*it).faceId;
+            if(_faceId == -1) {
+                _faceId = 1;
+            } else {
+                _faceId = (_faceId % 6) + 1;
+            }
+            
+            (*it).setFace(_faceId);
         }
     }
 }
@@ -332,17 +347,17 @@ Cube CubeManager::getDetectedCube(int _idCube) {
     throw string("CubeManager.getDetectedCube() ERROR : cubeDetected was not found");
 }
 
-ConnectedCube CubeManager::getConnectedCube(int _connectedCubeId) {
-    // TODO DOESN T WORK
-    map<int, ConnectedCube>::iterator it = connectedCubes.find(_connectedCubeId);
-
-    if (it != connectedCubes.end()) {
-        ConnectedCube& _connectedCube = it->second;
-        return _connectedCube;
-    }
-
-    throw string("CubeManager.getConnectedCube() ERROR : cubeConnected was not found");
-}
+// TODO DOESN T WORK
+//ConnectedCube CubeManager::getConnectedCube(int _connectedCubeId) {
+//    map<int, ConnectedCube>::iterator it = connectedCubes.find(_connectedCubeId);
+//
+//    if (it != connectedCubes.end()) {
+//        ConnectedCube& _connectedCube = it->second;
+//        return _connectedCube;
+//    }
+//
+//    throw string("CubeManager.getConnectedCube() ERROR : cubeConnected was not found");
+//}
 
 // GET CONNECTED CUBES STATUS ------------------------------------------
 stringstream CubeManager::getConnectedCubesStatus() {

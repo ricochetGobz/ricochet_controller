@@ -227,7 +227,12 @@ void ofApp::keyPressed(int key){
 // !!TEMP!! //
 // MOUSE RELEASED --------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-    cubeManager.mouseReleased(x, y);
+    if (button == 0) {
+        cubeManager.mouseLeftReleased(x, y);
+    } else if (button == 2) {
+        cubeManager.mouseRightReleased(x, y);
+    }
+    
 }
 // !!TEMP!! //
 

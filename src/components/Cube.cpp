@@ -52,8 +52,9 @@ void Cube::draw(ofRectangle _renderZone){
     stringstream reportStream;
     reportStream << "cubeId: " << cubeId << endl
     << "connectedCubeId: " << connectedCubeId << endl
+    << "faceId: " << faceId << endl
     << "x: " << pos.x << ", y: " << pos.y << endl;
-    ofDrawBitmapString(reportStream.str(), drawedShape.x + 2, drawedShape.y - 30);
+    ofDrawBitmapString(reportStream.str(), drawedShape.x + 2, drawedShape.y - 40);
 
     ofDrawRectangle(drawedShape);
 
@@ -111,5 +112,5 @@ bool Cube::isLinkedToConnectedCube() {
 // SET FACE -----
 void Cube::setFace(int _faceId) {
     faceId = _faceId;
-    if(_faceId != -1) loadSound("./sounds/note_" + to_string(_faceId) +".wav");
+    if(_faceId > 0 && _faceId <= 6) loadSound("./sounds/note_" + to_string(_faceId) +".wav");
 }
