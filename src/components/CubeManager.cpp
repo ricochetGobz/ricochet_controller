@@ -245,7 +245,7 @@ void CubeManager::cubeTouched(int _connectedCubeId, int _connectedSoundId) {
         // Récupérer le cube
         try {
             Cube _cube = getDetectedCube(_cubeTouched->cubeId);
-            _cube.setFace(_connectedSoundId);
+            if (_connectedSoundId != -1) _cube.setFace(_connectedSoundId);
 
             // Lancer un écho
             createEchoContainer(&_cube);
